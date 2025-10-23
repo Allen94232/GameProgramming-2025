@@ -1,0 +1,23 @@
+:root {
+}
+
+.pauseRegularButton {
+    width: 300px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.pauseRegularButton:hover {
+    transition-duration: 0.4s;
+    scale: 1.05 1.05;
+}
