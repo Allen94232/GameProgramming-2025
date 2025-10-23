@@ -21,7 +21,7 @@ public class Coin : MonoBehaviour
         {
             Debug.Log("Player collected a coin!");
             // add point
-            float newMood = MoodController.Instance.GetMoodValue() + 5f;
+            float newMood = MoodController.Instance.GetMoodValue() + value;
             newMood = Mathf.Min(newMood, 100);
             MoodController.Instance.SetMoodValue(newMood);
 
