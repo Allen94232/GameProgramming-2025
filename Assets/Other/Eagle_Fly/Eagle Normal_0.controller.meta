@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d38c1e3b09139ee41a3e8005033aec06
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 196612
+  packageName: 2D Birds(Eagle)
+  packageVersion: 1.0
+  assetPath: Assets/2DBirds_Eagle/Spritesheets/Eagle_Fly/Eagle Normal_0.controller
+  uploadId: 436693

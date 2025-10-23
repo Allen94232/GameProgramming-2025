@@ -29,10 +29,16 @@ public class PlayerController : MonoBehaviour
     [Header("Env Effects")]
     public bool inWater = false;
 
+    [Header("Bell Settings")]
+    public AudioClip bellSound;
+    private float bellTimer = 0f;
+    private AudioSource audioSource;
+
     [Header("Renderer")]
     [SerializeField] private SpriteRenderer spriteRenderer; // assign in Inspector
     [SerializeField] private Color normalColor = Color.green;
     [SerializeField] private Color inWaterColor = new Color(0.5f, 0.8f, 1f); // light blue
+
 
     // Current runtime settings (used for movement logic)
     private float currentMaxForwardSpeed;
@@ -42,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private float currentBrakeDeceleration;
     private float currentBackwardAcceleration;
     private float currentTurnSpeed;
+    private Stone[] stones;
 
     private Rigidbody2D rb;
     private float currentSpeed = 0f;
@@ -71,6 +78,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+        stones = FindObjectsOfType<Stone>();
         ApplySettingsForStatus(PlayerStatus.Normal);
     }
 
@@ -88,6 +97,17 @@ public class PlayerController : MonoBehaviour
         moveInput = Input.GetAxisRaw("Vertical");
 
         collisionTimer += Time.deltaTime;
+
+        bellTimer += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TryRingBell();
+        }
+
+        foreach (var stone in stones)
+        {
+            stone.TryFall(transform.position);
+        }
     }
 
     void FixedUpdate()
@@ -231,4 +251,28 @@ public class PlayerController : MonoBehaviour
 
         collisionTimer = 0f;
     }
+
+    void TryRingBell()
+    {
+        bellTimer = 0f; // reset timer
+
+        // 🔔 Play sound
+        if (audioSource != null && bellSound != null)
+            audioSource.PlayOneShot(bellSound);
+
+        Debug.Log("Bell rang!");
+        ScareNearbyPigeons();
+    }
+
+    void ScareNearbyPigeons()
+    {
+        // Find all pigeons currently in the scene
+        Pigeon[] pigeons = FindObjectsOfType<Pigeon>();
+
+        foreach (var pigeon in pigeons)
+        {
+            pigeon.TryScare(transform.position);
+        }
+    }
+
 }
