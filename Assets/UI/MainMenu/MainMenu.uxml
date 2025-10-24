@@ -1,10 +1,10 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/MainMenuStyleSheet.uss?fileID=7433441132597879392&amp;guid=18ed9e26162f14f95acebfcc4dd62c28&amp;type=3#MainMenuStyleSheet" />
-    <ui:VisualElement name="panel_container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/MainMenu/mainmenu_bg.png?fileID=2800000&amp;guid=47f9ecd614729462f95cfd227e8c49f2&amp;type=3#mainmenu_bg&quot;); -unity-background-image-tint-color: rgb(137, 137, 137); justify-content: center;">
-        <ui:VisualElement name="center_panel" class="centralPanel" style="flex-grow: 0; width: 500px; height: 350px; align-items: center; justify-content: center; align-self: center; margin-top: 0; position: relative; align-content: center; background-color: rgba(0, 0, 0, 0.55); border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(0, 212, 5); border-right-color: rgb(0, 212, 5); border-top-color: rgb(0, 212, 5); border-bottom-color: rgb(0, 212, 5); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
-            <ui:Label text="校園衝刺" name="main_menu" style="color: rgb(47, 255, 54); font-size: 50px; margin-bottom: 10px;" />
-            <ui:Button text="Start Game" name="start-game-button" class="menuRegularButton" style="margin-top: 10px; margin-bottom: 10px; color: rgb(255, 255, 255);" />
-            <ui:Button text="Leaderboard" name="leaderboard-button" class="menuRegularButton" style="margin-top: 5px; margin-bottom: 10px; color: rgb(255, 255, 255);" />
+    <Style src="project://database/Assets/UI/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=1a811be5f8b4a4d76bfbfcd1ac15274c&amp;type=3#MainMenu" />
+    <ui:VisualElement name="panel_container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/MainMenu/mainmenu_bg.png?fileID=2800000&amp;guid=47f9ecd614729462f95cfd227e8c49f2&amp;type=3#mainmenu_bg&quot;); -unity-background-image-tint-color: rgb(149, 149, 149); justify-content: center;">
+        <ui:VisualElement name="center-panel" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0.55); border-left-color: rgb(0, 212, 5); border-right-color: rgb(0, 212, 5); border-top-color: rgb(0, 212, 5); border-bottom-color: rgb(0, 212, 5); border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; width: 500px; height: 350px; align-items: center; justify-content: center; align-self: center;">
+            <ui:Label text="校園衝刺" name="main_menu" style="font-size: 50px; color: rgb(0, 212, 5); margin-bottom: 10px;" />
+            <ui:Button text="Start Game" name="start-game-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0);" />
+            <ui:Button text="Leaderboard" name="leaderboard-button" parse-escape-sequences="true" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0);" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

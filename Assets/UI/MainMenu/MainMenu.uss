@@ -2,26 +2,20 @@
 }
 
 .menuRegularButton {
-    font-size: 40px;
     width: 300px;
     height: 90px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
+    font-size: 40px;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0);
-}
-
-.centralPanel {
-    background-color: rgb(0, 0, 0);
-    align-content: center;
-    align-self: center;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    color: rgb(255, 255, 255);
 }
 
 .menuRegularButton:hover {
