@@ -68,4 +68,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73c5948612d4484ebecc33182ea3f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  gameUIController: {fileID: 0}
