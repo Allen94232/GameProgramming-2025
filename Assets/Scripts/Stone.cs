@@ -82,4 +82,19 @@ public class Stone : MonoBehaviour
             // GetComponent<Rigidbody2D>().simulated = true;
         }
     }
+
+    public void ResetStone()
+    {
+        isFall = false;
+        fallen = false;
+        transform.position = startPosition;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<SpriteRenderer>().sprite = stoneSprite[0];
+        
+        if (shadowInstance != null)
+        {
+            shadowInstance.transform.localScale = Vector3.one * minShadowScale;
+        }
+    }
 }

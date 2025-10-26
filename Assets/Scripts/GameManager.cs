@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -17,12 +20,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "MainMenuScene")
+        {
+            StartCoroutine(InitializeAfterSceneLoad());
+        }
+    }
+
+    private System.Collections.IEnumerator InitializeAfterSceneLoad()
+    {
+        yield return null;
+        
+        if (GameUIController.Instance != null)
+            GameUIController.Instance.Init();
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.Init();
+        if (MoodController.Instance != null)
+            MoodController.Instance.Init();
+    }
+
     [Header("GameObjects and Transforms")]
     public GameObject player;
     public Transform playerStartPoint;
     public GameObject destinationPoint;
 
-    [Header("Game Timer")]
+    [Header("Game Parameters")]
+    public float maxMood = 100;
+    public float initialMood = 50;
     public float gameTime = 180f; // in seconds
 
     [Header("Game UI")]
@@ -39,18 +69,20 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         timer = gameTime;
+
+        Init();
     }
 
     private void Update()
     {
         if (!isGameStarted)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartGame();
-            }
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    StartGame();
+            //}
 
-            return;
+            //return;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -58,9 +90,16 @@ public class GameManager : MonoBehaviour
             ResetGame();
         }
 
-        TimerCountdown();
+        if (isGameWin || isGameLose)
+        {
+            CheckIfGameOver();
+            return;
+        }
 
-        CheckIfGameOver();
+
+        GameUIController.Instance.UpdateTimer();
+
+        // CheckIfGameOver();
     }
 
     private void Init()
@@ -70,10 +109,13 @@ public class GameManager : MonoBehaviour
         isGameLose = false;
 
         timer = gameTime;
-        UpdateTimerUI();
+        // UpdateTimerUI();
 
-        winUI.SetActive(false);
-        loseUI.SetActive(false);
+        if (winUI != null)
+            winUI.SetActive(false);
+
+        if (loseUI != null)
+            loseUI.SetActive(false);
     }
 
     public void StartGame()
@@ -84,37 +126,44 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         Init();
+        GameUIController.Instance.Init();
+        PlayerController.Instance.Init();
+        MoodController.Instance.Init();
     }
 
-    private void GameWin()
+    public void GameWin()
     {
+        if (isGameWin || isGameLose)
+            return;
         isGameWin = true;
     }
 
-    private void GameLose()
+    public void GameLose()
     {
+        if (isGameWin || isGameLose)
+            return;
         isGameLose = true;
     }
 
-    private void TimerCountdown()
-    {
-        if (isGameWin || isGameLose || !isGameStarted)
-        {
-            return;
-        }
-        timer -= Time.deltaTime;
-        if (timer <= 0f)
-        {
-            timer = 0f;
-            if (!isGameWin)
-                isGameLose = true;
-        }
-    }
+    //private void TimerCountdown()
+    //{
+    //    if (isGameWin || isGameLose || !isGameStarted)
+    //    {
+    //        return;
+    //    }
+    //    timer -= Time.deltaTime;
+    //    if (timer <= 0f)
+    //    {
+    //        timer = 0f;
+    //        if (!isGameWin)
+    //            isGameLose = true;
+    //    }
+    //}
 
-    private void UpdateTimerUI()
-    {
-        timerUI.text = Mathf.CeilToInt(timer).ToString();
-    }
+    //private void UpdateTimerUI()
+    //{
+    //    timerUI.text = Mathf.CeilToInt(timer).ToString();
+    //}
 
     private void CheckIfGameOver()
     {
@@ -123,6 +172,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("You Win!");
             if (winUI != null)
                 winUI.SetActive(true);
+
+            Time.timeScale = 0f;
             //ResetGame();
         }
         else if (isGameLose)
@@ -130,6 +181,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("You Lose!");
             if (loseUI != null)
                 loseUI.SetActive(true);
+
+            Time.timeScale = 0f;
             //ResetGame();
         }
         else

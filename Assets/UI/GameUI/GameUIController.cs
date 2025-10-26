@@ -51,33 +51,45 @@ public class GameUIController : MonoBehaviour
 
     void Start()
     {
-        moodValue = 100;
-        _timeRemaining = levelTimeInSeconds;
+        Init();
     }
 
     void Update()
     {
-        if (_timeRemaining > 0)
-        {
-            _timeRemaining -= Time.deltaTime;
-            UpdateTimerDisplay();
-        }
-        else
-        {
-            _timeRemaining = 0;
-            UpdateTimerDisplay();
-        }
+        //if (_timeRemaining > 0)
+        //{
+        //    _timeRemaining -= Time.deltaTime;
+        //    UpdateTimerDisplay();
+        //}
+        //else
+        //{
+        //    _timeRemaining = 0;
+        //    UpdateTimerDisplay();
+        //}
 
         //for mood points    
-        UpdateMoodDisplay();
+        //UpdateMoodDisplay();
 
+    }
+
+    public void Init()
+    {
+        moodValue = GameManager.Instance.initialMood;
+        _timeRemaining = GameManager.Instance.gameTime;
     }
 
     private void RestartLevel()
     {
         Debug.Log("Restarting Level...");
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ResetGame();
+        }
+
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
     }
 
     public float GetMoodValue()
@@ -88,14 +100,29 @@ public class GameUIController : MonoBehaviour
     public void SetMoodValue(float newMoodValue)
     {
         Debug.Log("new value" + newMoodValue);
-        moodValue = Mathf.Clamp(newMoodValue, 0, 100);
+        moodValue = Mathf.Clamp(newMoodValue, 0, GameManager.Instance.maxMood);
     }
 
-    private void UpdateMoodDisplay()
+    public void UpdateMoodDisplay(float newMoodValue)
     {
         if (_moodLabel != null)
         {
-            _moodLabel.text = "Mood: " + moodValue.ToString();
+            _moodLabel.text = "Mood: " + newMoodValue.ToString();
+        }
+    }
+
+    public void UpdateTimer()
+    {   if (_timeRemaining > 0)
+        {
+            _timeRemaining -= Time.deltaTime;
+            UpdateTimerDisplay();
+        }
+        else
+        {
+            _timeRemaining = 0;
+            UpdateTimerDisplay();
+
+            GameManager.Instance.GameLose();
         }
     }
 

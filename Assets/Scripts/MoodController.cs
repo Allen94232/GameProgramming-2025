@@ -7,8 +7,6 @@ public class MoodController : MonoBehaviour
 
     private float moodValue = 0;
 
-    private TextMeshProUGUI moodUI;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,15 +19,19 @@ public class MoodController : MonoBehaviour
 
     private void Start()
     {
-        moodValue = 100;
-        moodUI = GetComponent<TextMeshProUGUI>();
+        Init();
     }
 
     private void Update()
     {
-        moodUI.text = "Mood: " + moodValue.ToString();
+
     }
     
+    public void Init()
+    {
+        moodValue = GameManager.Instance.initialMood;
+        GameUIController.Instance.UpdateMoodDisplay(moodValue);
+    }
 
     public float GetMoodValue()
     {
@@ -39,5 +41,6 @@ public class MoodController : MonoBehaviour
     public void SetMoodValue(float moodValue)
     {
         this.moodValue = moodValue;
+        GameUIController.Instance.UpdateMoodDisplay(moodValue);
     }
 }

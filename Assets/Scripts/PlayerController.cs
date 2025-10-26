@@ -81,6 +81,8 @@ public class PlayerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         stones = FindObjectsOfType<Stone>();
         ApplySettingsForStatus(PlayerStatus.Normal);
+
+        Init();
     }
 
     void Update()
@@ -115,6 +117,12 @@ public class PlayerController : MonoBehaviour
         SyncSpeedWithPhysics();
         HandleMovement();
         HandleRotation();
+    }
+
+    public void Init()
+    {
+        Playerstatus = PlayerStatus.Normal;
+        ApplySettingsForStatus(Playerstatus);
     }
 
     void SyncSpeedWithPhysics()
@@ -250,6 +258,14 @@ public class PlayerController : MonoBehaviour
         MoodController.Instance.SetMoodValue(newMood);
 
         collisionTimer = 0f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Destination"))
+        {
+            GameManager.Instance.GameWin();
+        }
     }
 
     void TryRingBell()

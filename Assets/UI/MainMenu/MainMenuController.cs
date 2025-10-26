@@ -30,6 +30,7 @@ public class MainMenuController : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("Start Game button clicked! Loading scene: Map1");
-        SceneManager.LoadScene("Map1");
+
+        SceneManager.LoadScene("Level 1");
     }
 }
