@@ -10,8 +10,8 @@ public class Stone : MonoBehaviour
 
     [Header("Shadow Setting")]
     public GameObject shadowPrefab;
-    public float minShadowScale = 0.2f;
-    public float maxShadowScale = 1f;  
+    public float minShadowScale = 0.5f;
+    public float maxShadowScale = 2.5f;  
 
     private GameObject shadowInstance;
     private bool isFall = false;

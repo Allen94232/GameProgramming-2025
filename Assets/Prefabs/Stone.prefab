@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -18.52163, y: 22.47589, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 8411544906788882930, guid: 6f348eaee52a4164a876059f1140dc3f, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
   m_FlipX: 0
@@ -105,15 +105,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af25be74437b504418d5b9021c968207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  fallRadius: 5
-  fallSpeed: 40
+  fallRadius: 20
+  fallSpeed: 80
   startHeight: 50
   stoneSprite:
   - {fileID: -844279654400910640, guid: 70266df8ed1e94a488a899bc6c1d41ba, type: 3}
   - {fileID: 8411544906788882930, guid: 6f348eaee52a4164a876059f1140dc3f, type: 3}
   shadowPrefab: {fileID: 1857348853513029753, guid: f4ba882088a60844087c56a285d4accc, type: 3}
-  minShadowScale: 0.2
-  maxShadowScale: 1
+  minShadowScale: 0.5
+  maxShadowScale: 2.5
 --- !u!61 &-2107014469319706350
 BoxCollider2D:
   m_ObjectHideFlags: 0

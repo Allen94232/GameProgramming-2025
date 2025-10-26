@@ -26,6 +26,14 @@ public class PlayerController : MonoBehaviour
     [Header("Original Rotation Settings")]
     public float oriTurnSpeed = 200f;
 
+    [Header("Mood Speed Settings")]
+    [Tooltip("Base mood value that corresponds to original speed (default 100)")]
+    public float baseMoodValue = 100f;
+    [Tooltip("Minimum speed multiplier when mood is 0 (e.g., 0.5 = 50% speed)")]
+    public float minSpeedMultiplier = 0.5f;
+    [Tooltip("Maximum speed multiplier when mood is 200 (e.g., 1.5 = 150% speed)")]
+    public float maxSpeedMultiplier = 1.5f;
+
     [Header("Env Effects")]
     public bool inWater = false;
 
@@ -189,18 +197,46 @@ public class PlayerController : MonoBehaviour
         }    
     }
 
+    float GetMoodSpeedMultiplier()
+    {
+        if (MoodController.Instance == null)
+            return 1f;
+
+        float currentMood = MoodController.Instance.GetMoodValue();
+        
+        // mood = 0 -> minSpeedMultiplier (0.5)
+        // mood = 100 -> 1.0
+        // mood = 200 -> maxSpeedMultiplier (1.5)
+        
+        float normalizedMood = currentMood / baseMoodValue; // 0-2
+        
+        if (normalizedMood <= 1f)
+        {
+            // Mood 0-100
+            return Mathf.Lerp(minSpeedMultiplier, 1f, normalizedMood);
+        }
+        else
+        {
+            // Mood 100-200
+            return Mathf.Lerp(1f, maxSpeedMultiplier, normalizedMood - 1f);
+        }
+    }
+
     void ApplySettingsForStatus(PlayerStatus newStatus)
     {
+        // 先獲取心情速度倍率
+        float moodMultiplier = GetMoodSpeedMultiplier();
+
         switch (newStatus)
         {
             case PlayerStatus.Normal:
-                currentMaxForwardSpeed = oriMaxForwardSpeed;
-                currentMaxBackwardSpeed = oriMaxBackwardSpeed;
-                currentAcceleration = oriAcceleration;
-                currentDeceleration = oriDeceleration;
-                currentBrakeDeceleration = oriBrakeDeceleration;
-                currentBackwardAcceleration = oriBackwardAcceleration;
-                currentTurnSpeed = oriTurnSpeed;
+                currentMaxForwardSpeed = oriMaxForwardSpeed * moodMultiplier;
+                currentMaxBackwardSpeed = oriMaxBackwardSpeed * moodMultiplier;
+                currentAcceleration = oriAcceleration * moodMultiplier;
+                currentDeceleration = oriDeceleration * moodMultiplier;
+                currentBrakeDeceleration = oriBrakeDeceleration * moodMultiplier;
+                currentBackwardAcceleration = oriBackwardAcceleration * moodMultiplier;
+                currentTurnSpeed = oriTurnSpeed * moodMultiplier;
 
                 // Change color when returning to normal
                 if (spriteRenderer != null)
@@ -209,14 +245,13 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case PlayerStatus.InWater:
-                // You can tweak these multipliers as needed
-                currentMaxForwardSpeed = oriMaxForwardSpeed * 0.6f;
-                currentMaxBackwardSpeed = oriMaxBackwardSpeed * 0.6f;
-                currentAcceleration = oriAcceleration * 0.7f;
-                currentDeceleration = oriDeceleration * 0.7f;
-                currentBrakeDeceleration = oriBrakeDeceleration * 0.7f;
-                currentBackwardAcceleration = oriBackwardAcceleration * 0.7f;
-                currentTurnSpeed = oriTurnSpeed * 0.8f;
+                currentMaxForwardSpeed = oriMaxForwardSpeed * 0.6f * moodMultiplier;
+                currentMaxBackwardSpeed = oriMaxBackwardSpeed * 0.6f * moodMultiplier;
+                currentAcceleration = oriAcceleration * 0.7f * moodMultiplier;
+                currentDeceleration = oriDeceleration * 0.7f * moodMultiplier;
+                currentBrakeDeceleration = oriBrakeDeceleration * 0.7f * moodMultiplier;
+                currentBackwardAcceleration = oriBackwardAcceleration * 0.7f * moodMultiplier;
+                currentTurnSpeed = oriTurnSpeed * 0.8f * moodMultiplier;
 
                 // Change color when in water
                 if (spriteRenderer != null)

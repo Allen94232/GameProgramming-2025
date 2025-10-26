@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +38,10 @@ public class GameManager : MonoBehaviour
     {
         yield return null;
         
+        FindSceneReferences();
+        
+        Init();
+        
         if (GameUIController.Instance != null)
             GameUIController.Instance.Init();
         if (PlayerController.Instance != null)
@@ -45,20 +50,22 @@ public class GameManager : MonoBehaviour
             MoodController.Instance.Init();
     }
 
-    [Header("GameObjects and Transforms")]
-    public GameObject player;
-    public Transform playerStartPoint;
-    public GameObject destinationPoint;
-
     [Header("Game Parameters")]
-    public float maxMood = 100;
-    public float initialMood = 50;
+    public float maxMood = 200;
+    public float initialMood = 100;
     public float gameTime = 180f; // in seconds
 
-    [Header("Game UI")]
-    public TextMeshProUGUI timerUI;
-    public GameObject winUI;
-    public GameObject loseUI;
+    // [Header("GameObjects and Transforms")]
+    // public GameObject player;
+    // public Transform playerStartPoint;
+    // public GameObject destinationPoint;
+    // [Header("Game UI")]
+    // public TextMeshProUGUI timerUI;
+    // public GameObject winUI;
+    // public GameObject loseUI;
+
+    private GameObject winUI;
+    private GameObject loseUI;
 
     private bool isGameStarted = false;
     private bool isGameWin = false;
@@ -69,8 +76,19 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         timer = gameTime;
-
+        FindSceneReferences();
         Init();
+    }
+
+    private void FindSceneReferences()
+    {
+        winUI = GameObject.Find("WinUI");
+        loseUI = GameObject.Find("LoseUI");
+        
+        if (winUI == null)
+            Debug.LogWarning("GameManager: Cannot find WinUI in scene!");
+        if (loseUI == null)
+            Debug.LogWarning("GameManager: Cannot find LoseUI in scene!");
     }
 
     private void Update()
@@ -87,7 +105,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ResetGame();
+            //ResetGame();
         }
 
         if (isGameWin || isGameLose)
@@ -96,10 +114,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-
-        GameUIController.Instance.UpdateTimer();
-
-        // CheckIfGameOver();
+        if (GameUIController.Instance != null)
+            GameUIController.Instance.UpdateTimer();
     }
 
     private void Init()
@@ -109,7 +125,6 @@ public class GameManager : MonoBehaviour
         isGameLose = false;
 
         timer = gameTime;
-        // UpdateTimerUI();
 
         if (winUI != null)
             winUI.SetActive(false);
@@ -126,9 +141,13 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         Init();
-        GameUIController.Instance.Init();
-        PlayerController.Instance.Init();
-        MoodController.Instance.Init();
+        
+        if (GameUIController.Instance != null)
+            GameUIController.Instance.Init();
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.Init();
+        if (MoodController.Instance != null)
+            MoodController.Instance.Init();
     }
 
     public void GameWin()
@@ -145,49 +164,35 @@ public class GameManager : MonoBehaviour
         isGameLose = true;
     }
 
-    //private void TimerCountdown()
-    //{
-    //    if (isGameWin || isGameLose || !isGameStarted)
-    //    {
-    //        return;
-    //    }
-    //    timer -= Time.deltaTime;
-    //    if (timer <= 0f)
-    //    {
-    //        timer = 0f;
-    //        if (!isGameWin)
-    //            isGameLose = true;
-    //    }
-    //}
-
-    //private void UpdateTimerUI()
-    //{
-    //    timerUI.text = Mathf.CeilToInt(timer).ToString();
-    //}
-
     private void CheckIfGameOver()
     {
         if (isGameWin)
         {
             Debug.Log("You Win!");
             if (winUI != null)
+            {
                 winUI.SetActive(true);
+            }
+            else
+            {
+                Debug.LogError("GameManager: WinUI is null when trying to show win screen!");
+            }
 
             Time.timeScale = 0f;
-            //ResetGame();
         }
         else if (isGameLose)
         {
             Debug.Log("You Lose!");
             if (loseUI != null)
+            {
                 loseUI.SetActive(true);
+            }
+            else
+            {
+                Debug.LogError("GameManager: LoseUI is null when trying to show lose screen!");
+            }
 
             Time.timeScale = 0f;
-            //ResetGame();
-        }
-        else
-        {
-            return;
         }
     }
 }
