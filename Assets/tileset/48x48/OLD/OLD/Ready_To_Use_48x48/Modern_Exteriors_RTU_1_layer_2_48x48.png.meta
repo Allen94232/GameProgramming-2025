@@ -1,0 +1,494 @@
+fileFormatVersion: 2
+guid: db4de9dc39b40c24f8f2abf891c2dad9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2402048453083422354
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_0
+  - first:
+      213: 5276844236951128030
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_1
+  - first:
+      213: 6619509757703407442
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_2
+  - first:
+      213: -513259078226527782
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_3
+  - first:
+      213: -8289706668937809264
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_4
+  - first:
+      213: -4557868584117168691
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_5
+  - first:
+      213: 1544207438238515803
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_6
+  - first:
+      213: -61938127774595337
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_7
+  - first:
+      213: 643910541056212476
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_8
+  - first:
+      213: -6013377628505799884
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_9
+  - first:
+      213: 1908052775255373570
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_10
+  - first:
+      213: 354564700155872736
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_11
+  - first:
+      213: -4855882814269357343
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_12
+  - first:
+      213: 5166228754564470961
+    second: Modern_Exteriors_RTU_1_layer_2_48x48_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 449
+        width: 260
+        height: 607
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e61afa498a53aaed0800000000000000
+      internalID: -2402048453083422354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_1
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 1022
+        width: 95
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed70a8620ed1b3940800000000000000
+      internalID: 5276844236951128030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_2
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 1022
+        width: 95
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 257c42f8d093ddb50800000000000000
+      internalID: 6619509757703407442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_3
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 1022
+        width: 95
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad93094769980e8f0800000000000000
+      internalID: -513259078226527782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_4
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 437
+        width: 577
+        height: 619
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09276c194bb05fc80800000000000000
+      internalID: -8289706668937809264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 434
+        width: 43
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc598cedba23fb0c0800000000000000
+      internalID: -4557868584117168691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_6
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 431
+        width: 218
+        height: 272
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5209b7cb702e6510800000000000000
+      internalID: 1544207438238515803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_7
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 239
+        width: 92
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f641f7d993f32ff0800000000000000
+      internalID: -61938127774595337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_8
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 143
+        width: 44
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cfdf8cab931afe800800000000000000
+      internalID: 643910541056212476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 110
+        width: 94
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43381a838e03c8ca0800000000000000
+      internalID: -6013377628505799884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_10
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 110
+        width: 95
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2077bc9c3e3ca7a10800000000000000
+      internalID: 1908052775255373570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_11
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 110
+        width: 95
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e50faa57baabe400800000000000000
+      internalID: 354564700155872736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_12
+      rect:
+        serializedVersion: 2
+        x: 962
+        y: 110
+        width: 95
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e20d88de407c9cb0800000000000000
+      internalID: -4855882814269357343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_1_layer_2_48x48_13
+      rect:
+        serializedVersion: 2
+        x: 1106
+        y: 110
+        width: 95
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b859303ea122b740800000000000000
+      internalID: 5166228754564470961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Modern_Exteriors_RTU_1_layer_2_48x48_0: -2402048453083422354
+      Modern_Exteriors_RTU_1_layer_2_48x48_1: 5276844236951128030
+      Modern_Exteriors_RTU_1_layer_2_48x48_10: 1908052775255373570
+      Modern_Exteriors_RTU_1_layer_2_48x48_11: 354564700155872736
+      Modern_Exteriors_RTU_1_layer_2_48x48_12: -4855882814269357343
+      Modern_Exteriors_RTU_1_layer_2_48x48_13: 5166228754564470961
+      Modern_Exteriors_RTU_1_layer_2_48x48_2: 6619509757703407442
+      Modern_Exteriors_RTU_1_layer_2_48x48_3: -513259078226527782
+      Modern_Exteriors_RTU_1_layer_2_48x48_4: -8289706668937809264
+      Modern_Exteriors_RTU_1_layer_2_48x48_5: -4557868584117168691
+      Modern_Exteriors_RTU_1_layer_2_48x48_6: 1544207438238515803
+      Modern_Exteriors_RTU_1_layer_2_48x48_7: -61938127774595337
+      Modern_Exteriors_RTU_1_layer_2_48x48_8: 643910541056212476
+      Modern_Exteriors_RTU_1_layer_2_48x48_9: -6013377628505799884
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

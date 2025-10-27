@@ -1,0 +1,390 @@
+fileFormatVersion: 2
+guid: 8095ccd1881e5c74f85525898c15fabe
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8813039721844236478
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_0
+  - first:
+      213: 7896614530740533054
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_1
+  - first:
+      213: 5395702385587608509
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_2
+  - first:
+      213: -8816868344282709613
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_3
+  - first:
+      213: -4073074139819731660
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_4
+  - first:
+      213: -5808815952426823160
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_5
+  - first:
+      213: -7362928984898079635
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_6
+  - first:
+      213: -8305662181440827769
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_7
+  - first:
+      213: -5727655940094631735
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_8
+  - first:
+      213: -4911360770776103791
+    second: Modern_Exteriors_RTU_3_layer_2_48x48_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 974
+        width: 163
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f1114011bc1b580800000000000000
+      internalID: -8813039721844236478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_1
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 572
+        width: 212
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e373af0e319669d60800000000000000
+      internalID: 7896614530740533054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_2
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 479
+        width: 110
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbb5da66bb261ea40800000000000000
+      internalID: 5395702385587608509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_3
+      rect:
+        serializedVersion: 2
+        x: 1874
+        y: 578
+        width: 140
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39184a364f034a580800000000000000
+      internalID: -8816868344282709613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_4
+      rect:
+        serializedVersion: 2
+        x: 2066
+        y: 578
+        width: 140
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 435173066a88977c0800000000000000
+      internalID: -4073074139819731660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 344
+        width: 163
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8021afdeaa0f26fa0800000000000000
+      internalID: -5808815952426823160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_6
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 122
+        width: 185
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d64f8b4491f91d990800000000000000
+      internalID: -7362928984898079635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_7
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 119
+        width: 125
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78ec2d2504c5cbc80800000000000000
+      internalID: -8305662181440827769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_8
+      rect:
+        serializedVersion: 2
+        x: 1223
+        y: 119
+        width: 185
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c0e007d4474380b0800000000000000
+      internalID: -5727655940094631735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Modern_Exteriors_RTU_3_layer_2_48x48_9
+      rect:
+        serializedVersion: 2
+        x: 1712
+        y: 122
+        width: 185
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1940a16866757dbb0800000000000000
+      internalID: -4911360770776103791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Modern_Exteriors_RTU_3_layer_2_48x48_0: -8813039721844236478
+      Modern_Exteriors_RTU_3_layer_2_48x48_1: 7896614530740533054
+      Modern_Exteriors_RTU_3_layer_2_48x48_2: 5395702385587608509
+      Modern_Exteriors_RTU_3_layer_2_48x48_3: -8816868344282709613
+      Modern_Exteriors_RTU_3_layer_2_48x48_4: -4073074139819731660
+      Modern_Exteriors_RTU_3_layer_2_48x48_5: -5808815952426823160
+      Modern_Exteriors_RTU_3_layer_2_48x48_6: -7362928984898079635
+      Modern_Exteriors_RTU_3_layer_2_48x48_7: -8305662181440827769
+      Modern_Exteriors_RTU_3_layer_2_48x48_8: -5727655940094631735
+      Modern_Exteriors_RTU_3_layer_2_48x48_9: -4911360770776103791
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
