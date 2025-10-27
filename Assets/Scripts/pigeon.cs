@@ -6,12 +6,12 @@ public class Pigeon : MonoBehaviour
     public float scareRadius = 5f;  // how close the player must be
     public float flyAwaySpeed = 5f;
     private bool isScared = false;
-    public Vector2 flyDirection = Vector2.up;
+    private Vector2 flyDirection = Vector2.up;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GetComponent<Collider2D>().enabled = true;
-        flyDirection = Random.insideUnitCircle.normalized;
     }
 
     // Update is called once per frame
@@ -32,26 +32,48 @@ public class Pigeon : MonoBehaviour
         if (distance <= scareRadius)
         {
             GetComponent<Collider2D>().enabled = false;
-            FlyAway();
+            FlyAway(playerPosition);
         }
     }
 
-    void FlyAway()
+    void FlyAway(Vector3 playerPosition)
     {
         isScared = true;
-        Debug.Log($"{gameObject.name} flies away!");
+        
+        Vector2 awayFromPlayer = ((Vector2)transform.position - (Vector2)playerPosition).normalized;
+        
+        float randomAngle = Random.Range(-30f, 30f);
+        flyDirection = RotateVector(awayFromPlayer, randomAngle);
+        
+        Debug.Log($"{gameObject.name} flies away in direction {flyDirection}!");
         Destroy(gameObject, 2f);
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    
+    // 輔助方法:旋轉向量
+    Vector2 RotateVector(Vector2 vector, float degrees)
     {
-        if (other.CompareTag("Player"))
+        float radians = degrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radians);
+        float sin = Mathf.Sin(radians);
+        
+        return new Vector2(
+            vector.x * cos - vector.y * sin,
+            vector.x * sin + vector.y * cos
+        );
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
         {
+            // Pigeon is crushed by player -> fly away immediately
+            FlyAway(collision.transform.position);
+
             //dead animation
-            Debug.Log("You crush a bird");
-            float newMood = MoodController.Instance.GetMoodValue() - 5f;
-            newMood = Mathf.Max(newMood, 0);
-            MoodController.Instance.SetMoodValue(newMood);
+            //Debug.Log("You crush a bird");
+            //float newMood = MoodController.Instance.GetMoodValue() - 5f;
+            //newMood = Mathf.Max(newMood, 0);
+            //MoodController.Instance.SetMoodValue(newMood);
         }
     }
 }

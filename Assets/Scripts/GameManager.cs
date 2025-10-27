@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
+    private bool isFirstSceneLoad = true;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -28,22 +30,40 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != "MainMenuScene")
+        // Reset first load flag when returning to main menu
+        if (scene.name == "MainMenuScene")
         {
-            StartCoroutine(InitializeAfterSceneLoad());
+            // destroy game manager when returning to main menu
+            isFirstSceneLoad = true;
+            Destroy(gameObject);
+            return;
         }
+
+        // Handle game scene loading
+        isFirstSceneLoad = false;
+        
+        // Immediately find and hide UI to prevent visual delay
+        FindSceneReferences();
+        HideGameOverUI();
+
+        StartCoroutine(ToggleGameObjectsAfterDelay());
+
+        // Then initialize other controllers
+        StartCoroutine(InitializeAfterSceneLoad());
     }
 
     private System.Collections.IEnumerator InitializeAfterSceneLoad()
     {
+        // Wait one frame to ensure all Awake methods complete
         yield return null;
-        
-        FindSceneReferences();
         
         Init();
         
         if (GameUIController.Instance != null)
             GameUIController.Instance.Init();
+        else
+            Debug.LogError("GameManager: GameUIController.Instance is null after scene load!");
+            
         if (PlayerController.Instance != null)
             PlayerController.Instance.Init();
         if (MoodController.Instance != null)
@@ -53,19 +73,13 @@ public class GameManager : MonoBehaviour
     [Header("Game Parameters")]
     public float maxMood = 200;
     public float initialMood = 100;
-    public float gameTime = 180f; // in seconds
-
-    // [Header("GameObjects and Transforms")]
-    // public GameObject player;
-    // public Transform playerStartPoint;
-    // public GameObject destinationPoint;
-    // [Header("Game UI")]
-    // public TextMeshProUGUI timerUI;
-    // public GameObject winUI;
-    // public GameObject loseUI;
+    public float gameTime = 180f;
 
     private GameObject winUI;
     private GameObject loseUI;
+
+    private GameObject speedDetectors;
+    private GameObject sprinklers;
 
     private bool isGameStarted = false;
     private bool isGameWin = false;
@@ -75,24 +89,61 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        timer = gameTime;
-        FindSceneReferences();
-        Init();
+        // Only initialize on first scene load (before OnSceneLoaded triggers)
+        if (isFirstSceneLoad)
+        {
+            timer = gameTime;
+            FindSceneReferences();
+            HideGameOverUI();
+            StartCoroutine(ToggleGameObjectsAfterDelay());
+            Init();
+        }
     }
 
+    // Find UI GameObjects in the current scene
     private void FindSceneReferences()
     {
         winUI = GameObject.Find("WinUI");
         loseUI = GameObject.Find("LoseUI");
-        
+
+        speedDetectors = GameObject.Find("SpeedDetectors");
+        sprinklers = GameObject.Find("Sprinklers");
+
         if (winUI == null)
             Debug.LogWarning("GameManager: Cannot find WinUI in scene!");
         if (loseUI == null)
             Debug.LogWarning("GameManager: Cannot find LoseUI in scene!");
     }
 
+    // Immediately hide game over UI
+    private void HideGameOverUI()
+    {
+        if (winUI != null)
+            winUI.SetActive(false);
+        if (loseUI != null)
+            loseUI.SetActive(false);
+    }
+
+    // Disable speed detectors and sprinklers and enable them after 0.5 seconds
+    private System.Collections.IEnumerator ToggleGameObjectsAfterDelay()
+    {
+        if (speedDetectors != null)
+            speedDetectors.SetActive(false);
+        if (sprinklers != null)
+            sprinklers.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        if (speedDetectors != null)
+            speedDetectors.SetActive(true);
+        if (sprinklers != null)
+            sprinklers.SetActive(true);
+    }
+
     private void Update()
     {
+        // Don't update if in main menu
+        if (SceneManager.GetActiveScene().name == "MainMenuScene")
+            return;
+            
         if (!isGameStarted)
         {
             //if (Input.GetKeyDown(KeyCode.Space))
@@ -101,11 +152,6 @@ public class GameManager : MonoBehaviour
             //}
 
             //return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            //ResetGame();
         }
 
         if (isGameWin || isGameLose)
@@ -118,19 +164,16 @@ public class GameManager : MonoBehaviour
             GameUIController.Instance.UpdateTimer();
     }
 
+    // Reset game state flags
     private void Init()
     {
+        Debug.Log("GameManager.Init() called");
+        
         isGameStarted = false;
         isGameWin = false;
         isGameLose = false;
 
         timer = gameTime;
-
-        if (winUI != null)
-            winUI.SetActive(false);
-
-        if (loseUI != null)
-            loseUI.SetActive(false);
     }
 
     public void StartGame()
@@ -166,32 +209,23 @@ public class GameManager : MonoBehaviour
 
     private void CheckIfGameOver()
     {
-        if (isGameWin)
+        // Add null check to prevent errors
+        if (winUI == null || loseUI == null)
+        {
+            Debug.LogError("GameManager: UI references are null in CheckIfGameOver!");
+            return;
+        }
+        
+        if (isGameWin && !winUI.activeSelf)
         {
             Debug.Log("You Win!");
-            if (winUI != null)
-            {
-                winUI.SetActive(true);
-            }
-            else
-            {
-                Debug.LogError("GameManager: WinUI is null when trying to show win screen!");
-            }
-
+            winUI.SetActive(true);
             Time.timeScale = 0f;
         }
-        else if (isGameLose)
+        else if (isGameLose && !loseUI.activeSelf)
         {
             Debug.Log("You Lose!");
-            if (loseUI != null)
-            {
-                loseUI.SetActive(true);
-            }
-            else
-            {
-                Debug.LogError("GameManager: LoseUI is null when trying to show lose screen!");
-            }
-
+            loseUI.SetActive(true);
             Time.timeScale = 0f;
         }
     }

@@ -26,16 +26,22 @@ public class PlayerController : MonoBehaviour
     [Header("Original Rotation Settings")]
     public float oriTurnSpeed = 200f;
 
+    [Header("Cooldown Settings")]
+    public float collisionCooldown = 0.5f;
+
     [Header("Mood Speed Settings")]
     [Tooltip("Base mood value that corresponds to original speed (default 100)")]
     public float baseMoodValue = 100f;
     [Tooltip("Minimum speed multiplier when mood is 0 (e.g., 0.5 = 50% speed)")]
-    public float minSpeedMultiplier = 0.5f;
+    public float minSpeedMultiplier = 0.3f;
     [Tooltip("Maximum speed multiplier when mood is 200 (e.g., 1.5 = 150% speed)")]
-    public float maxSpeedMultiplier = 1.5f;
-
+    public float maxSpeedMultiplier = 2.0f;
+    
     [Header("Env Effects")]
     public bool inWater = false;
+    
+    // Counter to track how many water spray areas the player is in
+    private int waterAreaCount = 0;
 
     [Header("Bell Settings")]
     public AudioClip bellSound;
@@ -43,10 +49,9 @@ public class PlayerController : MonoBehaviour
     private AudioSource audioSource;
 
     [Header("Renderer")]
-    [SerializeField] private SpriteRenderer spriteRenderer; // assign in Inspector
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Color normalColor = Color.green;
-    [SerializeField] private Color inWaterColor = new Color(0.5f, 0.8f, 1f); // light blue
-
+    [SerializeField] private Color inWaterColor = new Color(0.5f, 0.8f, 1f);
 
     // Current runtime settings (used for movement logic)
     private float currentMaxForwardSpeed;
@@ -63,11 +68,10 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
 
     // Mood drain timer variables
-    private float moodDrainInterval = 1f;  // drain every 1 second
-    private float moodDrainTimer = 1f;     // internal timer
+    private float moodDrainInterval = 1f;
+    private float moodDrainTimer = 1f;
 
     // Collision timer variables
-    private float collisionCooldown = 0.5f;
     private float collisionTimer = 0.5f;
 
     private void Awake()
@@ -87,7 +91,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
-        stones = FindObjectsOfType<Stone>();
+        stones = FindObjectsByType<Stone>(FindObjectsSortMode.None);
         ApplySettingsForStatus(PlayerStatus.Normal);
 
         Init();
@@ -131,6 +135,34 @@ public class PlayerController : MonoBehaviour
     {
         Playerstatus = PlayerStatus.Normal;
         ApplySettingsForStatus(Playerstatus);
+        waterAreaCount = 0;
+        inWater = false;
+    }
+
+    // Called by WaterSprayTrigger when player enters water area
+    public void EnterWaterArea()
+    {
+        waterAreaCount++;
+        inWater = waterAreaCount > 0;
+        
+        Debug.Log($"Player entered water area. Total active water areas: {waterAreaCount}");
+    }
+
+    // Called by WaterSprayTrigger when player exits water area
+    public void ExitWaterArea()
+    {
+        waterAreaCount--;
+        // Ensure count doesn't go negative
+        waterAreaCount = Mathf.Max(0, waterAreaCount);
+        inWater = waterAreaCount > 0;
+        
+        Debug.Log($"Player exited water area. Total active water areas: {waterAreaCount}");
+    }
+
+    // Get current water area count (useful for debugging)
+    public int GetWaterAreaCount()
+    {
+        return waterAreaCount;
     }
 
     void SyncSpeedWithPhysics()
@@ -204,27 +236,20 @@ public class PlayerController : MonoBehaviour
 
         float currentMood = MoodController.Instance.GetMoodValue();
         
-        // mood = 0 -> minSpeedMultiplier (0.5)
-        // mood = 100 -> 1.0
-        // mood = 200 -> maxSpeedMultiplier (1.5)
-        
-        float normalizedMood = currentMood / baseMoodValue; // 0-2
+        float normalizedMood = currentMood / baseMoodValue;
         
         if (normalizedMood <= 1f)
         {
-            // Mood 0-100
             return Mathf.Lerp(minSpeedMultiplier, 1f, normalizedMood);
         }
         else
         {
-            // Mood 100-200
             return Mathf.Lerp(1f, maxSpeedMultiplier, normalizedMood - 1f);
         }
     }
 
     void ApplySettingsForStatus(PlayerStatus newStatus)
     {
-        // 先獲取心情速度倍率
         float moodMultiplier = GetMoodSpeedMultiplier();
 
         switch (newStatus)
@@ -238,7 +263,6 @@ public class PlayerController : MonoBehaviour
                 currentBackwardAcceleration = oriBackwardAcceleration * moodMultiplier;
                 currentTurnSpeed = oriTurnSpeed * moodMultiplier;
 
-                // Change color when returning to normal
                 if (spriteRenderer != null)
                     spriteRenderer.color = normalColor;
 
@@ -253,7 +277,6 @@ public class PlayerController : MonoBehaviour
                 currentBackwardAcceleration = oriBackwardAcceleration * 0.7f * moodMultiplier;
                 currentTurnSpeed = oriTurnSpeed * 0.8f * moodMultiplier;
 
-                // Change color when in water
                 if (spriteRenderer != null)
                     spriteRenderer.color = inWaterColor;
 
@@ -276,7 +299,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // Reset timer when not in water
             moodDrainTimer = 1f;
         }
     }
@@ -305,9 +327,8 @@ public class PlayerController : MonoBehaviour
 
     void TryRingBell()
     {
-        bellTimer = 0f; // reset timer
+        bellTimer = 0f;
 
-        // 🔔 Play sound
         if (audioSource != null && bellSound != null)
             audioSource.PlayOneShot(bellSound);
 
@@ -317,13 +338,11 @@ public class PlayerController : MonoBehaviour
 
     void ScareNearbyPigeons()
     {
-        // Find all pigeons currently in the scene
-        Pigeon[] pigeons = FindObjectsOfType<Pigeon>();
+        Pigeon[] pigeons = FindObjectsByType<Pigeon>(FindObjectsSortMode.None);
 
         foreach (var pigeon in pigeons)
         {
             pigeon.TryScare(transform.position);
         }
     }
-
 }

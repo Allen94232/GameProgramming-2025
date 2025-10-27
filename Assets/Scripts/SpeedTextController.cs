@@ -9,15 +9,21 @@ public class SpeedTextController : MonoBehaviour
 
     [SerializeField] private int currSpeed;
 
-
     private TextMeshProUGUI speedText;
+    private Material textMaterial;
 
     private void Start()
     {
         currSpeed = 0;
 
         speedText = GetComponent<TextMeshProUGUI>();
-        speedText.color = normalSpeedColor;
+        
+        // Create a proper material instance for this text component
+        // Using fontMaterial (not fontSharedMaterial) automatically creates an instance
+        textMaterial = speedText.fontMaterial;
+        
+        // Set initial face color using the correct property
+        textMaterial.SetColor("_FaceColor", normalSpeedColor);
         speedText.text = currSpeed.ToString();
     }
 
@@ -27,7 +33,8 @@ public class SpeedTextController : MonoBehaviour
 
         if (currSpeed > overSpeedValue)
         {
-            speedText.color = overSpeedColor;
+            // Change face color of the text
+            textMaterial.SetColor("_FaceColor", overSpeedColor);
 
             float newMood = MoodController.Instance.GetMoodValue() - 20f;
             newMood = Mathf.Max(newMood, 0);
@@ -35,9 +42,19 @@ public class SpeedTextController : MonoBehaviour
         }
         else
         {
-            speedText.color = normalSpeedColor;
+            // Change face color of the text
+            textMaterial.SetColor("_FaceColor", normalSpeedColor);
         }
 
         speedText.text = currSpeed.ToString();
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up material instance to prevent memory leak
+        if (textMaterial != null)
+        {
+            Destroy(textMaterial);
+        }
     }
 }

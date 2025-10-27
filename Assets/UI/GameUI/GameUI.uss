@@ -1,4 +1,21 @@
 :root {
+    /* Allow clicks to pass through root element to UGUI/GameObjects below */
+    pointer-events: none;
+}
+
+/* Interactive elements and containers need to accept pointer events */
+.interactive {
+    pointer-events: auto;
+}
+
+/* All buttons accept pointer events */
+Button {
+    pointer-events: auto;
+}
+
+/* Labels don't need interaction */
+Label {
+    pointer-events: none;
 }
 
 .pauseRegularButton {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
 public class Draggable : MonoBehaviour
@@ -7,18 +8,40 @@ public class Draggable : MonoBehaviour
 
     private Vector3 offset;
     private Camera cam;
-    private bool isDragging = false;
+    private Collider2D col;
+    //private bool isDragging = false;
 
     void Start()
     {
         cam = Camera.main;
+        col = GetComponent<Collider2D>();
 
-        // Force physics refresh, make it draggable for sure
-        Collider2D col = GetComponent<Collider2D>();
+        // Force physics refresh with delay to ensure it's draggable
+        StartCoroutine(RefreshColliderWithDelay());
+    }
+
+    // Refresh collider after waiting for physics to settle
+    private IEnumerator RefreshColliderWithDelay()
+    {
         if (col != null)
         {
             col.enabled = false;
+            
+            // Wait for physics update
+            yield return new WaitForFixedUpdate();
+            
+            // Wait for end of frame
+            yield return new WaitForEndOfFrame();
+            
+            // Wait one more frame
+            yield return null;
+            
             col.enabled = true;
+            
+            // Force physics sync
+            Physics2D.SyncTransforms();
+            
+            Debug.Log($"Draggable {gameObject.name}: Collider refreshed with full delay");
         }
     }
 
@@ -27,7 +50,7 @@ public class Draggable : MonoBehaviour
         // Calculate offset to avoid jump on click
         Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         offset = transform.position - new Vector3(mousePos.x, mousePos.y, transform.position.z);
-        isDragging = true;
+        //isDragging = true;
     }
 
     void OnMouseDrag()
@@ -39,7 +62,7 @@ public class Draggable : MonoBehaviour
 
     void OnMouseUp()
     {
-        isDragging = false;
+        //isDragging = false;
 
         // Raycast or overlap to detect if dropped on a target
         Vector2 mouseWorldPos = cam.ScreenToWorldPoint(Input.mousePosition);
