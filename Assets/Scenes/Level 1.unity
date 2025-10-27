@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3300971943172066, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 121388825753131208, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 320212246700646405, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -139,13 +147,41 @@ PrefabInstance:
       propertyPath: speedMultiplier
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1896061262033294451, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 2076874768302599268, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 2339128857674258241, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3775525415900595023, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3833584443357975893, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4235487986888692643, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
       propertyPath: speedMultiplier
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5567380384323518766, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5828496852144690152, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824109001854110578, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6870297644695128154, guid: 49175ba2c845c914fac55e24a7b34cd8, type: 3}
       propertyPath: m_LocalPosition.x

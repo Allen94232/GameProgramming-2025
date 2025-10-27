@@ -609,6 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedDetector
   speedTextController: {fileID: 6705968072119292547}
+  speedMultiplier: 0.8
 --- !u!1001 &1004511639542905324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -627,7 +628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4019933856196632159, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4019933856196632159, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_LocalRotation.w
