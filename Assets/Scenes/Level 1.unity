@@ -1665,6 +1665,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7115228700209390207, guid: e655d9b60d052444b9c3397d4734aa17, type: 3}
+      propertyPath: levelTimeInSeconds
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 7298904376314199989, guid: e655d9b60d052444b9c3397d4734aa17, type: 3}
       propertyPath: m_Name
       value: GameUI

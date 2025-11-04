@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         
         // Immediately find and hide UI to prevent visual delay
         FindSceneReferences();
-        HideGameOverUI();
+        //HideGameOverUI();
 
         StartCoroutine(ToggleGameObjectsAfterDelay());
 
@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour
     public float initialMood = 100;
     public float gameTime = 180f;
 
-    private GameObject winUI;
-    private GameObject loseUI;
+    //private GameObject winUI;
+    //private GameObject loseUI;
 
     private GameObject speedDetectors;
     private GameObject sprinklers;
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         {
             timer = gameTime;
             FindSceneReferences();
-            HideGameOverUI();
+            //HideGameOverUI();
             StartCoroutine(ToggleGameObjectsAfterDelay());
             Init();
         }
@@ -103,26 +103,27 @@ public class GameManager : MonoBehaviour
     // Find UI GameObjects in the current scene
     private void FindSceneReferences()
     {
-        winUI = GameObject.Find("WinUI");
-        loseUI = GameObject.Find("LoseUI");
+        //winUI = GameObject.Find("WinUI");
+        //loseUI = GameObject.Find("LoseUI");
 
         speedDetectors = GameObject.Find("SpeedDetectors");
         sprinklers = GameObject.Find("Sprinklers");
 
-        if (winUI == null)
+       /* if (winUI == null)
             Debug.LogWarning("GameManager: Cannot find WinUI in scene!");
-        if (loseUI == null)
-            Debug.LogWarning("GameManager: Cannot find LoseUI in scene!");
+          if (loseUI == null)
+            Debug.LogWarning("GameManager: Cannot find LoseUI in scene!"); */
     }
 
     // Immediately hide game over UI
-    private void HideGameOverUI()
+
+    /*private void HideGameOverUI()
     {
         if (winUI != null)
             winUI.SetActive(false);
         if (loseUI != null)
             loseUI.SetActive(false);
-    }
+    }*/
 
     // Disable speed detectors and sprinklers and enable them after 0.5 seconds
     private System.Collections.IEnumerator ToggleGameObjectsAfterDelay()
@@ -209,8 +210,29 @@ public class GameManager : MonoBehaviour
 
     private void CheckIfGameOver()
     {
-        // Add null check to prevent errors
-        if (winUI == null || loseUI == null)
+        if (isGameWin)
+        {
+            Debug.Log("You Win!");
+            if (GameUIController.Instance != null)
+            {
+                GameUIController.Instance.ShowWinScreen();
+            }
+            Time.timeScale = 0f;
+            isGameWin = false;
+        }
+
+        else if (isGameLose)
+        {
+            Debug.Log("You Lose!");
+            if (GameUIController.Instance != null)
+            {
+                GameUIController.Instance.ShowLoseScreen();
+            }
+            Time.timeScale = 0f;
+            isGameLose = false;
+        }
+
+        /*if (winUI == null || loseUI == null)
         {
             Debug.LogError("GameManager: UI references are null in CheckIfGameOver!");
             return;
@@ -222,11 +244,13 @@ public class GameManager : MonoBehaviour
             winUI.SetActive(true);
             Time.timeScale = 0f;
         }
+        
         else if (isGameLose && !loseUI.activeSelf)
         {
             Debug.Log("You Lose!");
             loseUI.SetActive(true);
             Time.timeScale = 0f;
         }
+        */
     }
 }

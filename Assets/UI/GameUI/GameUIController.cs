@@ -13,13 +13,16 @@ public class GameUIController : MonoBehaviour
     private Button _homeButton;
     private Button _restartButton;
     private VisualElement _pauseMenuContainer; 
+    private VisualElement _winScreenContainer;
+    private VisualElement _loseScreenContainer;
+    private Button _restartButtonWin;
+    private Button _restartButtonLose;
 
     private Label _moodLabel;
     private float moodValue;
     
     private Label _timerLabel;
     private float _timeRemaining;
-    public float levelTimeInSeconds = 300f;
 
     void Awake()
     {
@@ -33,8 +36,7 @@ public class GameUIController : MonoBehaviour
         _uiDocument = GetComponent<UIDocument>();
         _root = _uiDocument.rootVisualElement;
 
-        // CRITICAL: Set root to ignore pointer events
-        // This allows clicks to pass through to UGUI buttons and GameObjects
+        // clicks to pass through
         _root.pickingMode = PickingMode.Ignore;
 
         // Query UI elements
@@ -45,40 +47,51 @@ public class GameUIController : MonoBehaviour
         _pauseMenuContainer = _root.Q<VisualElement>("pause-menu-container");
         _timerLabel = _root.Q<Label>("timer-label");
         _moodLabel = _root.Q<Label>("mood-display-label");
+        _winScreenContainer = _root.Q<VisualElement>("win-screen-container");
+        _loseScreenContainer = _root.Q<VisualElement>("lose-screen-container");
 
-        // Configure picking mode for all elements
+        if (_winScreenContainer != null)
+        {
+            _restartButtonWin = _winScreenContainer.Q<Button>("restart-button-win");
+        }
+        if (_loseScreenContainer != null)
+        {
+        _restartButtonLose = _loseScreenContainer.Q<Button>("restart-button-lose");
+        }
+
+        // Configure picking mode 
         ConfigurePickingModes();
 
-        // Register button events
+        // button events
         if (_pauseButton != null) _pauseButton.clicked += PauseGame;
         if (_resumeButton != null) _resumeButton.clicked += ResumeGame;
         if (_homeButton != null) _homeButton.clicked += GoToMainMenu;
         if (_restartButton != null) _restartButton.clicked += RestartLevel;
+        if (_restartButtonWin != null) _restartButtonWin.clicked += RestartLevel;
+        if (_restartButtonLose != null) _restartButtonLose.clicked += RestartLevel;
     }
 
     private void ConfigurePickingModes()
     {
-        // HUD container needs to block clicks
+        // block clicks
         var hudContainer = _root.Q<VisualElement>("hud-container");
         if (hudContainer != null)
         {
             hudContainer.pickingMode = PickingMode.Position;
         }
 
-        // Pause button and its parents need to accept clicks
+        // accept clicks
         if (_pauseButton != null)
         {
             _pauseButton.pickingMode = PickingMode.Position;
             EnablePickingForParents(_pauseButton);
         }
 
-        // Pause menu container needs to block clicks when visible
         if (_pauseMenuContainer != null)
         {
             _pauseMenuContainer.pickingMode = PickingMode.Position;
         }
 
-        // All buttons in pause menu need to accept clicks
         if (_resumeButton != null)
         {
             _resumeButton.pickingMode = PickingMode.Position;
@@ -95,7 +108,8 @@ public class GameUIController : MonoBehaviour
             EnablePickingForParents(_restartButton);
         }
 
-        // Labels should ignore picking
+
+        // ignore picking
         if (_timerLabel != null)
             _timerLabel.pickingMode = PickingMode.Ignore;
         if (_moodLabel != null)
@@ -104,7 +118,6 @@ public class GameUIController : MonoBehaviour
         Debug.Log("GameUIController: Picking modes configured successfully");
     }
 
-    // Recursively enable picking for parent elements (except root)
     private void EnablePickingForParents(VisualElement element)
     {
         if (element == null || element == _root || element.parent == null)
@@ -124,7 +137,7 @@ public class GameUIController : MonoBehaviour
         moodValue = GameManager.Instance.initialMood;
         _timeRemaining = GameManager.Instance.gameTime;
         
-        // Update UI displays immediately
+        // Update UI display
         UpdateMoodDisplay(moodValue);
         UpdateTimerDisplay();
     }
@@ -181,10 +194,12 @@ public class GameUIController : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(_timeRemaining / 60);
         int seconds = Mathf.FloorToInt(_timeRemaining % 60);
+        float fraction = _timeRemaining % 1;
+        int millisecondes = Mathf.FloorToInt(fraction * 100);
 
         if (_timerLabel != null)
         {
-            _timerLabel.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+            _timerLabel.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, millisecondes);
         }
     }
 
@@ -208,5 +223,21 @@ public class GameUIController : MonoBehaviour
         _pauseMenuContainer.style.display = DisplayStyle.None;
         Time.timeScale = 1f;
     }
+
+    public void ShowWinScreen()
+    {
+        if (_winScreenContainer != null)
+        {
+        _winScreenContainer.style.display = DisplayStyle.Flex;
+        }
+    }
+
+    public void ShowLoseScreen()
+    {
+        if (_loseScreenContainer != null)
+        {
+        _loseScreenContainer.style.display = DisplayStyle.Flex; 
+        }
+    } 
 }
 
