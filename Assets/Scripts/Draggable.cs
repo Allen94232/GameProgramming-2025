@@ -41,7 +41,7 @@ public class Draggable : MonoBehaviour
             // Force physics sync
             Physics2D.SyncTransforms();
             
-            Debug.Log($"Draggable {gameObject.name}: Collider refreshed with full delay");
+            //Debug.Log($"Draggable {gameObject.name}: Collider refreshed with full delay");
         }
     }
 

@@ -66,5 +66,6 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "GameProgramming-2025.sln"
+    "dotnet.defaultSolution": "GameProgramming-2025.sln",
+    "dotnet.preferCSharpExtension": true
 }

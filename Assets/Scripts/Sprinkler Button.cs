@@ -94,7 +94,7 @@ public class SprinklerButton : MonoBehaviour
             // Force physics sync
             Physics2D.SyncTransforms();
             
-            Debug.Log($"SprinklerButton {gameObject.name}: Collider refreshed with full delay");
+            //Debug.Log($"SprinklerButton {gameObject.name}: Collider refreshed with full delay");
         }
     }
 

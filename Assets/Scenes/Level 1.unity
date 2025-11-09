@@ -2055,6 +2055,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1778773558}
   m_CullTransparentMesh: 1
+--- !u!1 &1835165524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1835165525}
+  - component: {fileID: 1835165527}
+  - component: {fileID: 1835165526}
+  m_Layer: 0
+  m_Name: LeaderboardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1835165525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835165524}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16.24584, y: -74.51505, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1835165526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835165524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7747606e790e9419bfed2ad4191881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeaderboardTest
+  topCount: 10
+  specificLevelName: 
+--- !u!114 &1835165527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835165524}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72531a3036e67fa409fa0132ee4b0e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeaderboardManager
+  defaultLeaderboardId: 0
+  leaderboardConfigs:
+  - levelName: Level 1
+    leaderboardId: 32061
 --- !u!4 &1865713113 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1315499626071685756, guid: e655d9b60d052444b9c3397d4734aa17, type: 3}
@@ -2127,6 +2190,10 @@ PrefabInstance:
     - target: {fileID: 9130204710174094343, guid: 245f2023d4e655945a0af16a25b09f03, type: 3}
       propertyPath: maxMood
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9130204710174094343, guid: 245f2023d4e655945a0af16a25b09f03, type: 3}
+      propertyPath: gameTime
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 9130204710174094343, guid: 245f2023d4e655945a0af16a25b09f03, type: 3}
       propertyPath: initialMood
@@ -2243,7 +2310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2258,3 +2325,4 @@ SceneRoots:
   - {fileID: 1426684133738348373}
   - {fileID: 1517647134}
   - {fileID: 29344401134826689}
+  - {fileID: 1835165525}

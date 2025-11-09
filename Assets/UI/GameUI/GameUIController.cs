@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using LootLocker.Requests;
+using System.Collections;
 
 public class GameUIController : MonoBehaviour
 {
@@ -17,12 +19,22 @@ public class GameUIController : MonoBehaviour
     private VisualElement _loseScreenContainer;
     private Button _restartButtonWin;
     private Button _restartButtonLose;
+    private Button _homeButtonWin;
+    private Button _homeButtonLose;
+    
+    private ScrollView _winLeaderboardScroll;
+    private Label _currentTimeLabel;
+    private Label _bestTimeLabel;
 
     private Label _moodLabel;
     private float moodValue;
     
     private Label _timerLabel;
     private float _timeRemaining;
+    
+    private float _currentRunTime; // Store current run's remaining time
+    private bool _isWaitingForSession = false;
+    private Coroutine _sessionCheckCoroutine = null;
 
     void Awake()
     {
@@ -50,13 +62,21 @@ public class GameUIController : MonoBehaviour
         _winScreenContainer = _root.Q<VisualElement>("win-screen-container");
         _loseScreenContainer = _root.Q<VisualElement>("lose-screen-container");
 
+        // Win screen elements
         if (_winScreenContainer != null)
         {
             _restartButtonWin = _winScreenContainer.Q<Button>("restart-button-win");
+            _homeButtonWin = _winScreenContainer.Q<Button>("home-button-win");
+            _winLeaderboardScroll = _winScreenContainer.Q<ScrollView>("win-leaderboard-scroll");
+            _currentTimeLabel = _winScreenContainer.Q<Label>("current-time-label");
+            _bestTimeLabel = _winScreenContainer.Q<Label>("best-time-label");
         }
+        
+        // Lose screen elements
         if (_loseScreenContainer != null)
         {
-        _restartButtonLose = _loseScreenContainer.Q<Button>("restart-button-lose");
+            _restartButtonLose = _loseScreenContainer.Q<Button>("restart-button-lose");
+            _homeButtonLose = _loseScreenContainer.Q<Button>("home-button-lose");
         }
 
         // Configure picking mode 
@@ -69,6 +89,35 @@ public class GameUIController : MonoBehaviour
         if (_restartButton != null) _restartButton.clicked += RestartLevel;
         if (_restartButtonWin != null) _restartButtonWin.clicked += RestartLevel;
         if (_restartButtonLose != null) _restartButtonLose.clicked += RestartLevel;
+        if (_homeButtonWin != null) _homeButtonWin.clicked += GoToMainMenu;
+        if (_homeButtonLose != null) _homeButtonLose.clicked += GoToMainMenu;
+        
+        // Subscribe to LootLocker session ready event
+        if (LeaderboardManager.Instance != null)
+        {
+            LeaderboardManager.Instance.OnSessionReady += OnLootLockerSessionReady;
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        // Unsubscribe from event
+        if (LeaderboardManager.Instance != null)
+        {
+            LeaderboardManager.Instance.OnSessionReady -= OnLootLockerSessionReady;
+        }
+    }
+    
+    private void OnLootLockerSessionReady()
+    {
+        Debug.Log("LootLocker session ready, refreshing win screen leaderboard if needed");
+        
+        // If win screen is showing and waiting for session, reload leaderboard data
+        if (_isWaitingForSession && _winScreenContainer != null && _winScreenContainer.style.display == DisplayStyle.Flex)
+        {
+            _isWaitingForSession = false;
+            LoadWinScreenData();
+        }
     }
 
     private void ConfigurePickingModes()
@@ -228,8 +277,255 @@ public class GameUIController : MonoBehaviour
     {
         if (_winScreenContainer != null)
         {
-        _winScreenContainer.style.display = DisplayStyle.Flex;
+            _winScreenContainer.style.display = DisplayStyle.Flex;
+            
+            // Store current run time
+            _currentRunTime = _timeRemaining;
+            
+            // Load and display leaderboard data
+            LoadWinScreenData();
         }
+    }
+    
+    private void LoadWinScreenData()
+    {
+        string currentLevelName = SceneManager.GetActiveScene().name;
+        
+        // Display current time
+        if (_currentTimeLabel != null)
+        {
+            _currentTimeLabel.text = $"Time Remaining: {FormatTime(_currentRunTime)}";
+        }
+        
+        // Check if LootLocker session is ready
+        if (LeaderboardManager.Instance == null || !LeaderboardManager.Instance.IsSessionReady())
+        {
+            Debug.Log("LootLocker session not ready yet, showing loading message for win screen");
+            _isWaitingForSession = true;
+            
+            // Display loading message in best time label
+            if (_bestTimeLabel != null)
+            {
+                _bestTimeLabel.text = "Connecting to server...";
+                _bestTimeLabel.style.color = new Color(0.8f, 0.8f, 0.8f);
+            }
+            
+            // Display loading in leaderboard
+            if (_winLeaderboardScroll != null)
+            {
+                _winLeaderboardScroll.Clear();
+                var loadingLabel = new Label("Connecting to LootLocker...\nPlease wait...");
+                loadingLabel.style.color = new Color(0.8f, 0.8f, 0.8f);
+                loadingLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+                loadingLabel.style.marginTop = 40;
+                loadingLabel.style.fontSize = 18;
+                _winLeaderboardScroll.Add(loadingLabel);
+            }
+            
+            // Start checking for session readiness
+            if (_sessionCheckCoroutine != null)
+            {
+                StopCoroutine(_sessionCheckCoroutine);
+            }
+            _sessionCheckCoroutine = StartCoroutine(CheckSessionAndRefreshWinScreen());
+            
+            return;
+        }
+        
+        // Session is ready, clear waiting flag
+        _isWaitingForSession = false;
+        
+        // Get player's best time from leaderboard
+        if (LeaderboardManager.Instance != null)
+        {
+            LeaderboardManager.Instance.GetPlayerRank((rank, score) =>
+            {
+                if (_bestTimeLabel != null)
+                {
+                    if (rank > 0)
+                    {
+                        float bestTime = score / 1000f;
+                        _bestTimeLabel.text = $"Your Best: {FormatTime(bestTime)}";
+                        
+                        // Check if this is a new record
+                        if (_currentRunTime > bestTime)
+                        {
+                            _bestTimeLabel.text += " (NEW RECORD!)";
+                            _bestTimeLabel.style.color = new Color(1f, 0.84f, 0f); // Gold color
+                        }
+                        else
+                        {
+                            _bestTimeLabel.style.color = new Color(180f/255f, 180f/255f, 180f/255f);
+                        }
+                    }
+                    else
+                    {
+                        _bestTimeLabel.text = "Your Best: First Clear!";
+                        _bestTimeLabel.style.color = new Color(1f, 0.84f, 0f);
+                    }
+                }
+            }, currentLevelName);
+            
+            // Load top 5 players
+            LeaderboardManager.Instance.GetTopPlayers(5, OnWinLeaderboardLoaded, currentLevelName);
+        }
+    }
+    
+    private void OnWinLeaderboardLoaded(LootLockerLeaderboardMember[] members)
+    {
+        if (_winLeaderboardScroll == null) return;
+        
+        _winLeaderboardScroll.Clear();
+        
+        if (members == null || members.Length == 0)
+        {
+            var emptyLabel = new Label("No leaderboard data yet");
+            emptyLabel.style.color = Color.white;
+            emptyLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+            emptyLabel.style.marginTop = 20;
+            _winLeaderboardScroll.Add(emptyLabel);
+            return;
+        }
+        
+        // Display each leaderboard entry
+        for (int i = 0; i < members.Length; i++)
+        {
+            var member = members[i];
+            var entry = CreateWinLeaderboardEntry(member);
+            _winLeaderboardScroll.Add(entry);
+        }
+    }
+    
+    private VisualElement CreateWinLeaderboardEntry(LootLockerLeaderboardMember member)
+    {
+        var container = new VisualElement();
+        container.style.flexDirection = FlexDirection.Row;
+        container.style.paddingTop = 6;
+        container.style.paddingBottom = 6;
+        container.style.paddingLeft = 10;
+        container.style.paddingRight = 10;
+        container.style.marginBottom = 1;
+        container.style.alignItems = Align.Center;
+        
+        // Highlight player's own entry
+        string playerIdentifier = LeaderboardManager.Instance?.GetPlayerIdentifier();
+        bool isCurrentPlayer = (member.member_id == playerIdentifier);
+        
+        if (isCurrentPlayer)
+        {
+            container.style.backgroundColor = new Color(11f/255f, 255f/255f, 11f/255f, 0.25f);
+            container.style.borderLeftWidth = 3;
+            container.style.borderLeftColor = new Color(11f/255f, 255f/255f, 11f/255f);
+        }
+        else if (member.rank == 1)
+        {
+            container.style.backgroundColor = new Color(1f, 0.84f, 0f, 0.12f);
+        }
+        else if (member.rank == 2)
+        {
+            container.style.backgroundColor = new Color(0.75f, 0.75f, 0.75f, 0.12f);
+        }
+        else if (member.rank == 3)
+        {
+            container.style.backgroundColor = new Color(0.8f, 0.5f, 0.2f, 0.12f);
+        }
+        else
+        {
+            container.style.backgroundColor = new Color(0, 0, 0, 0.3f);
+        }
+        
+        // Rank with medal for top 3
+        string rankText = "";
+        Color rankColor = Color.white;
+        
+        if (member.rank == 1) 
+        {
+            rankText = "#1";
+            rankColor = new Color(1f, 0.84f, 0f); // Gold
+        }
+        else if (member.rank == 2) 
+        {
+            rankText = "#2";
+            rankColor = new Color(0.75f, 0.75f, 0.75f); // Silver
+        }
+        else if (member.rank == 3) 
+        {
+            rankText = "#3";
+            rankColor = new Color(0.8f, 0.5f, 0.2f); // Bronze
+        }
+        else 
+        {
+            rankText = $"#{member.rank}";
+        }
+
+        var rankLabel = new Label(rankText);
+        rankLabel.style.width = 70;
+        rankLabel.style.color = rankColor;
+        rankLabel.style.fontSize = 16;
+        rankLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        container.Add(rankLabel);
+        
+        // Player name
+        string displayName = ExtractPlayerNameFromMetadata(member.metadata);
+        if (string.IsNullOrEmpty(displayName))
+        {
+            displayName = member.member_id;
+            if (displayName.Length > 20 && displayName.Contains("-"))
+            {
+                string shortId = displayName.Substring(0, 8);
+                displayName = $"Player{shortId}";
+            }
+        }
+        
+        var nameLabel = new Label(displayName);
+        nameLabel.style.flexGrow = 1;
+        nameLabel.style.color = isCurrentPlayer ? new Color(11f/255f, 255f/255f, 11f/255f) : Color.white;
+        nameLabel.style.fontSize = 15;
+        if (isCurrentPlayer)
+        {
+            nameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        }
+        container.Add(nameLabel);
+        
+        // Time
+        float timeInSeconds = member.score / 1000f;
+        var timeLabel = new Label(FormatTime(timeInSeconds));
+        timeLabel.style.width = 120;
+        timeLabel.style.color = member.rank <= 3 ? rankColor : Color.white;
+        timeLabel.style.fontSize = 15;
+        timeLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+        if (member.rank <= 3)
+        {
+            timeLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        }
+        container.Add(timeLabel);
+        
+        return container;
+    }
+    
+    private string ExtractPlayerNameFromMetadata(string metadata)
+    {
+        if (string.IsNullOrEmpty(metadata)) return null;
+        
+        try
+        {
+            int nameStart = metadata.IndexOf("\"playerName\":\"");
+            if (nameStart >= 0)
+            {
+                nameStart += "\"playerName\":\"".Length;
+                int nameEnd = metadata.IndexOf("\"", nameStart);
+                if (nameEnd > nameStart)
+                {
+                    return metadata.Substring(nameStart, nameEnd - nameStart);
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Failed to parse metadata: {e.Message}");
+        }
+        
+        return null;
     }
 
     public void ShowLoseScreen()
@@ -238,6 +534,37 @@ public class GameUIController : MonoBehaviour
         {
         _loseScreenContainer.style.display = DisplayStyle.Flex; 
         }
-    } 
+    }
+    
+    private string FormatTime(float timeInSeconds)
+    {
+        int minutes = Mathf.FloorToInt(timeInSeconds / 60f);
+        int seconds = Mathf.FloorToInt(timeInSeconds % 60f);
+        int milliseconds = Mathf.FloorToInt((timeInSeconds * 1000f) % 1000f);
+        return $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+    }
+
+    public float GetRemainingTime()
+    {
+        return _timeRemaining;
+    }
+    
+    private IEnumerator CheckSessionAndRefreshWinScreen()
+    {
+        // Check every 0.25 seconds
+        while (_isWaitingForSession)
+        {
+            yield return new WaitForSeconds(0.25f);
+            
+            if (LeaderboardManager.Instance != null && LeaderboardManager.Instance.IsSessionReady())
+            {
+                Debug.Log("Session connected! Refreshing win screen leaderboard...");
+                _isWaitingForSession = false;
+                LoadWinScreenData();
+                yield break;
+            }
+        }
+    }
 }
+
 

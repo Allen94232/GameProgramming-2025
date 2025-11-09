@@ -205,7 +205,7 @@ public class GameManager : MonoBehaviour
     {
         if (isGameWin || isGameLose)
             return;
-        isGameLose = true;
+           isGameLose = true;
     }
 
     private void CheckIfGameOver()
@@ -213,10 +213,22 @@ public class GameManager : MonoBehaviour
         if (isGameWin)
         {
             Debug.Log("You Win!");
+
+            // Get remaining time (higher is better)
+            float remainingTime = GameUIController.Instance != null ?
+                GameUIController.Instance.GetRemainingTime() : 0;
+
+            // Submit to leaderboard
+            if (LeaderboardManager.Instance != null)
+            {
+                LeaderboardManager.Instance.SubmitRemainingTime(remainingTime);
+            }
+
             if (GameUIController.Instance != null)
             {
                 GameUIController.Instance.ShowWinScreen();
             }
+
             Time.timeScale = 0f;
             isGameWin = false;
         }
