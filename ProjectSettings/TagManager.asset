@@ -16,7 +16,7 @@ TagManager:
   - Minimap
   - Wall
   - Obstacle
-  - 
+  - Tilemap
   - 
   - 
   - 
@@ -41,6 +41,21 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Terrain
+    uniqueID: 3540216573
+    locked: 0
+  - name: Underbuildings
+    uniqueID: 3257067623
+    locked: 0
+  - name: Buildings
+    uniqueID: 726694227
+    locked: 0
+  - name: Trees
+    uniqueID: 3021329991
+    locked: 0
+  - name: Big Road
+    uniqueID: 2342140573
     locked: 0
   - name: Player
     uniqueID: 54341337

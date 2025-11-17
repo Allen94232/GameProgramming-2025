@@ -2559,7 +2559,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 54341337
-  m_SortingLayer: 1
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0, g: 0.6150943, b: 0.079826236, a: 1}
@@ -2609,6 +2609,10 @@ MonoBehaviour:
   oriBrakeDeceleration: 20
   oriBackwardAcceleration: 6
   oriTurnSpeed: 200
+  collisionCooldown: 0.5
+  baseMoodValue: 100
+  minSpeedMultiplier: 0.3
+  maxSpeedMultiplier: 2
   inWater: 0
   bellSound: {fileID: 0}
   spriteRenderer: {fileID: 349764228}
@@ -5353,6 +5357,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Sprinkler
   isOpening: 1
+  autoReopenDelay: 10
+  waterSprayEffect: {fileID: 0}
 --- !u!1 &664202974
 GameObject:
   m_ObjectHideFlags: 0
@@ -5865,6 +5871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedDetector
   speedTextController: {fileID: 1363300750}
+  speedMultiplier: 0.8
 --- !u!1 &691015520
 GameObject:
   m_ObjectHideFlags: 0
