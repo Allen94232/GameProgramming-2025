@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9982e0e084c2ed44f9ea24327df6833c
+guid: 1f1e2255805aa7b4ea232a6b88de4ae2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7352150651528231464
-    second: ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0
+      213: 3914893504495799116
+    second: ME_Singles_Vehicles_48x48_Ambulance_Right_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0
+      name: ME_Singles_Vehicles_48x48_Ambulance_Right_2_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 26
         y: 0
-        width: 139
-        height: 144
+        width: 344
+        height: 202
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8d5c0809fe9e7f990800000000000000
-      internalID: -7352150651528231464
+      spriteID: c4bc4fc76ee745630800000000000000
+      internalID: 3914893504495799116
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0: -7352150651528231464
+      ME_Singles_Vehicles_48x48_Ambulance_Right_2_0: 3914893504495799116
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

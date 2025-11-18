@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9982e0e084c2ed44f9ea24327df6833c
+guid: 6899c3be90c87b543adcc2ce88a4cf5e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7352150651528231464
-    second: ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0
+      213: -7449156196588978723
+    second: ME_Singles_Vehicles_48x48_Car_Down_15_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 15
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0
+      name: ME_Singles_Vehicles_48x48_Car_Down_15_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 139
-        height: 144
+        x: 20
+        y: 2
+        width: 107
+        height: 188
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8d5c0809fe9e7f990800000000000000
-      internalID: -7352150651528231464
+      spriteID: dddf9e118e74f9890800000000000000
+      internalID: -7449156196588978723
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ME_Singles_Vehicles_48x48_Street_Food_Cart_4_0: -7352150651528231464
+      ME_Singles_Vehicles_48x48_Car_Down_15_0: -7449156196588978723
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
