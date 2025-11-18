@@ -243,12 +243,12 @@ public class GameUIController : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(_timeRemaining / 60);
         int seconds = Mathf.FloorToInt(_timeRemaining % 60);
-        float fraction = _timeRemaining % 1;
-        int millisecondes = Mathf.FloorToInt(fraction * 100);
+        //float fraction = _timeRemaining % 1;
+        int milliseconds = Mathf.FloorToInt((_timeRemaining * 1000f) % 1000f);
 
         if (_timerLabel != null)
         {
-            _timerLabel.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, millisecondes);
+            _timerLabel.text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
         }
     }
 
