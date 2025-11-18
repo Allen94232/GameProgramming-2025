@@ -16,7 +16,7 @@ MonoBehaviour:
   adminToken: 
   domainKey: 
   game_version: 1.0.0.0
-  sdk_version: 6.4.0
+  sdk_version: 
   url: https://api.lootlocker.com/v1
   adminUrl: https://api.lootlocker.com/admin
   playerUrl: https://api.lootlocker.com/player
