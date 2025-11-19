@@ -6,7 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     
-    private bool isFirstSceneLoad = true;
+    [Header("Level Configuration")]
+    public string[] availableLevels = new string[] { "Level 1", "Level 1 v2" }; // Add all your level scene names here
+    
+    private string currentLevelName = "";
+    private bool isInGameLevel = false;
     
     private void Awake()
     {
@@ -16,6 +20,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             
             SceneManager.sceneLoaded += OnSceneLoaded;
+            
+            Debug.Log("GameManager: Singleton created and persisting across scenes");
         }
         else
         {
@@ -25,31 +31,55 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Reset first load flag when returning to main menu
+        Debug.Log($"GameManager: Scene loaded - {scene.name}");
+        
+        // Check if this is MainMenuScene
         if (scene.name == "MainMenuScene")
         {
-            // destroy game manager when returning to main menu
-            isFirstSceneLoad = true;
-            Destroy(gameObject);
+            isInGameLevel = false;
+            currentLevelName = "";
+            Debug.Log("GameManager: Returned to Main Menu");
             return;
         }
 
-        // Handle game scene loading
-        isFirstSceneLoad = false;
+        // Check if this is a game level
+        bool isGameLevel = IsGameLevel(scene.name);
         
-        // Immediately find and hide UI to prevent visual delay
-        FindSceneReferences();
-        //HideGameOverUI();
+        if (isGameLevel)
+        {
+            isInGameLevel = true;
+            currentLevelName = scene.name;
+            
+            Debug.Log($"GameManager: Starting level - {currentLevelName}");
+            
+            // Find scene-specific objects
+            FindSceneReferences();
 
-        StartCoroutine(ToggleGameObjectsAfterDelay());
+            // Disable certain objects temporarily
+            StartCoroutine(ToggleGameObjectsAfterDelay());
 
-        // Then initialize other controllers
-        StartCoroutine(InitializeAfterSceneLoad());
+            // Initialize controllers after scene is fully loaded
+            StartCoroutine(InitializeAfterSceneLoad());
+        }
+    }
+    
+    // Check if scene name is a game level
+    private bool IsGameLevel(string sceneName)
+    {
+        foreach (string levelName in availableLevels)
+        {
+            if (sceneName == levelName)
+                return true;
+        }
+        return false;
     }
 
     private System.Collections.IEnumerator InitializeAfterSceneLoad()
@@ -81,49 +111,20 @@ public class GameManager : MonoBehaviour
     private GameObject speedDetectors;
     private GameObject sprinklers;
 
-    private bool isGameStarted = false;
     private bool isGameWin = false;
     private bool isGameLose = false;
 
     private float timer;
 
-    private void Start()
-    {
-        // Only initialize on first scene load (before OnSceneLoaded triggers)
-        if (isFirstSceneLoad)
-        {
-            timer = gameTime;
-            FindSceneReferences();
-            //HideGameOverUI();
-            StartCoroutine(ToggleGameObjectsAfterDelay());
-            Init();
-        }
-    }
+    // Remove Start method - initialization now handled by OnSceneLoaded
+    // Start() is no longer needed with DontDestroyOnLoad pattern
 
     // Find UI GameObjects in the current scene
     private void FindSceneReferences()
     {
-        //winUI = GameObject.Find("WinUI");
-        //loseUI = GameObject.Find("LoseUI");
-
         speedDetectors = GameObject.Find("SpeedDetectors");
         sprinklers = GameObject.Find("Sprinklers");
-
-       /* if (winUI == null)
-            Debug.LogWarning("GameManager: Cannot find WinUI in scene!");
-          if (loseUI == null)
-            Debug.LogWarning("GameManager: Cannot find LoseUI in scene!"); */
     }
-
-    // Immediately hide game over UI
-
-    /*private void HideGameOverUI()
-    {
-        if (winUI != null)
-            winUI.SetActive(false);
-        if (loseUI != null)
-            loseUI.SetActive(false);
-    }*/
 
     // Disable speed detectors and sprinklers and enable them after 0.5 seconds
     private System.Collections.IEnumerator ToggleGameObjectsAfterDelay()
@@ -141,19 +142,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Don't update if in main menu
-        if (SceneManager.GetActiveScene().name == "MainMenuScene")
+        // Only update during game levels
+        if (!isInGameLevel)
             return;
-            
-        if (!isGameStarted)
-        {
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    StartGame();
-            //}
-
-            //return;
-        }
 
         if (isGameWin || isGameLose)
         {
@@ -168,22 +159,17 @@ public class GameManager : MonoBehaviour
     // Reset game state flags
     private void Init()
     {
-        Debug.Log("GameManager.Init() called");
+        Debug.Log($"GameManager.Init() called for level: {currentLevelName}");
         
-        isGameStarted = false;
         isGameWin = false;
         isGameLose = false;
 
         timer = gameTime;
     }
 
-    public void StartGame()
-    {
-        isGameStarted = true;
-    }
-
     public void ResetGame()
     {
+        Debug.Log($"Resetting level: {currentLevelName}");
         Init();
         
         if (GameUIController.Instance != null)
@@ -192,6 +178,49 @@ public class GameManager : MonoBehaviour
             PlayerController.Instance.Init();
         if (MoodController.Instance != null)
             MoodController.Instance.Init();
+    }
+    
+    public void LoadLevel(string levelName)
+    {
+        if (!IsGameLevel(levelName))
+        {
+            Debug.LogError($"GameManager: '{levelName}' is not a valid game level!");
+            return;
+        }
+        
+        Debug.Log($"GameManager: Loading level - {levelName}");
+        Time.timeScale = 1f; // Ensure time is running
+        SceneManager.LoadScene(levelName);
+    }
+    
+    public void RestartCurrentLevel()
+    {
+        if (string.IsNullOrEmpty(currentLevelName))
+        {
+            Debug.LogError("GameManager: No current level to restart!");
+            return;
+        }
+        
+        Debug.Log($"GameManager: Restarting level - {currentLevelName}");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(currentLevelName);
+    }
+    
+    public void ReturnToMainMenu()
+    {
+        Debug.Log("GameManager: Returning to Main Menu");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenuScene");
+    }
+    
+    public string GetCurrentLevelName()
+    {
+        return currentLevelName;
+    }
+    
+    public bool IsInGameLevel()
+    {
+        return isInGameLevel;
     }
 
     public void GameWin()
@@ -224,6 +253,12 @@ public class GameManager : MonoBehaviour
                 LeaderboardManager.Instance.SubmitRemainingTime(remainingTime);
             }
 
+            // Play win sound effect
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayWinSFX();
+            }
+            
             if (GameUIController.Instance != null)
             {
                 GameUIController.Instance.ShowWinScreen();
@@ -236,6 +271,13 @@ public class GameManager : MonoBehaviour
         else if (isGameLose)
         {
             Debug.Log("You Lose!");
+            
+            // Play lose sound effect
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayLoseSFX();
+            }
+            
             if (GameUIController.Instance != null)
             {
                 GameUIController.Instance.ShowLoseScreen();

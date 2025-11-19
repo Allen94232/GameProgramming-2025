@@ -82,15 +82,47 @@ public class GameUIController : MonoBehaviour
         // Configure picking mode 
         ConfigurePickingModes();
 
-        // button events
-        if (_pauseButton != null) _pauseButton.clicked += PauseGame;
-        if (_resumeButton != null) _resumeButton.clicked += ResumeGame;
-        if (_homeButton != null) _homeButton.clicked += GoToMainMenu;
-        if (_restartButton != null) _restartButton.clicked += RestartLevel;
-        if (_restartButtonWin != null) _restartButtonWin.clicked += RestartLevel;
-        if (_restartButtonLose != null) _restartButtonLose.clicked += RestartLevel;
-        if (_homeButtonWin != null) _homeButtonWin.clicked += GoToMainMenu;
-        if (_homeButtonLose != null) _homeButtonLose.clicked += GoToMainMenu;
+        // button events (with sound effects)
+        if (_pauseButton != null)
+        {
+            _pauseButton.clicked += () => { PlayButtonSound(); PauseGame(); };
+            _pauseButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_resumeButton != null)
+        {
+            _resumeButton.clicked += () => { PlayButtonSound(); ResumeGame(); };
+            _resumeButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_homeButton != null)
+        {
+            _homeButton.clicked += () => { PlayButtonSound(); GoToMainMenu(); };
+            _homeButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_restartButton != null)
+        {
+            _restartButton.clicked += () => { PlayButtonSound(); RestartLevel(); };
+            _restartButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_restartButtonWin != null)
+        {
+            _restartButtonWin.clicked += () => { PlayButtonSound(); RestartLevel(); };
+            _restartButtonWin.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_restartButtonLose != null)
+        {
+            _restartButtonLose.clicked += () => { PlayButtonSound(); RestartLevel(); };
+            _restartButtonLose.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_homeButtonWin != null)
+        {
+            _homeButtonWin.clicked += () => { PlayButtonSound(); GoToMainMenu(); };
+            _homeButtonWin.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_homeButtonLose != null)
+        {
+            _homeButtonLose.clicked += () => { PlayButtonSound(); GoToMainMenu(); };
+            _homeButtonLose.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
         
         // Subscribe to LootLocker session ready event
         if (LeaderboardManager.Instance != null)
@@ -197,11 +229,14 @@ public class GameUIController : MonoBehaviour
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.ResetGame();
+            GameManager.Instance.RestartCurrentLevel();
         }
-
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        else
+        {
+            // Fallback if GameManager doesn't exist
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     public float GetMoodValue()
@@ -255,8 +290,35 @@ public class GameUIController : MonoBehaviour
     private void GoToMainMenu()
     {
         Debug.Log("Returning to Main Menu Scene...");
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenuScene");
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ReturnToMainMenu();
+        }
+        else
+        {
+            // Fallback if GameManager doesn't exist
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("MainMenuScene");
+        }
+    }
+    
+    // Play button click sound effect
+    private void PlayButtonSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayButtonClickSFX();
+        }
+    }
+    
+    // Play button hover sound effect
+    private void PlayButtonHoverSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayButtonHoverSFX();
+        }
     }
     
     private void PauseGame()
@@ -314,7 +376,7 @@ public class GameUIController : MonoBehaviour
             if (_winLeaderboardScroll != null)
             {
                 _winLeaderboardScroll.Clear();
-                var loadingLabel = new Label("Connecting to LootLocker...\nPlease wait...");
+                var loadingLabel = new Label("Connecting to Leaderboard...\nPlease wait...");
                 loadingLabel.style.color = new Color(0.8f, 0.8f, 0.8f);
                 loadingLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
                 loadingLabel.style.marginTop = 40;

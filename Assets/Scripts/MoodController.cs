@@ -9,23 +9,19 @@ public class MoodController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            Debug.Log("MoodController: Singleton created and persisting across scenes");
+        }
+        else
         {
             Destroy(gameObject);
-            return;
         }
-        Instance = this;
     }
 
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Update()
-    {
-
-    }
+    // Remove Start - initialization now handled by GameManager's OnSceneLoaded
     
     public void Init()
     {

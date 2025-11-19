@@ -11,10 +11,19 @@ public class MainMenuController : MonoBehaviour
 
     // Main menu components
     private Button _startButton;
+    private Button _settingsButton;
     private Button _leaderboardButton;
     private TextField _playerNameInput;
     private Button _confirmNameButton;
     private Label _nameWarningLabel;
+
+    // Settings panel components
+    private VisualElement _settingsPanel;
+    private Button _closeSettingsButton;
+    private Slider _bgmVolumeSlider;
+    private Slider _sfxVolumeSlider;
+    private Label _bgmVolumeLabel;
+    private Label _sfxVolumeLabel;
 
     // Leaderboard panel components
     private VisualElement _leaderboardPanel;
@@ -37,10 +46,19 @@ public class MainMenuController : MonoBehaviour
 
         // Get main menu components
         _startButton = root.Q<Button>("start-game-button");
+        _settingsButton = root.Q<Button>("settings-button");
         _leaderboardButton = root.Q<Button>("leaderboard-button");
         _playerNameInput = root.Q<TextField>("player-name-input");
         _confirmNameButton = root.Q<Button>("confirm-name-button");
         _nameWarningLabel = root.Q<Label>("name-warning-label");
+
+        // Get settings panel components
+        _settingsPanel = root.Q<VisualElement>("settings-panel");
+        _closeSettingsButton = root.Q<Button>("close-settings-button");
+        _bgmVolumeSlider = root.Q<Slider>("bgm-volume-slider");
+        _sfxVolumeSlider = root.Q<Slider>("sfx-volume-slider");
+        _bgmVolumeLabel = root.Q<Label>("bgm-volume-label");
+        _sfxVolumeLabel = root.Q<Label>("sfx-volume-label");
 
         // Get leaderboard panel components
         _leaderboardPanel = root.Q<VisualElement>("leaderboard-panel");
@@ -50,21 +68,72 @@ public class MainMenuController : MonoBehaviour
         _leaderboardScrollView = root.Q<ScrollView>("leaderboard-scroll-view");
         _playerRankLabel = root.Q<Label>("player-rank-label");
 
-        // Setup button events
+        // Setup button events (with sound effects)
         if (_startButton != null)
-            _startButton.clicked += StartGame;
+        {
+            _startButton.clicked += () => { PlayButtonSound(); StartGame(); };
+            _startButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_settingsButton != null)
+        {
+            _settingsButton.clicked += () => { PlayButtonSound(); ShowSettings(); };
+            _settingsButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
 
         if (_leaderboardButton != null)
-            _leaderboardButton.clicked += ShowLeaderboard;
+        {
+            _leaderboardButton.clicked += () => { PlayButtonSound(); ShowLeaderboard(); };
+            _leaderboardButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
 
         if (_confirmNameButton != null)
-            _confirmNameButton.clicked += OnConfirmNameClicked;
+        {
+            _confirmNameButton.clicked += () => { PlayButtonSound(); OnConfirmNameClicked(); };
+            _confirmNameButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
 
         if (_closeLeaderboardButton != null)
-            _closeLeaderboardButton.clicked += HideLeaderboard;
+        {
+            _closeLeaderboardButton.clicked += () => { PlayButtonSound(); HideLeaderboard(); };
+            _closeLeaderboardButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
 
         if (_refreshLeaderboardButton != null)
-            _refreshLeaderboardButton.clicked += RefreshLeaderboard;
+        {
+            _refreshLeaderboardButton.clicked += () => { PlayButtonSound(); RefreshLeaderboard(); };
+            _refreshLeaderboardButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        // Setup settings panel events
+        if (_closeSettingsButton != null)
+        {
+            _closeSettingsButton.clicked += () => { PlayButtonSound(); HideSettings(); };
+            _closeSettingsButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        // Setup volume sliders
+        if (_bgmVolumeSlider != null)
+        {
+            _bgmVolumeSlider.RegisterValueChangedCallback(OnBGMVolumeChanged);
+            // Initialize from AudioManager
+            if (AudioManager.Instance != null)
+            {
+                _bgmVolumeSlider.value = AudioManager.Instance.GetBGMVolume();
+                UpdateBGMVolumeLabel(_bgmVolumeSlider.value);
+            }
+        }
+
+        if (_sfxVolumeSlider != null)
+        {
+            _sfxVolumeSlider.RegisterValueChangedCallback(OnSFXVolumeChanged);
+            // Initialize from AudioManager
+            if (AudioManager.Instance != null)
+            {
+                _sfxVolumeSlider.value = AudioManager.Instance.GetSFXVolume();
+                UpdateSFXVolumeLabel(_sfxVolumeSlider.value);
+            }
+        }
 
         // Setup TextField Enter key event
         if (_playerNameInput != null)
@@ -291,8 +360,19 @@ public class MainMenuController : MonoBehaviour
 
     private void StartGame()
     {
-        Debug.Log("Start Game button clicked! Loading scene: Level 1");
-        SceneManager.LoadScene("Level 1");
+        // Get the first available level from GameManager
+        if (GameManager.Instance != null && GameManager.Instance.availableLevels.Length > 0)
+        {
+            string firstLevel = GameManager.Instance.availableLevels[0];
+            Debug.Log($"Start Game button clicked! Loading level: {firstLevel}");
+            GameManager.Instance.LoadLevel(firstLevel);
+        }
+        else
+        {
+            // Fallback to hardcoded level if GameManager doesn't exist
+            Debug.Log("Start Game button clicked! Loading scene: Level 1 (fallback)");
+            SceneManager.LoadScene("Level 1");
+        }
     }
 
     private void ShowLeaderboard()
@@ -582,6 +662,71 @@ public class MainMenuController : MonoBehaviour
                 RefreshLeaderboard();
                 yield break;
             }
+        }
+    }
+    
+    // Play button click sound effect
+    private void PlayButtonSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayButtonClickSFX();
+        }
+    }
+    
+    // Play button hover sound effect
+    private void PlayButtonHoverSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayButtonHoverSFX();
+        }
+    }
+
+    // Settings panel methods
+    private void ShowSettings()
+    {
+        if (_settingsPanel == null) return;
+        _settingsPanel.style.display = DisplayStyle.Flex;
+    }
+
+    private void HideSettings()
+    {
+        if (_settingsPanel == null) return;
+        _settingsPanel.style.display = DisplayStyle.None;
+    }
+
+    private void OnBGMVolumeChanged(ChangeEvent<float> evt)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetBGMVolume(evt.newValue);
+        }
+        UpdateBGMVolumeLabel(evt.newValue);
+    }
+
+    private void OnSFXVolumeChanged(ChangeEvent<float> evt)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetSFXVolume(evt.newValue);
+        }
+        UpdateSFXVolumeLabel(evt.newValue);
+    }
+
+    private void UpdateBGMVolumeLabel(float volume)
+    {
+        if (_bgmVolumeLabel != null)
+        {
+            _bgmVolumeLabel.text = $"{Mathf.RoundToInt(volume * 100)}%";
+        }
+    }
+
+    private void UpdateSFXVolumeLabel(float volume)
+    {
+        if (_sfxVolumeLabel != null)
+        {
+            _sfxVolumeLabel.text = $"{Mathf.RoundToInt(volume * 100)}%";
         }
     }
 }
