@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    [Header("Coin Setting")]
     public int value = 1;
+    public GameObject destroyEffect;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,6 +28,11 @@ public class Coin : MonoBehaviour
             MoodController.Instance.SetMoodValue(newMood);
 
             Destroy(gameObject);
+            // particle effect
+            if (destroyEffect != null)
+            {
+                Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            }
         }
     }
 }

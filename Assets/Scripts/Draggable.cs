@@ -5,6 +5,7 @@ using System.Collections;
 public class Draggable : MonoBehaviour
 {
     public LayerMask targetLayer;
+    [Header("Sprite")]
 
     private Vector3 offset;
     private Camera cam;

@@ -1118,6 +1118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DirectionIndicator
   target: {fileID: 1517647134}
   minimapCamera: {fileID: 762866363}
+  playerTransform: {fileID: 0}
   indicatorVisual: {fileID: 557641536}
 --- !u!1001 &1467313120
 PrefabInstance:
@@ -3227,8 +3228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7747606e790e9419bfed2ad4191881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeaderboardTest
-  topCount: 10
-  specificLevelName: 
 --- !u!114 &1835165527
 MonoBehaviour:
   m_ObjectHideFlags: 0

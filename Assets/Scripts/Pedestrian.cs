@@ -17,6 +17,7 @@ public class Pedestrian : MonoBehaviour
     private Vector3 targetPosition;
     private float stopTimer = 0f;
     private Vector3 startPosition;       // Store starting position for area calculation
+    private Vector3 walkingDirection;
 
     void Start()
     {
@@ -56,12 +57,17 @@ public class Pedestrian : MonoBehaviour
             // animator.SetBool("isWalking", false);
             stopTimer = 0f;
         }
+
+        animator.SetBool("isWalking", isWalking);
+        animator.SetFloat("walkingX", walkingDirection.x);
+        animator.SetFloat("walkingY", walkingDirection.y);
     }
 
     void OnBecameVisible()
     {
         // Start moving when visible
         isWalking = true;
+        animator.SetBool("isWalking", isWalking);
         // animator.SetBool("isWalking", true);
     }
 
@@ -69,6 +75,7 @@ public class Pedestrian : MonoBehaviour
     {
         // Optional: stop when out of view
         isWalking = false;
+        animator.SetBool("isWalking", isWalking);
         // animator.SetBool("isWalking", false);
     }
 
@@ -87,6 +94,8 @@ public class Pedestrian : MonoBehaviour
                 startPosition.y + randomPos.y, 
                 transform.position.z
             );
+
+            walkingDirection = (newTarget - transform.position).normalized;
             
             // Check if position is valid (not inside collider)
             if (IsPositionValid(newTarget))
@@ -110,6 +119,7 @@ public class Pedestrian : MonoBehaviour
             isWalking = false;
             stopTimer = 0f;
         }
+        animator.SetBool("isWalking", isWalking);
     }
     
     // Check if a position is valid (not inside obstacle)

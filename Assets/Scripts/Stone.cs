@@ -65,6 +65,9 @@ public class Stone : MonoBehaviour
                 sr.sprite = stoneSprite[1];
 
                 GetComponent<Collider2D>().enabled = true;
+
+                // destrot shadow
+                Destroy(shadowInstance);
             }
         }
         

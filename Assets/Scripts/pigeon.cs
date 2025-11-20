@@ -5,6 +5,8 @@ public class Pigeon : MonoBehaviour
     [Header("Pigeon Trigger")]
     public float scareRadius = 5f;  // how close the player must be
     public float flyAwaySpeed = 5f;
+    [Header("Pigeon Animator")]
+    public Animator animator;
     private bool isScared = false;
     private Vector2 flyDirection = Vector2.up;
     
@@ -44,12 +46,15 @@ public class Pigeon : MonoBehaviour
         
         float randomAngle = Random.Range(-30f, 30f);
         flyDirection = RotateVector(awayFromPlayer, randomAngle);
+
+        animator.SetFloat("FlyX", flyDirection.x);
+        animator.SetFloat("FlyY", flyDirection.y);
         
         Debug.Log($"{gameObject.name} flies away in direction {flyDirection}!");
         Destroy(gameObject, 2f);
     }
     
-    // »²§U¤èªk:±ÛÂà¦V¶q
+    // ï¿½ï¿½ï¿½Uï¿½ï¿½k:ï¿½ï¿½ï¿½ï¿½Vï¿½q
     Vector2 RotateVector(Vector2 vector, float degrees)
     {
         float radians = degrees * Mathf.Deg2Rad;
