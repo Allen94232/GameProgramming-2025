@@ -68,3 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ebbdf5cbb6a740c09f5b62bdcde55a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  happyFace: {fileID: 0}
+  neutralFace: {fileID: 0}
+  sadFace: {fileID: 0}
+  happyColor: {r: 0.89, g: 0.33, b: 0.09, a: 1}
+  neutralColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+  sadColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}

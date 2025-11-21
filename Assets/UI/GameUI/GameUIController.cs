@@ -278,18 +278,18 @@ public class GameUIController : MonoBehaviour
         if (maxMood <= 0) maxMood = 100f;
         float percentage = Mathf.Clamp01(newMoodValue / maxMood);
 
-        // 3. Update Bar Width
+        // Bar Width
         if (_moodBarFill != null)
         {
             _moodBarFill.style.width = Length.Percent(percentage * 100f);
         }
 
-        // 4. Update Face AND Color (Synced)
-        // Logic: Happy > 60% | Neutral 30%-60% | Sad < 30%
+        // face and color
+        // happy > 60% | neutral 30%-60% | sad < 30%
         
         if (percentage > 0.6f)
         {
-            // HAPPY STATE
+
             if (_moodIcon != null && happyFace != null) 
                 _moodIcon.style.backgroundImage = new StyleBackground(happyFace);
             
@@ -298,7 +298,7 @@ public class GameUIController : MonoBehaviour
         }
         else if (percentage > 0.3f)
         {
-            // NEUTRAL STATE
+
             if (_moodIcon != null && neutralFace != null) 
                 _moodIcon.style.backgroundImage = new StyleBackground(neutralFace);
 
@@ -307,7 +307,7 @@ public class GameUIController : MonoBehaviour
         }
         else
         {
-            // SAD STATE
+
             if (_moodIcon != null && sadFace != null) 
                 _moodIcon.style.backgroundImage = new StyleBackground(sadFace);
 
