@@ -57,6 +57,12 @@ TagManager:
   - name: Big Road
     uniqueID: 2342140573
     locked: 0
+  - name: Environment Objects
+    uniqueID: 218282765
+    locked: 0
+  - name: Pigeon
+    uniqueID: 3054918933
+    locked: 0
   - name: Player
     uniqueID: 54341337
     locked: 0
