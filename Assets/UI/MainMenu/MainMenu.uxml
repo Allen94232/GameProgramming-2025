@@ -1,37 +1,29 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=1a811be5f8b4a4d76bfbfcd1ac15274c&amp;type=3#MainMenu" />
-    <ui:VisualElement name="panel_container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/MainMenu/mainmenu_bg.png?fileID=2800000&amp;guid=47f9ecd614729462f95cfd227e8c49f2&amp;type=3#mainmenu_bg&quot;); -unity-background-image-tint-color: rgb(149, 149, 149); justify-content: center;">
-        <!-- 主選單面板 -->
-        <ui:VisualElement name="center-panel" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0.55); border-left-color: rgb(0, 212, 5); border-right-color: rgb(0, 212, 5); border-top-color: rgb(0, 212, 5); border-bottom-color: rgb(0, 212, 5); border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; width: 600px; height: 580px; align-items: center; justify-content: center; align-self: center; padding-top: 30px; padding-bottom: 30px;">
-            <ui:Label text="校園衝刺" name="main_menu" style="font-size: 50px; color: rgb(0, 212, 5); margin-bottom: 25px;" />
-            
-            <!-- 玩家名稱輸入區 -->
-            <ui:VisualElement name="player-name-section" style="margin-bottom: 40px; align-items: center; width: 90%; flex-shrink: 0;">
-                <ui:Label text="Player Name" style="color: rgb(255, 255, 255); font-size: 18px; margin-bottom: 12px; -unity-font-style: bold; flex-shrink: 0;" />
+    <ui:VisualElement name="panel_container" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/MainMenu/mainmenu_bg.png?fileID=2800000&amp;guid=47f9ecd614729462f95cfd227e8c49f2&amp;type=3#mainmenu_bg&quot;); -unity-background-image-tint-color: rgb(106, 106, 106); justify-content: center;">
+        <ui:VisualElement name="center-panel" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); border-left-color: rgb(0, 0, 5); border-right-color: rgb(0, 0, 5); border-top-color: rgb(0, 0, 5); border-bottom-color: rgb(0, 0, 5); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; width: 600px; height: 580px; align-items: center; justify-content: center; align-self: center; padding-top: 30px; padding-bottom: 30px; background-image: url(&quot;project://database/Assets/UI/GameUI/texture/panel_backgroun.png?fileID=2800000&amp;guid=7aab809a972d142b8b9c678c8c441fc0&amp;type=3#panel_backgroun&quot;);">
+            <ui:Label text="校園衝刺" name="main_menu" style="font-size: 58px; color: rgb(255, 243, 223); margin-bottom: 0; margin-top: 0; padding-top: 0; padding-bottom: 0; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0; -unity-font-definition: url(&quot;project://database/Assets/UI/GameUI/font/Cubic_11.ttf?fileID=12800000&amp;guid=c144d948e58d84d39ac9184aa881466f&amp;type=3#Cubic_11&quot;); -unity-font-style: bold;" />
+            <ui:VisualElement name="player-name-section" style="margin-bottom: 10px; align-items: center; width: 90%; flex-shrink: 0;">
+                <ui:Label text="Player Name" style="color: rgb(255, 255, 255); font-size: 24px; margin-bottom: 0; -unity-font-style: bold; flex-shrink: 0; -unity-font-definition: url(&quot;project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&amp;guid=8c2ab64ad12824a55827b2ea2f868ae3&amp;type=3#VT323-Regular&quot;);" />
                 <ui:VisualElement name="player-name-container" style="flex-direction: row; align-items: center; justify-content: center; width: 100%; margin-top: 5px; margin-bottom: 5px; flex-shrink: 0;">
-                    <ui:TextField name="player-name-input" max-length="20" text="" style="width: 250px; height: 35px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); border-radius: 3px; padding-left: 8px; padding-right: 8px; font-size: 16px; -unity-text-align: middle-left;" />
-                    <ui:Button text="✓" name="confirm-name-button" style="width: 45px; height: 35px; margin-left: 8px; background-color: rgb(0, 212, 5); color: rgb(255, 255, 255); font-size: 20px; border-radius: 3px;" />
+                    <ui:TextField name="player-name-input" max-length="20" style="width: 250px; height: 35px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); border-radius: 3px; padding-left: 8px; padding-right: 8px; font-size: 16px; -unity-text-align: middle-left; background-image: url(&quot;project://database/Assets/UI/GameUI/texture/input.png?fileID=2800000&amp;guid=9c06f25414aaa44b3a0f3cb59d4dc9fe&amp;type=3#input&quot;);" />
+                    <ui:Button text="✓" name="confirm-name-button" style="width: 45px; height: 35px; margin-left: 8px; background-color: rgb(159, 207, 50); color: rgb(255, 255, 255); font-size: 20px; border-radius: 3px;" />
                 </ui:VisualElement>
-                <ui:Label text="(2-20 characters)" style="color: rgb(180, 180, 180); font-size: 13px; margin-top: 10px; flex-shrink: 0;" />
-                <!-- 警告標籤 (預設隱藏) -->
-                <ui:Label name="name-warning-label" text="" style="color: rgb(255, 100, 100); font-size: 14px; margin-top: 10px; display: none; flex-shrink: 0;" />
+                <ui:Label text="(2-20 characters)" style="color: rgb(224, 224, 224); font-size: 20px; margin-top: 0; flex-shrink: 0; -unity-font-definition: url(&quot;project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&amp;guid=8c2ab64ad12824a55827b2ea2f868ae3&amp;type=3#VT323-Regular&quot;); -unity-font-style: normal; -unity-text-outline-color: rgb(255, 255, 255); -unity-text-outline-width: 0.6px;" />
+                <ui:Label name="name-warning-label" style="color: rgb(255, 100, 100); font-size: 14px; margin-top: 10px; display: none; flex-shrink: 0;" />
             </ui:VisualElement>
-            
-            <ui:Button text="Start Game" name="start-game-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 15px;" />
-            <ui:Button text="Settings" name="settings-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 15px;" />
-            <ui:Button text="Leaderboard" name="leaderboard-button" parse-escape-sequences="true" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 15px;" />
+            <ui:VisualElement name="button-panel" style="flex-grow: 0;">
+                <ui:Button text="Start Game" name="start-game-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 8px; padding-bottom: 0; padding-right: 0; padding-top: 0; padding-left: 0;" />
+                <ui:Button text="Settings" name="settings-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 8px;" />
+                <ui:Button text="Leaderboard" name="leaderboard-button" parse-escape-sequences="true" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 0;" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        
-        <!-- 設定面板 (預設隱藏) -->
         <ui:VisualElement name="settings-panel" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: none;">
             <ui:VisualElement name="settings-content" style="background-color: rgba(0, 0, 0, 0.9); border-left-color: rgb(0, 212, 5); border-right-color: rgb(0, 212, 5); border-top-color: rgb(0, 212, 5); border-bottom-color: rgb(0, 212, 5); border-width: 5px; width: 500px; height: 400px; align-self: center; margin-top: 100px; padding: 30px;">
-                <!-- 標題列 -->
                 <ui:VisualElement style="flex-direction: row; justify-content: space-between; margin-bottom: 30px;">
                     <ui:Label text="SETTINGS" style="font-size: 40px; color: rgb(0, 212, 5);" />
                     <ui:Button text="✕" name="close-settings-button" style="width: 50px; height: 50px; font-size: 30px;" />
                 </ui:VisualElement>
-                
-                <!-- BGM 音量控制 -->
                 <ui:VisualElement style="margin-bottom: 30px;">
                     <ui:Label text="Music Volume" style="color: rgb(255, 255, 255); font-size: 20px; margin-bottom: 10px;" />
                     <ui:VisualElement style="flex-direction: row; align-items: center;">
@@ -39,8 +31,6 @@
                         <ui:Label name="bgm-volume-label" text="50%" style="color: rgb(255, 255, 255); font-size: 18px; width: 60px; margin-left: 10px; -unity-text-align: middle-right;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
-                
-                <!-- SFX 音量控制 -->
                 <ui:VisualElement style="margin-bottom: 30px;">
                     <ui:Label text="Sound Effects Volume" style="color: rgb(255, 255, 255); font-size: 20px; margin-bottom: 10px;" />
                     <ui:VisualElement style="flex-direction: row; align-items: center;">
@@ -50,39 +40,26 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        
-        <!-- 排行榜面板 (預設隱藏) -->
         <ui:VisualElement name="leaderboard-panel" style="position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); display: none;">
             <ui:VisualElement name="leaderboard-content" style="background-color: rgba(0, 0, 0, 0.9); border-left-color: rgb(0, 212, 5); border-right-color: rgb(0, 212, 5); border-top-color: rgb(0, 212, 5); border-bottom-color: rgb(0, 212, 5); border-width: 5px; width: 700px; height: 600px; align-self: center; margin-top: 50px; padding: 20px;">
-                <!-- 標題列 -->
                 <ui:VisualElement style="flex-direction: row; justify-content: space-between; margin-bottom: 20px;">
                     <ui:Label text="LEADERBOARD" style="font-size: 40px; color: rgb(0, 212, 5);" />
                     <ui:Button text="✕" name="close-leaderboard-button" style="width: 50px; height: 50px; font-size: 30px;" />
                 </ui:VisualElement>
-                
-                <!-- 關卡選擇 -->
                 <ui:VisualElement style="flex-direction: row; margin-bottom: 10px; align-items: center;">
                     <ui:Label text="Select Level:" style="color: rgb(255, 255, 255); font-size: 16px; margin-right: 10px;" />
                     <ui:DropdownField name="level-dropdown" style="flex-grow: 1;" />
                     <ui:Button text="Refresh" name="refresh-leaderboard-button" style="margin-left: 10px;" />
                 </ui:VisualElement>
-                
-                <!-- 玩家排名資訊 -->
                 <ui:VisualElement name="player-rank-panel" style="background-color: rgba(0, 212, 5, 0.2); padding: 10px; margin-bottom: 10px; border-radius: 5px;">
                     <ui:Label name="player-rank-label" text="Your Rank: Loading..." style="color: rgb(255, 255, 255); font-size: 16px;" />
                 </ui:VisualElement>
-                
-                <!-- 排行榜列表標題 -->
                 <ui:VisualElement style="flex-direction: row; padding: 10px; background-color: rgba(0, 212, 5, 0.3); margin-bottom: 5px;">
                     <ui:Label text="Rank" style="width: 80px; color: rgb(255, 255, 255); font-size: 16px; -unity-font-style: bold;" />
                     <ui:Label text="Player" style="flex-grow: 1; color: rgb(255, 255, 255); font-size: 16px; -unity-font-style: bold;" />
                     <ui:Label text="Time Remaining" style="width: 150px; color: rgb(255, 255, 255); font-size: 16px; -unity-font-style: bold;" />
                 </ui:VisualElement>
-                
-                <!-- 排行榜內容 (可滾動) -->
-                <ui:ScrollView name="leaderboard-scroll-view" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.5);">
-                    <!-- 排行榜項目會動態加入這裡 -->
-                </ui:ScrollView>
+                <ui:ScrollView name="leaderboard-scroll-view" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.5);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
