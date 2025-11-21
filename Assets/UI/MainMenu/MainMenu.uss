@@ -3,20 +3,33 @@
 
 .menuRegularButton {
     width: 320px;
-    height: 70px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    height: 80px;
+    margin-top: 0;
+    margin-bottom: 0;
     font-size: 32px;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
     border-radius: 5px;
-    color: rgb(255, 255, 255);
+    color: rgb(29, 29, 29);
+    background-image: url("project://database/Assets/UI/GameUI/texture/button_background.png?fileID=2800000&guid=87bcef70b8c104272b7aaf2400efc56c&type=3#button_background");
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    -unity-slice-left: 10;
+    -unity-slice-top: 10;
+    -unity-slice-right: 10;
+    -unity-slice-bottom: 10;
+    -unity-slice-scale: 2px;
+    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&guid=8c2ab64ad12824a55827b2ea2f868ae3&type=3#VT323-Regular");
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-width: 1.2px;
 }
 
 .menuRegularButton:hover {
