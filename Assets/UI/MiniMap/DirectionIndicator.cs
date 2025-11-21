@@ -3,44 +3,52 @@ using UnityEngine;
 public class DirectionIndicator : MonoBehaviour
 {
     [Header("Object Assignments")]
-    [Tooltip("The destination object for the arrow to point at.")]
-    [SerializeField] private Transform target;
+    [SerializeField] private Transform target;         
+    [SerializeField] private Transform player;          
+    [SerializeField] private Camera minimapCamera;      
+    
+    [Header("Settings")]
+    // Your orange arrow points LEFT. Unity 0 degrees is RIGHT.
+    // So we need a 180 offset to correct it.
+    [SerializeField] private float rotationOffset = 180f; 
 
-    [Tooltip("The Camera used for your minimap.")]
-    [SerializeField] private Camera minimapCamera;
+    private RectTransform arrowRect;
 
-    [Tooltip("The GameObject for the player. Its position is used for the rotation calculation.")]
-    [SerializeField] private Transform playerTransform;
-
-    [Tooltip("The child GameObject that has the arrow sprite. This is what we will show/hide.")]
-    [SerializeField] private GameObject indicatorVisual; 
+    void Start()
+    {
+        // Get the RectTransform of the object this script is attached to
+        arrowRect = GetComponent<RectTransform>();
+    }
 
     void Update()
     {
-        if (target == null || minimapCamera == null || indicatorVisual == null)
+        if (target == null || minimapCamera == null || player == null) return;
+
+        // 1. Check if target is on screen
+        Vector3 targetViewportPos = minimapCamera.WorldToViewportPoint(target.position);
+        bool isVisible = targetViewportPos.x > 0 && targetViewportPos.x < 1 &&
+                         targetViewportPos.y > 0 && targetViewportPos.y < 1 &&
+                         targetViewportPos.z > 0;
+
+        // 2. Show arrow ONLY if target is OFF screen
+        if (isVisible)
         {
-            return; 
+            // Hide the arrow if we can see the target
+            if (gameObject.activeSelf) gameObject.SetActive(false);
         }
-
-        Vector3 viewportPoint = new Vector3(0.2f, 0.2f, 10f);
-        Vector3 worldPoint = minimapCamera.ViewportToWorldPoint(viewportPoint);
-        transform.position = worldPoint;
-
-        Vector3 targetViewportPosition = minimapCamera.WorldToViewportPoint(target.position);
-
-        bool isTargetVisible = targetViewportPosition.z > 0 &&
-                               targetViewportPosition.x > 0 && targetViewportPosition.x < 1 &&
-                               targetViewportPosition.y > 0 && targetViewportPosition.y < 1;
-
-        indicatorVisual.SetActive(!isTargetVisible);
-
-
-        if (indicatorVisual.activeSelf)
+        else
         {
-            Vector3 direction = target.position - playerTransform.position;
+            // Show the arrow if target is missing
+            if (!gameObject.activeSelf) gameObject.SetActive(true);
+
+            // 3. Calculate Direction
+            Vector3 direction = target.position - player.position;
+
+            // 4. Calculate Angle
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90f);
-            transform.rotation = rotation; 
+
+            // 5. Apply Rotation (Spin the UI Image)
+            arrowRect.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
         }
     }
 }

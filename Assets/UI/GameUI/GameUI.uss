@@ -1,19 +1,15 @@
 :root {
-    /* Allow clicks to pass through root element to UGUI/GameObjects below */
     pointer-events: none;
 }
 
-/* Interactive elements and containers need to accept pointer events */
 .interactive {
     pointer-events: auto;
 }
 
-/* All buttons accept pointer events */
 Button {
     pointer-events: auto;
 }
 
-/* Labels don't need interaction */
 Label {
     pointer-events: none;
 }
@@ -29,12 +25,26 @@ Label {
     border-bottom-width: 5px;
     border-left-width: 5px;
     background-color: rgba(0, 0, 0, 0);
-    color: rgb(255, 255, 255);
-    font-size: 20px;
+    color: rgb(26, 26, 26);
+    font-size: 32px;
     margin-bottom: 8px;
+    background-image: url("project://database/Assets/UI/GameUI/texture/button_background.png?fileID=2800000&guid=87bcef70b8c104272b7aaf2400efc56c&type=3#button_background");
+    -unity-slice-left: 10;
+    -unity-slice-top: 10;
+    -unity-slice-right: 10;
+    -unity-slice-bottom: 10;
+    -unity-slice-scale: 2px;
+    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&guid=8c2ab64ad12824a55827b2ea2f868ae3&type=3#VT323-Regular");
+    -unity-font-style: normal;
+    -unity-text-outline-color: rgb(34, 34, 34);
+    -unity-text-outline-width: 1.2px;
 }
 
 .pauseRegularButton:hover {
     transition-duration: 0.4s;
     scale: 1.05 1.05;
+}
+
+.pauseButton:hover {
+    scale: 1.2 1.2;
 }
