@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 218282765
+  m_SortingLayer: 6
   m_SortingOrder: 75
   m_Sprite: {fileID: 2718111150291252319, guid: cf9a63fa14fd21a4aa5c610ac3ed3068, type: 3}
   m_Color: {r: 0.5411765, g: 0.1686275, b: 0.8862746, a: 1}
@@ -170,8 +170,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 218282765
+  m_SortingLayer: 6
   m_SortingOrder: 14
   m_Sprite: {fileID: 2345905699075283312, guid: c74a770edda91cd4d9c981d97201d8bf, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d2afb000a6d18428e5850fa4b9e2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedTextController
-  normalSpeedColor: {r: 1, g: 1, b: 1, a: 1}
+  normalSpeedColor: {r: 0, g: 1, b: 0.023555994, a: 1}
   overSpeedColor: {r: 1, g: 0, b: 0, a: 1}
   overSpeedValue: 20
   currSpeed: 0
@@ -420,8 +420,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 218282765
+  m_SortingLayer: 6
   m_SortingOrder: 15
   m_Sprite: {fileID: 7946943205733681741, guid: a79bdd9495eaec147b606e0a69ae9453, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
@@ -536,7 +536,7 @@ RectTransform:
   m_GameObject: {fileID: 8804221541656288061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 102993305366739069}
@@ -684,7 +684,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6953584652045754656, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6953584652045754656, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 218282765
       objectReference: {fileID: 0}
     - target: {fileID: 7986067666198860388, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_Name
