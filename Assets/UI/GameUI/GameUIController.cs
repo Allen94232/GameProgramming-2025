@@ -42,6 +42,7 @@ public class GameUIController : MonoBehaviour
     
     private Label _timerLabel;
     private float _timeRemaining;
+    private bool _hasTriggeredGameOver = false; // Prevent repeated GameLose calls
     
     private float _currentRunTime; // Store current run's remaining time
     private bool _isWaitingForSession = false;
@@ -232,6 +233,7 @@ public class GameUIController : MonoBehaviour
     {
         moodValue = GameManager.Instance.initialMood;
         _timeRemaining = GameManager.Instance.gameTime;
+        _hasTriggeredGameOver = false; // Reset game over flag
         
         // Update UI display
         UpdateMoodDisplay(moodValue);
@@ -323,10 +325,11 @@ public class GameUIController : MonoBehaviour
             _timeRemaining -= Time.deltaTime;
             UpdateTimerDisplay();
         }
-        else
+        else if (!_hasTriggeredGameOver)
         {
             _timeRemaining = 0;
             UpdateTimerDisplay();
+            _hasTriggeredGameOver = true; // Set flag before calling GameLose
             GameManager.Instance.GameLose();
         }
     }

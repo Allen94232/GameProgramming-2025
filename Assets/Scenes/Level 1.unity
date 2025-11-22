@@ -348,7 +348,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 54341337
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 0, g: 0.6150943, b: 0.079826236, a: 1}
@@ -370,7 +370,7 @@ Transform:
   m_GameObject: {fileID: 349764225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -209.9, y: -266.5, z: 0}
+  m_LocalPosition: {x: -211.5, y: -325.2, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -502,8 +502,8 @@ MonoBehaviour:
   minSpeedMultiplier: 0.5
   maxSpeedMultiplier: 1.7
   inWater: 0
-  bellSound: {fileID: 0}
-  spriteRenderer: {fileID: 0}
+  bellSound: {fileID: 8300000, guid: df88f0a0e0aa94b4195743ae54776780, type: 3}
+  spriteRenderer: {fileID: 349764228}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
   inWaterColor: {r: 0.5, g: 0.8, b: 1, a: 1}
 --- !u!1 &519420028
@@ -1339,7 +1339,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 54341337
-  m_SortingLayer: 8
+  m_SortingLayer: 7
   m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 0, g: 0.12661982, b: 1, a: 1}

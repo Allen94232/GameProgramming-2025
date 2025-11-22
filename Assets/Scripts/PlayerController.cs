@@ -234,7 +234,8 @@ void HandleRotation()
         
         // Turning effectiveness increases with speed
         float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
-        speedFactor = Mathf.Clamp(speedFactor, 0.1f, 1f);
+        // Higher minimum turn speed for better low-speed maneuverability
+        speedFactor = Mathf.Clamp(speedFactor, 0.6f, 1f);
         
         float rotationSpeed = currentTurnSpeed * speedFactor;
         

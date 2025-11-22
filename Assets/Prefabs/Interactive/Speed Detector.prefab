@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayerID: -1273637305
+  m_SortingLayer: 8
   m_SortingOrder: 75
   m_Sprite: {fileID: 2718111150291252319, guid: cf9a63fa14fd21a4aa5c610ac3ed3068, type: 3}
   m_Color: {r: 0.5411765, g: 0.1686275, b: 0.8862746, a: 1}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 1294440365027721744}
   - component: {fileID: 4400839292857458487}
   m_Layer: 5
-  m_Name: Square
+  m_Name: Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,8 +170,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayerID: -1273637305
+  m_SortingLayer: 8
   m_SortingOrder: 14
   m_Sprite: {fileID: 2345905699075283312, guid: c74a770edda91cd4d9c981d97201d8bf, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
@@ -217,10 +217,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 102993305366739069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.35757306, y: 0.345971}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.73942626, y: -1.34}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1709901479199212460
 CanvasRenderer:
@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d2afb000a6d18428e5850fa4b9e2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedTextController
-  normalSpeedColor: {r: 0, g: 1, b: 0.023555994, a: 1}
+  normalSpeedColor: {r: 0, g: 1, b: 0, a: 1}
   overSpeedColor: {r: 1, g: 0, b: 0, a: 1}
   overSpeedValue: 20
   currSpeed: 0
@@ -347,10 +347,10 @@ GameObject:
   m_Component:
   - component: {fileID: 102993305366739069}
   - component: {fileID: 1700957874942114571}
-  - component: {fileID: 3994337605463083299}
   - component: {fileID: 7631705501908395565}
+  - component: {fileID: 388504005324243063}
   m_Layer: 6
-  m_Name: Circle
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,8 +420,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayerID: -1273637305
+  m_SortingLayer: 8
   m_SortingOrder: 15
   m_Sprite: {fileID: 7946943205733681741, guid: a79bdd9495eaec147b606e0a69ae9453, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
@@ -434,42 +434,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3994337605463083299
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8632994572984320943}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.4
 --- !u!114 &7631705501908395565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,6 +473,52 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!61 &388504005324243063
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8632994572984320943}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.6666667, y: 0.7083333}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.2, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &8804221541656288061
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpeedDetector
   speedTextController: {fileID: 6705968072119292547}
-  speedMultiplier: 0.8
+  speedMultiplier: 0.7
 --- !u!1001 &1004511639542905324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -684,7 +694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6953584652045754656, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_SortingLayer
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6953584652045754656, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_SortingLayerID

@@ -146,9 +146,11 @@ public class GameManager : MonoBehaviour
         if (!isInGameLevel)
             return;
 
+        // Check game over only once when flags are set
         if (isGameWin || isGameLose)
         {
             CheckIfGameOver();
+            // Stop updating after game over is processed
             return;
         }
 
@@ -242,6 +244,9 @@ public class GameManager : MonoBehaviour
         if (isGameWin)
         {
             Debug.Log("You Win!");
+            
+            // Reset flag immediately to prevent repeated execution
+            isGameWin = false;
 
             // Get remaining time (higher is better)
             float remainingTime = GameUIController.Instance != null ?
@@ -265,12 +270,14 @@ public class GameManager : MonoBehaviour
             }
 
             Time.timeScale = 0f;
-            isGameWin = false;
         }
 
         else if (isGameLose)
         {
             Debug.Log("You Lose!");
+            
+            // Reset flag immediately to prevent repeated execution
+            isGameLose = false;
             
             // Play lose sound effect
             if (AudioManager.Instance != null)
@@ -282,29 +289,8 @@ public class GameManager : MonoBehaviour
             {
                 GameUIController.Instance.ShowLoseScreen();
             }
-            Time.timeScale = 0f;
-            isGameLose = false;
-        }
-
-        /*if (winUI == null || loseUI == null)
-        {
-            Debug.LogError("GameManager: UI references are null in CheckIfGameOver!");
-            return;
-        }
-        
-        if (isGameWin && !winUI.activeSelf)
-        {
-            Debug.Log("You Win!");
-            winUI.SetActive(true);
+            
             Time.timeScale = 0f;
         }
-        
-        else if (isGameLose && !loseUI.activeSelf)
-        {
-            Debug.Log("You Lose!");
-            loseUI.SetActive(true);
-            Time.timeScale = 0f;
-        }
-        */
     }
 }
