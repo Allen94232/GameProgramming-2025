@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
     public PlayerStatus Playerstatus;
 
     [Header("Original Speed Settings")]
-    public float oriMaxForwardSpeed = 8f;
-    public float oriMaxBackwardSpeed = 3f;
+    public float oriMaxForwardSpeed = 30f;
+    public float oriMaxBackwardSpeed = 10f;
 
     [Header("Original Acceleration Settings")]
     public float oriAcceleration = 10f;
@@ -25,17 +25,21 @@ public class PlayerController : MonoBehaviour
 
     [Header("Original Rotation Settings")]
     public float oriTurnSpeed = 200f;
+    [Tooltip("Maximum handlebar angle when stationary (in degrees)")]
+    public float maxStationaryHandlebarAngle = 45f;
+    [Tooltip("Speed of handlebar rotation when stationary")]
+    public float stationaryHandlebarTurnSpeed = 60f;
 
     [Header("Cooldown Settings")]
-    public float collisionCooldown = 0.5f;
+    public float collisionCooldown = 1.5f;
 
     [Header("Mood Speed Settings")]
     [Tooltip("Base mood value that corresponds to original speed (default 100)")]
     public float baseMoodValue = 100f;
     [Tooltip("Minimum speed multiplier when mood is 0 (e.g., 0.5 = 50% speed)")]
-    public float minSpeedMultiplier = 0.3f;
+    public float minSpeedMultiplier = 0.5f;
     [Tooltip("Maximum speed multiplier when mood is 200 (e.g., 1.5 = 150% speed)")]
-    public float maxSpeedMultiplier = 2.0f;
+    public float maxSpeedMultiplier = 1.7f;
     
     [Header("Env Effects")]
     public bool inWater = false;
@@ -65,6 +69,10 @@ public class PlayerController : MonoBehaviour
     
     // External speed multiplier (e.g., from bird poop)
     private float externalSpeedMultiplier = 1f;
+    
+    // Handlebar angle when stationary (relative to body)
+    private float currentHandlebarAngle = 0f;
+    private float stationaryRotation = 0f;
 
     private Rigidbody2D rb;
     private float currentSpeed = 0f;
@@ -137,9 +145,12 @@ public class PlayerController : MonoBehaviour
     public void Init()
     {
         Playerstatus = PlayerStatus.Normal;
+        externalSpeedMultiplier = 1f;
         ApplySettingsForStatus(Playerstatus);
         waterAreaCount = 0;
         inWater = false;
+        currentHandlebarAngle = 0f;
+        stationaryRotation = rb.rotation;
     }
 
     // Called by WaterSprayTrigger when player enters water area
@@ -211,15 +222,42 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = transform.up * currentSpeed;
     }
 
-    void HandleRotation()
+void HandleRotation()
+{
+    float turnInput = -Input.GetAxis("Horizontal");
+    
+    if (Mathf.Abs(currentSpeed) > 0.1f)
     {
-        if (Mathf.Abs(currentSpeed) > 0.1f)
+        // Moving: normal bicycle steering
+        // Reverse steering direction when moving backward (like a car)
+        float turnDirection = currentSpeed > 0 ? 1f : -1f;
+        
+        // Turning effectiveness increases with speed
+        float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
+        speedFactor = Mathf.Clamp(speedFactor, 0.1f, 1f);
+        
+        float rotationSpeed = currentTurnSpeed * speedFactor;
+        
+        rb.MoveRotation(rb.rotation + turnInput * turnDirection * rotationSpeed * Time.fixedDeltaTime);
+        
+        // Reset handlebar angle when moving
+        currentHandlebarAngle = 0f;
+        stationaryRotation = rb.rotation;
+    }
+    else
+    {
+        // Stationary: simulate handlebar rotation (limited angle)
+        if (Mathf.Abs(turnInput) > 0.01f)
         {
-            float turnInput = -Input.GetAxis("Horizontal");
-            rb.MoveRotation(rb.rotation + turnInput * currentTurnSpeed * Time.fixedDeltaTime);
+            // Adjust handlebar angle
+            currentHandlebarAngle += turnInput * stationaryHandlebarTurnSpeed * Time.fixedDeltaTime;
+            currentHandlebarAngle = Mathf.Clamp(currentHandlebarAngle, -maxStationaryHandlebarAngle, maxStationaryHandlebarAngle);
+            
+            // Apply visual rotation based on handlebar angle
+            rb.MoveRotation(stationaryRotation + currentHandlebarAngle);
         }
     }
-
+}
     void UpdatePlayerStatus()
     {
         if (inWater)

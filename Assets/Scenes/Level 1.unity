@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 349764229}
-  - component: {fileID: 349764230}
+  - component: {fileID: 349764232}
   - component: {fileID: 349764228}
   - component: {fileID: 349764227}
   - component: {fileID: 349764226}
@@ -378,35 +378,6 @@ Transform:
   - {fileID: 1710709748}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &349764230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 349764225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad05dcef544c0054eb7530cb561dee04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  Playerstatus: 0
-  oriMaxForwardSpeed: 30
-  oriMaxBackwardSpeed: 3
-  oriAcceleration: 10
-  oriDeceleration: 8
-  oriBrakeDeceleration: 20
-  oriBackwardAcceleration: 6
-  oriTurnSpeed: 200
-  collisionCooldown: 1
-  baseMoodValue: 100
-  minSpeedMultiplier: 0.3
-  maxSpeedMultiplier: 1.7
-  inWater: 0
-  bellSound: {fileID: 8300000, guid: df88f0a0e0aa94b4195743ae54776780, type: 3}
-  spriteRenderer: {fileID: 349764228}
-  normalColor: {r: 0, g: 1, b: 0, a: 1}
-  inWaterColor: {r: 0.5, g: 0.8, b: 1, a: 1}
 --- !u!82 &349764231
 AudioSource:
   m_ObjectHideFlags: 0
@@ -504,6 +475,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &349764232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349764225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad05dcef544c0054eb7530cb561dee04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  Playerstatus: 0
+  oriMaxForwardSpeed: 30
+  oriMaxBackwardSpeed: 10
+  oriAcceleration: 10
+  oriDeceleration: 8
+  oriBrakeDeceleration: 20
+  oriBackwardAcceleration: 6
+  oriTurnSpeed: 200
+  maxStationaryHandlebarAngle: 45
+  stationaryHandlebarTurnSpeed: 60
+  collisionCooldown: 1.5
+  baseMoodValue: 100
+  minSpeedMultiplier: 0.5
+  maxSpeedMultiplier: 1.7
+  inWater: 0
+  bellSound: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  inWaterColor: {r: 0.5, g: 0.8, b: 1, a: 1}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,15 +1577,15 @@ RectTransform:
   m_GameObject: {fileID: 1710709747}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 341508594}
   m_Father: {fileID: 349764229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.4, y: -31.8}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 759.5, y: 427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710709749
