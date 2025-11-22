@@ -32,6 +32,16 @@ public class AudioManager : MonoBehaviour
     
     [Tooltip("Sound effect for button hover")]
     [SerializeField] private AudioClip buttonHoverSFX;
+    
+    [Header("Gameplay Sound Effects")]
+    [Tooltip("Sound effect when player collects a coin")]
+    [SerializeField] private AudioClip coinCollectSFX;
+    
+    [Tooltip("Sound effect when toggling sprinkler on/off")]
+    [SerializeField] private AudioClip sprinklerToggleSFX;
+    
+    [Tooltip("Sound effect when spray painting (draggable object dropped on target)")]
+    [SerializeField] private AudioClip sprayPaintSFX;
 
     [Header("Volume Settings")]
     [Range(0f, 1f)]
@@ -246,6 +256,42 @@ public class AudioManager : MonoBehaviour
             sfxSource.PlayOneShot(buttonHoverSFX, sfxVolume * 0.7f); // Lower volume for hover
         }
         // No warning for hover - it's optional
+    }
+    
+    public void PlayCoinCollectSFX()
+    {
+        if (coinCollectSFX != null)
+        {
+            sfxSource.PlayOneShot(coinCollectSFX, sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager: Coin collect SFX not assigned!");
+        }
+    }
+    
+    public void PlaySprinklerToggleSFX()
+    {
+        if (sprinklerToggleSFX != null)
+        {
+            sfxSource.PlayOneShot(sprinklerToggleSFX, sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager: Sprinkler toggle SFX not assigned!");
+        }
+    }
+    
+    public void PlaySprayPaintSFX()
+    {
+        if (sprayPaintSFX != null)
+        {
+            sfxSource.PlayOneShot(sprayPaintSFX, sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager: Spray paint SFX not assigned!");
+        }
     }
 
     // Volume control methods

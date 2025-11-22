@@ -449,9 +449,9 @@ MonoBehaviour:
   onObjectDropped:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6694465815133632418}
-        m_TargetAssemblyTypeName: UnityEngine.BoxCollider2D, UnityEngine
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 846016908811228032}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -459,11 +459,11 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 846016908811228032}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5969722680316806938}
+        m_TargetAssemblyTypeName: SpeedDetector, Assembly-CSharp
+        m_MethodName: SetCovered
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -620,6 +620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpeedDetector
   speedTextController: {fileID: 6705968072119292547}
   speedMultiplier: 0.7
+  isCovered: 0
 --- !u!1001 &1004511639542905324
 PrefabInstance:
   m_ObjectHideFlags: 0

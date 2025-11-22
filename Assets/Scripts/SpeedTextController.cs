@@ -27,7 +27,7 @@ public class SpeedTextController : MonoBehaviour
         speedText.text = currSpeed.ToString();
     }
 
-    public void SpeedChanged(float speed)
+    public void SpeedChanged(float speed, bool isCovered = false)
     {
         currSpeed = Mathf.FloorToInt(speed);
 
@@ -36,9 +36,13 @@ public class SpeedTextController : MonoBehaviour
             // Change face color of the text
             textMaterial.SetColor("_FaceColor", overSpeedColor);
 
-            float newMood = MoodController.Instance.GetMoodValue() - 20f;
-            newMood = Mathf.Max(newMood, 0);
-            MoodController.Instance.SetMoodValue(newMood);
+            // Only apply mood damage if detector is not covered
+            if (!isCovered)
+            {
+                float newMood = MoodController.Instance.GetMoodValue() - 20f;
+                newMood = Mathf.Max(newMood, 0);
+                MoodController.Instance.SetMoodValue(newMood);
+            }
         }
         else
         {

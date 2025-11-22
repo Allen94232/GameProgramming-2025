@@ -22,6 +22,13 @@ public class Coin : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Debug.Log("Player collected a coin!");
+            
+            // Play coin collection sound effect
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayCoinCollectSFX();
+            }
+            
             // add point
             float newMood = MoodController.Instance.GetMoodValue() + value;
             newMood = Mathf.Min(newMood, GameManager.Instance.maxMood);

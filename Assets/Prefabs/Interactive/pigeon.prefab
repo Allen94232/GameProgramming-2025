@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1240048363
-  m_SortingLayer: 7
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -7202298358451323859, guid: ae81d7f928c171d4fa12e4bbd0e2a64c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   scareRadius: 20
-  flyAwaySpeed: 40
+  flyAwaySpeed: 60
   animator: {fileID: -4815785694613492655}
 --- !u!95 &-4815785694613492655
 Animator:

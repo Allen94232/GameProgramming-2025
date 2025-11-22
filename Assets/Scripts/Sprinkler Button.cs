@@ -115,6 +115,12 @@ public class SprinklerButton : MonoBehaviour
             return;
         }
         
+        // Play sprinkler toggle sound effect
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySprinklerToggleSFX();
+        }
+        
         // Toggle water spray
         waterSprayTrigger.ToggleWaterSpray();
 

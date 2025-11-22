@@ -10,19 +10,39 @@ public class Pedestrian : MonoBehaviour
     
     [Header("Collision Detection")]
     public LayerMask obstacleLayer;      // Layer for walls and obstacles
-    public float checkRadius = 0.5f;     // Radius to check for collisions at target position
+    public float checkRadius = 0.5f;     // Radius to check for collisions at target position (fallback if no collider)
     public int maxAttempts = 10;         // Maximum attempts to find valid position
+    
+    [Header("Angry State")]
+    [Tooltip("Angry image to show when pedestrian is angry")]
+    public GameObject angryImage;
+    [Tooltip("Duration in seconds that pedestrian stays angry after collision")]
+    public float angryDuration = 2f;
     
     private bool isWalking = false;
     private Vector3 targetPosition;
     private float stopTimer = 0f;
     private Vector3 startPosition;       // Store starting position for area calculation
     private Vector3 walkingDirection;
+    private Collider2D pedestrianCollider;  // Reference to pedestrian's own collider
+    
+    // Angry state variables
+    private bool isAngry = false;
+    private float angryTimer = 0f;
 
     void Start()
     {
         // Store the starting position as the center of walking area
         startPosition = transform.position;
+        
+        // Get pedestrian's collider for overlap detection
+        pedestrianCollider = GetComponent<Collider2D>();
+        
+        // Initialize angry state
+        if (angryImage != null)
+        {
+            angryImage.SetActive(false);
+        }
         
         // animator = GetComponent<Animator>();
         // animator.SetBool("isWalking", false);
@@ -31,6 +51,16 @@ public class Pedestrian : MonoBehaviour
 
     void Update()
     {
+        // Handle angry state timer
+        if (isAngry)
+        {
+            angryTimer -= Time.deltaTime;
+            if (angryTimer <= 0f)
+            {
+                SetAngry(false);
+            }
+        }
+        
         if (!isWalking)
         {
             stopTimer += Time.deltaTime;
@@ -77,6 +107,39 @@ public class Pedestrian : MonoBehaviour
         isWalking = false;
         animator.SetBool("isWalking", isWalking);
         // animator.SetBool("isWalking", false);
+    }
+    
+    // Collision with player
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            SetAngry(true);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by player, becoming angry!");
+        }
+    }
+    
+    // Set angry state
+    private void SetAngry(bool angry)
+    {
+        isAngry = angry;
+        
+        if (isAngry)
+        {
+            angryTimer = angryDuration;
+        }
+        
+        // Toggle angry image
+        if (angryImage != null)
+        {
+            angryImage.SetActive(isAngry);
+        }
+    }
+    
+    // Public method to check if pedestrian is angry
+    public bool IsAngry()
+    {
+        return isAngry;
     }
 
     void PickNewTarget()
@@ -125,11 +188,50 @@ public class Pedestrian : MonoBehaviour
     // Check if a position is valid (not inside obstacle)
     private bool IsPositionValid(Vector3 position)
     {
-        // Use OverlapCircle to check for colliders at the target position
-        Collider2D hitCollider = Physics2D.OverlapCircle(position, checkRadius, obstacleLayer);
+        // If pedestrian has a collider, check if the collider would overlap with obstacles at target position
+        if (pedestrianCollider != null)
+        {
+            // Calculate offset from current position to target position
+            Vector2 offset = (Vector2)(position - transform.position);
+            
+            // Check collision based on collider type
+            if (pedestrianCollider is BoxCollider2D boxCollider)
+            {
+                // Get box collider properties
+                Vector2 boxSize = boxCollider.size * transform.localScale;
+                Vector2 boxCenter = (Vector2)position + boxCollider.offset;
+                float angle = transform.eulerAngles.z;
+                
+                // Check if box would overlap with any obstacle at target position
+                Collider2D hitCollider = Physics2D.OverlapBox(boxCenter, boxSize, angle, obstacleLayer);
+                return hitCollider == null;
+            }
+            else if (pedestrianCollider is CircleCollider2D circleCollider)
+            {
+                // Get circle collider properties
+                float radius = circleCollider.radius * Mathf.Max(transform.localScale.x, transform.localScale.y);
+                Vector2 circleCenter = (Vector2)position + circleCollider.offset;
+                
+                // Check if circle would overlap with any obstacle at target position
+                Collider2D hitCollider = Physics2D.OverlapCircle(circleCenter, radius, obstacleLayer);
+                return hitCollider == null;
+            }
+            else if (pedestrianCollider is CapsuleCollider2D capsuleCollider)
+            {
+                // Get capsule collider properties
+                Vector2 capsuleSize = capsuleCollider.size * transform.localScale;
+                Vector2 capsuleCenter = (Vector2)position + capsuleCollider.offset;
+                float angle = transform.eulerAngles.z;
+                
+                // Check if capsule would overlap with any obstacle at target position
+                Collider2D hitCollider = Physics2D.OverlapCapsule(capsuleCenter, capsuleSize, capsuleCollider.direction, angle, obstacleLayer);
+                return hitCollider == null;
+            }
+        }
         
-        // Position is valid if no collider was hit
-        return hitCollider == null;
+        // Fallback: Use simple circle check if no collider or unsupported type
+        Collider2D fallbackHit = Physics2D.OverlapCircle(position, checkRadius, obstacleLayer);
+        return fallbackHit == null;
     }
     
     // Visualize the walking area and check radius in editor
@@ -140,11 +242,35 @@ public class Pedestrian : MonoBehaviour
         Vector3 center = Application.isPlaying ? startPosition : transform.position;
         Gizmos.DrawWireSphere(center, areaSize);
         
-        // Draw current target and check radius
+        // Draw current target and collision detection area
         if (Application.isPlaying)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(targetPosition, checkRadius);
+            
+            // Visualize based on collider type
+            if (pedestrianCollider is BoxCollider2D boxCollider)
+            {
+                Vector2 boxSize = boxCollider.size * transform.localScale;
+                Gizmos.DrawWireCube(targetPosition + (Vector3)boxCollider.offset, boxSize);
+            }
+            else if (pedestrianCollider is CircleCollider2D circleCollider)
+            {
+                float radius = circleCollider.radius * Mathf.Max(transform.localScale.x, transform.localScale.y);
+                Gizmos.DrawWireSphere(targetPosition + (Vector3)circleCollider.offset, radius);
+            }
+            else if (pedestrianCollider is CapsuleCollider2D capsuleCollider)
+            {
+                // Approximate capsule visualization with sphere
+                Vector2 capsuleSize = capsuleCollider.size * transform.localScale;
+                float radius = Mathf.Max(capsuleSize.x, capsuleSize.y) * 0.5f;
+                Gizmos.DrawWireSphere(targetPosition + (Vector3)capsuleCollider.offset, radius);
+            }
+            else
+            {
+                // Fallback visualization
+                Gizmos.DrawWireSphere(targetPosition, checkRadius);
+            }
+            
             Gizmos.DrawLine(transform.position, targetPosition);
         }
     }

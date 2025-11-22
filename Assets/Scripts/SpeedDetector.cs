@@ -4,6 +4,10 @@ public class SpeedDetector : MonoBehaviour
 {
     public SpeedTextController speedTextController;
     public float speedMultiplier = 0.8f;
+    
+    [Header("Cover State")]
+    [Tooltip("Whether detector is covered by spray paint")]
+    public bool isCovered = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -17,8 +21,16 @@ public class SpeedDetector : MonoBehaviour
 
                 playerSpeed *= speedMultiplier;
 
-                speedTextController.SpeedChanged(playerSpeed);
+                // Pass covered state to SpeedTextController
+                speedTextController.SpeedChanged(playerSpeed, isCovered);
             }
         }
+    }
+    
+    // Called by DraggableTarget UnityEvent when spray painted
+    public void SetCovered(bool covered)
+    {
+        isCovered = covered;
+        Debug.Log($"SpeedDetector {gameObject.name}: Covered state set to {isCovered}");
     }
 }

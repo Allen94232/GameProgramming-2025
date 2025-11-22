@@ -85,6 +85,12 @@ public class Draggable : MonoBehaviour
 
     private void OnDroppedOnTarget(DraggableTarget target)
     {
+        // Play spray paint sound effect
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySprayPaintSFX();
+        }
+        
         // Example: assign this object to the target
         target.SendMessage("OnObjectDropped", this, SendMessageOptions.DontRequireReceiver);
     }
