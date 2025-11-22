@@ -712,7 +712,7 @@ MonoBehaviour:
   minimapCamera: {fileID: 762866363}
   minimapRect: {fileID: 284147109}
   rotationOffset: 180
-  padding: 15
+  padding: 50
 --- !u!114 &520548542
 MonoBehaviour:
   m_ObjectHideFlags: 0
