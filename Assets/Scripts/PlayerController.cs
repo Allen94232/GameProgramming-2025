@@ -61,7 +61,10 @@ public class PlayerController : MonoBehaviour
     private float currentBrakeDeceleration;
     private float currentBackwardAcceleration;
     private float currentTurnSpeed;
-    private Stone[] stones;
+    private BirdPoop[] birdPoops;
+    
+    // External speed multiplier (e.g., from bird poop)
+    private float externalSpeedMultiplier = 1f;
 
     private Rigidbody2D rb;
     private float currentSpeed = 0f;
@@ -91,7 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
-        stones = FindObjectsByType<Stone>(FindObjectsSortMode.None);
+        birdPoops = FindObjectsByType<BirdPoop>(FindObjectsSortMode.None);
         ApplySettingsForStatus(PlayerStatus.Normal);
 
         Init();
@@ -117,10 +120,10 @@ public class PlayerController : MonoBehaviour
         {
             TryRingBell();
         }
-
-        foreach (var stone in stones)
+        
+        foreach (var poop in birdPoops)
         {
-            stone.TryFall(transform.position);
+            poop.TryFall(transform.position);
         }
     }
 
@@ -251,17 +254,18 @@ public class PlayerController : MonoBehaviour
     void ApplySettingsForStatus(PlayerStatus newStatus)
     {
         float moodMultiplier = GetMoodSpeedMultiplier();
+        float finalMultiplier = moodMultiplier * externalSpeedMultiplier;
 
         switch (newStatus)
         {
             case PlayerStatus.Normal:
-                currentMaxForwardSpeed = oriMaxForwardSpeed * moodMultiplier;
-                currentMaxBackwardSpeed = oriMaxBackwardSpeed * moodMultiplier;
-                currentAcceleration = oriAcceleration * moodMultiplier;
-                currentDeceleration = oriDeceleration * moodMultiplier;
-                currentBrakeDeceleration = oriBrakeDeceleration * moodMultiplier;
-                currentBackwardAcceleration = oriBackwardAcceleration * moodMultiplier;
-                currentTurnSpeed = oriTurnSpeed * moodMultiplier;
+                currentMaxForwardSpeed = oriMaxForwardSpeed * finalMultiplier;
+                currentMaxBackwardSpeed = oriMaxBackwardSpeed * finalMultiplier;
+                currentAcceleration = oriAcceleration * finalMultiplier;
+                currentDeceleration = oriDeceleration * finalMultiplier;
+                currentBrakeDeceleration = oriBrakeDeceleration * finalMultiplier;
+                currentBackwardAcceleration = oriBackwardAcceleration * finalMultiplier;
+                currentTurnSpeed = oriTurnSpeed * finalMultiplier;
 
                 if (spriteRenderer != null)
                     spriteRenderer.color = normalColor;
@@ -269,13 +273,13 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case PlayerStatus.InWater:
-                currentMaxForwardSpeed = oriMaxForwardSpeed * 0.6f * moodMultiplier;
-                currentMaxBackwardSpeed = oriMaxBackwardSpeed * 0.6f * moodMultiplier;
-                currentAcceleration = oriAcceleration * 0.7f * moodMultiplier;
-                currentDeceleration = oriDeceleration * 0.7f * moodMultiplier;
-                currentBrakeDeceleration = oriBrakeDeceleration * 0.7f * moodMultiplier;
-                currentBackwardAcceleration = oriBackwardAcceleration * 0.7f * moodMultiplier;
-                currentTurnSpeed = oriTurnSpeed * 0.8f * moodMultiplier;
+                currentMaxForwardSpeed = oriMaxForwardSpeed * 0.6f * finalMultiplier;
+                currentMaxBackwardSpeed = oriMaxBackwardSpeed * 0.6f * finalMultiplier;
+                currentAcceleration = oriAcceleration * 0.7f * finalMultiplier;
+                currentDeceleration = oriDeceleration * 0.7f * finalMultiplier;
+                currentBrakeDeceleration = oriBrakeDeceleration * 0.7f * finalMultiplier;
+                currentBackwardAcceleration = oriBackwardAcceleration * 0.7f * finalMultiplier;
+                currentTurnSpeed = oriTurnSpeed * 0.8f * finalMultiplier;
 
                 if (spriteRenderer != null)
                     spriteRenderer.color = inWaterColor;
@@ -344,5 +348,19 @@ public class PlayerController : MonoBehaviour
         {
             pigeon.TryScare(transform.position);
         }
+    }
+
+    // Apply external speed multiplier (e.g., from bird poop)
+    public void ApplySpeedMultiplier(float multiplier)
+    {
+        externalSpeedMultiplier = multiplier;
+        ApplySettingsForStatus(Playerstatus);
+    }
+
+    // Remove external speed multiplier
+    public void RemoveSpeedMultiplier()
+    {
+        externalSpeedMultiplier = 1f;
+        ApplySettingsForStatus(Playerstatus);
     }
 }

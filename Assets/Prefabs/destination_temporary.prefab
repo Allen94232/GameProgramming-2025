@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8238965772320942722
+--- !u!1 &7922812016499482540
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6000138923581626035}
-  - component: {fileID: 5836657359471761110}
-  - component: {fileID: -2107014469319706350}
-  - component: {fileID: 6909180384269507831}
-  - component: {fileID: 6441275225969133249}
+  - component: {fileID: 4662505663670939327}
+  - component: {fileID: 4612606218243718137}
+  - component: {fileID: 6025082045470328680}
   m_Layer: 0
-  m_Name: Bird Poop
-  m_TagString: Untagged
+  m_Name: destination_temporary
+  m_TagString: Destination
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6000138923581626035
+--- !u!4 &4662505663670939327
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8238965772320942722}
+  m_GameObject: {fileID: 7922812016499482540}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.52163, y: 22.47589, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 141, y: 161.8, z: 0}
+  m_LocalScale: {x: 2.4, y: 2.316645, z: 0.64548886}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5836657359471761110
+--- !u!212 &4612606218243718137
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8238965772320942722}
+  m_GameObject: {fileID: 7922812016499482540}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -79,27 +77,27 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 218282765
-  m_SortingLayer: 6
-  m_SortingOrder: 10
-  m_Sprite: {fileID: 2619498828616818467, guid: a0a6fecbb25172749b0af13d60c05efd, type: 3}
-  m_Color: {r: 1, g: 0.25788936, b: 0, a: 1}
+  m_SortingLayerID: 54341337
+  m_SortingLayer: 8
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -7810592631353093279, guid: da1bba56a802a48c38d606be73cf2ce7, type: 3}
+  m_Color: {r: 0.13162613, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.08, y: 5.07}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-2107014469319706350
+--- !u!61 &6025082045470328680
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8238965772320942722}
+  m_GameObject: {fileID: 7922812016499482540}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -127,60 +125,15 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.13959971, y: -0.021262825}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 5.08, y: 5.07}
+    newSize: {x: 5.08, y: 5.07}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7208006, y: 1}
+  m_Size: {x: 5.08, y: 5.07}
   m_EdgeRadius: 0
---- !u!95 &6909180384269507831
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8238965772320942722}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1e806300152d80f4c98095d70bfaaad3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6441275225969133249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8238965772320942722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1265ab3a1d2b604f8874612c5f662fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdPoop
-  fallRadius: 20
-  fallSpeed: 25
-  startHeight: 10
-  poopSprite:
-  - {fileID: 21300000, guid: 00b5fba22bd1d8b4583ad810ab8dda3f, type: 3}
-  - {fileID: 2619498828616818467, guid: a0a6fecbb25172749b0af13d60c05efd, type: 3}
-  shadowPrefab: {fileID: 1857348853513029753, guid: f4ba882088a60844087c56a285d4accc, type: 3}
-  minShadowScale: 0.8
-  maxShadowScale: 2
-  speedMultiplier: 0.2
-  moodDamagePerSecond: 10
