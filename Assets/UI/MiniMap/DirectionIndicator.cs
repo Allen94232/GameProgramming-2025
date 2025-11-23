@@ -10,8 +10,6 @@ public class DirectionIndicator : MonoBehaviour
     [SerializeField] private RectTransform minimapRect;      
     
     [Header("Settings")]
-    // Your orange arrow points LEFT. Unity 0 degrees is RIGHT.
-    // So we need a 180 offset to correct it.
     [SerializeField] private float rotationOffset = -90f;
     [SerializeField] private float padding = 15f;
 
@@ -28,36 +26,28 @@ public class DirectionIndicator : MonoBehaviour
     {
         if (target == null || minimapCamera == null || player == null || minimapRect == null || arrowImage == null) return;
 
-        // 1. Calculate Target Position
         Vector3 targetViewportPos = minimapCamera.WorldToViewportPoint(target.position);
 
-        // 2. CHECK VISIBILITY
         bool isVisible = targetViewportPos.x >= 0 && targetViewportPos.x <= 1 &&
                          targetViewportPos.y >= 0 && targetViewportPos.y <= 1 &&
                          targetViewportPos.z > 0;
 
-        // 3. HIDE OR SHOW
         if (isVisible)
         {
-            // Don't use SetActive(false)! Just turn off the image.
-            // The script continues to run in the background.
+
             if (arrowImage.enabled) arrowImage.enabled = false;
             return;
         }
         else
         {
-            // Target is off-screen, make sure image is visible
             if (!arrowImage.enabled) arrowImage.enabled = true;
         }
 
-        // 4. Position Calculation (Only happens if arrow is needed)
         Vector2 directionFromCenter = new Vector2(targetViewportPos.x - 0.5f, targetViewportPos.y - 0.5f);
 
-        // Rotate
         float angle = Mathf.Atan2(directionFromCenter.y, directionFromCenter.x) * Mathf.Rad2Deg;
         arrowRect.rotation = Quaternion.Euler(0f, 0f, angle + rotationOffset);
 
-        // Clamp to Border
         Vector2 clampedPos = directionFromCenter;
         float maxDist = Mathf.Max(Mathf.Abs(directionFromCenter.x), Mathf.Abs(directionFromCenter.y));
         
@@ -66,7 +56,6 @@ public class DirectionIndicator : MonoBehaviour
             clampedPos = (directionFromCenter / maxDist) * 0.5f;
         }
 
-        // Convert to Pixels
         float width = minimapRect.rect.width;
         float height = minimapRect.rect.height;
 
@@ -75,7 +64,6 @@ public class DirectionIndicator : MonoBehaviour
             clampedPos.y * height
         );
 
-        // Apply Padding
         screenPos.x = Mathf.Clamp(screenPos.x, -width/2 + padding, width/2 - padding);
         screenPos.y = Mathf.Clamp(screenPos.y, -height/2 + padding, height/2 - padding);
 

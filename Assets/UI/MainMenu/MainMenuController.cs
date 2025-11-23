@@ -524,39 +524,39 @@ public class MainMenuController : MonoBehaviour
     private VisualElement CreateLeaderboardEntry(LootLockerLeaderboardMember member)
     {
         var container = new VisualElement();
-        container.style.flexDirection = FlexDirection.Row;
+        container.AddToClassList("leaderboard-row");
+        /*container.style.flexDirection = FlexDirection.Row;
         container.style.paddingTop = 8;
         container.style.paddingBottom = 8;
         container.style.paddingLeft = 10;
         container.style.paddingRight = 10;
-        container.style.marginBottom = 2;
+        container.style.marginBottom = 2;*/
 
         // Set background color based on rank
-        if (member.rank == 1)
-            container.style.backgroundColor = new Color(1f, 0.84f, 0f, 0.2f);
-        else if (member.rank == 2)
-            container.style.backgroundColor = new Color(0.75f, 0.75f, 0.75f, 0.2f);
-        else if (member.rank == 3)
-            container.style.backgroundColor = new Color(0.8f, 0.5f, 0.2f, 0.2f);
-        else
-            container.style.backgroundColor = new Color(0, 0, 0, 0.3f);
+        if (member.rank == 1) container.AddToClassList("rank-gold");
+        else if (member.rank == 2) container.AddToClassList("rank-silver");
+        else if (member.rank == 3) container.AddToClassList("rank-bronze");
+        else container.style.backgroundColor = new Color(0, 0, 0, 0.3f);
+
+        //current player
+        string playerIdentifier = LeaderboardManager.Instance?.GetPlayerIdentifier();
+        if (!string.IsNullOrEmpty(playerIdentifier) && member.member_id == playerIdentifier)
+        {
+        container.AddToClassList("rank-current-player");
+        }
 
         // Rank label
-        string rankText = "";
-        if (member.rank == 1) rankText = "1";
-        else if (member.rank == 2) rankText = "2";
-        else if (member.rank == 3) rankText = "3";
-        else rankText = member.rank.ToString();
-
-        var rankLabel = new Label(rankText);
-        rankLabel.style.width = 80;
-        rankLabel.style.color = Color.white;
-        rankLabel.style.fontSize = 16;
+        var rankLabel = new Label($"#{member.rank}");
+        // style
+        rankLabel.AddToClassList("leaderboard-text"); 
+        rankLabel.style.width = 80;  
+        rankLabel.style.flexGrow = 0; 
+        
         container.Add(rankLabel);
+        
 
         // Player name - extract from metadata
-        string displayName = ExtractPlayerNameFromMetadata(member.metadata);
-        
+        string displayName = ExtractPlayerNameFromMetadata(member.metadata);        
         if (string.IsNullOrEmpty(displayName))
         {
             // No name in metadata, use member_id (GUID)
@@ -570,19 +570,28 @@ public class MainMenuController : MonoBehaviour
             }
         }
         
+        // Name label
         var nameLabel = new Label(displayName);
-        nameLabel.style.flexGrow = 1;
-        nameLabel.style.color = Color.white;
-        nameLabel.style.fontSize = 16;
+        //style
+        nameLabel.AddToClassList("leaderboard-text"); 
+        nameLabel.style.width = StyleKeyword.Auto;
+        nameLabel.style.flexGrow = 1; 
+        nameLabel.style.marginLeft = 12;
+        
         container.Add(nameLabel);
 
-        // Time
+        //time
         float timeInSeconds = member.score / 1000f;
         string timeString = FormatTime(timeInSeconds);
+        
+        // remaining time label
         var timeLabel = new Label(timeString);
-        timeLabel.style.width = 150;
-        timeLabel.style.color = Color.white;
-        timeLabel.style.fontSize = 16;
+        //style
+        timeLabel.AddToClassList("leaderboard-text");
+        timeLabel.style.width = 160;
+        timeLabel.style.marginRight = 45;
+        timeLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+        
         container.Add(timeLabel);
 
         return container;

@@ -49,3 +49,67 @@
     scale: 1.2 1.2;
     display: flex;
 }
+
+.leaderboard-row {
+    flex-direction: row;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(139, 69, 19);
+    -unity-text-align: upper-left;
+    align-items: center;
+}
+
+.leaderboard-text {
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
+    color: rgb(62, 39, 35);
+    font-size: 18px;
+}
+
+.rank-gold {
+    background-color: rgba(255, 215, 0, 0.47);
+}
+
+.rank-silver {
+    background-color: rgba(192, 192, 192, 0.47);
+}
+
+.rank-bronze {
+    background-color: rgba(205, 127, 50, 0.47);
+}
+
+.rank-current-player {
+    background-color: rgba(227, 86, 25, 0.2);
+    border-left-color: rgb(227, 86, 25);
+    border-left-width: 4px;
+}
+
+.custom-dropdown {
+}
+
+.custom-dropdown .unity-base-field__input {
+    background-color: rgb(219, 210, 193);
+    border-top-width: 1.5px;
+    border-right-width: 1.5px;
+    border-bottom-width: 1.5px;
+    border-left-width: 1.5px;
+    border-left-color: rgb(74, 51, 35);
+    border-right-color: rgb(74, 51, 35);
+    border-top-color: rgb(74, 51, 35);
+    border-bottom-color: rgb(74, 51, 35);
+}
+
+.custom-dropdown .unity-text-element {
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
+    color: rgb(74, 51, 35);
+    font-size: 16px;
+    -unity-text-outline-width: 1.1px;
+    -unity-text-outline-color: rgb(74, 51, 35);
+}
+
+.custom-dropdown .unity-base-popup-field__input:hover {
+    -unity-background-image-tint-color: rgb(231, 231, 231);
+    scale: 1.2 1.2;
+}
