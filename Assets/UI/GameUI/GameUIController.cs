@@ -14,7 +14,14 @@ public class GameUIController : MonoBehaviour
     private Button _resumeButton; 
     private Button _homeButton;
     private Button _restartButton;
-    private VisualElement _pauseMenuContainer; 
+    private Button _settingsButton;
+    private VisualElement _pauseMenuContainer;
+    private VisualElement _settingsPanel;
+    private Button _closeSettingsButton;
+    private Slider _bgmVolumeSlider;
+    private Slider _sfxVolumeSlider;
+    private Label _bgmVolumeLabel;
+    private Label _sfxVolumeLabel;
     private VisualElement _winScreenContainer;
     private VisualElement _loseScreenContainer;
     private Button _restartButtonWin;
@@ -68,7 +75,16 @@ public class GameUIController : MonoBehaviour
         _resumeButton = _root.Q<Button>("resume-button");
         _homeButton = _root.Q<Button>("home-button");
         _restartButton = _root.Q<Button>("restart-button");
+        _settingsButton = _root.Q<Button>("settings-button");
         _pauseMenuContainer = _root.Q<VisualElement>("pause-menu-container");
+        
+        // Settings panel elements
+        _settingsPanel = _root.Q<VisualElement>("settings-panel");
+        _closeSettingsButton = _root.Q<Button>("close-settings-button");
+        _bgmVolumeSlider = _root.Q<Slider>("bgm-volume-slider");
+        _sfxVolumeSlider = _root.Q<Slider>("sfx-volume-slider");
+        _bgmVolumeLabel = _root.Q<Label>("bgm-volume-label");
+        _sfxVolumeLabel = _root.Q<Label>("sfx-volume-label");
 
         _timerLabel = _root.Q<Label>("timer-label");
         _moodLabel = _root.Q<Label>("mood-display-label");
@@ -139,6 +155,31 @@ public class GameUIController : MonoBehaviour
             _homeButtonLose.clicked += () => { PlayButtonSound(); GoToMainMenu(); };
             _homeButtonLose.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
+        
+        // Settings button events
+        if (_settingsButton != null)
+        {
+            _settingsButton.clicked += () => { PlayButtonSound(); OpenSettings(); };
+            _settingsButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        if (_closeSettingsButton != null)
+        {
+            _closeSettingsButton.clicked += () => { PlayButtonSound(); CloseSettings(); };
+            _closeSettingsButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+        
+        // Volume slider events
+        if (_bgmVolumeSlider != null)
+        {
+            _bgmVolumeSlider.RegisterValueChangedCallback(OnBGMVolumeChanged);
+        }
+        if (_sfxVolumeSlider != null)
+        {
+            _sfxVolumeSlider.RegisterValueChangedCallback(OnSFXVolumeChanged);
+        }
+        
+        // Initialize volume sliders with current values
+        InitializeVolumeSettings();
         
         // Subscribe to LootLocker session ready event
         if (LeaderboardManager.Instance != null)
@@ -595,6 +636,81 @@ public class GameUIController : MonoBehaviour
         }
         
         return null;
+    }
+    
+    // Settings panel methods
+    private void InitializeVolumeSettings()
+    {
+        if (AudioManager.Instance == null) return;
+        
+        // Set initial slider values from AudioManager
+        if (_bgmVolumeSlider != null)
+        {
+            _bgmVolumeSlider.value = AudioManager.Instance.GetBGMVolume();
+            UpdateBGMVolumeLabel(_bgmVolumeSlider.value);
+        }
+        
+        if (_sfxVolumeSlider != null)
+        {
+            _sfxVolumeSlider.value = AudioManager.Instance.GetSFXVolume();
+            UpdateSFXVolumeLabel(_sfxVolumeSlider.value);
+        }
+    }
+    
+    private void OpenSettings()
+    {
+        Debug.Log("Opening settings panel...");
+        if (_settingsPanel != null)
+        {
+            _settingsPanel.style.display = DisplayStyle.Flex;
+        }
+    }
+    
+    private void CloseSettings()
+    {
+        Debug.Log("Closing settings panel...");
+        if (_settingsPanel != null)
+        {
+            _settingsPanel.style.display = DisplayStyle.None;
+        }
+    }
+    
+    private void OnBGMVolumeChanged(ChangeEvent<float> evt)
+    {
+        float volume = evt.newValue;
+        UpdateBGMVolumeLabel(volume);
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetBGMVolume(volume);
+        }
+    }
+    
+    private void OnSFXVolumeChanged(ChangeEvent<float> evt)
+    {
+        float volume = evt.newValue;
+        UpdateSFXVolumeLabel(volume);
+        
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetSFXVolume(volume);
+        }
+    }
+    
+    private void UpdateBGMVolumeLabel(float volume)
+    {
+        if (_bgmVolumeLabel != null)
+        {
+            _bgmVolumeLabel.text = Mathf.RoundToInt(volume * 100) + "%";
+        }
+    }
+    
+    private void UpdateSFXVolumeLabel(float volume)
+    {
+        if (_sfxVolumeLabel != null)
+        {
+            _sfxVolumeLabel.text = Mathf.RoundToInt(volume * 100) + "%";
+        }
     }
 
     public void ShowLoseScreen()
