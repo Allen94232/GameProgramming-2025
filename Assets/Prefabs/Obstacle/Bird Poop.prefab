@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 10
   m_Sprite: {fileID: 2619498828616818467, guid: a0a6fecbb25172749b0af13d60c05efd, type: 3}
   m_Color: {r: 1, g: 0.25788936, b: 0, a: 1}
@@ -182,5 +182,5 @@ MonoBehaviour:
   shadowPrefab: {fileID: 1857348853513029753, guid: f4ba882088a60844087c56a285d4accc, type: 3}
   minShadowScale: 0.8
   maxShadowScale: 2
-  speedMultiplier: 0.2
+  speedMultiplier: 0.35
   moodDamagePerSecond: 10

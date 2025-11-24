@@ -48,3 +48,50 @@ Label {
 .pauseButton:hover {
     scale: 1.2 1.2;
 }
+
+.leaderboard-row {
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(35, 25, 18);
+    border-right-color: rgb(35, 25, 18);
+    border-top-color: rgb(35, 25, 18);
+    border-bottom-color: rgb(35, 25, 18);
+}
+
+.leaderboard-text {
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Examples%20&%20Extras/Fonts/Roboto-Bold.ttf?fileID=12800000&guid=4beb055f07aaff244873dec698d0363e&type=3#Roboto-Bold");
+    font-size: 18px;
+    color: rgb(32, 23, 18);
+}
+
+.row-gold {
+    background-color: rgba(255, 215, 0, 0.47);
+}
+
+.row-silver {
+    -unity-background-image-tint-color: rgba(192, 192, 192, 0.47);
+}
+
+.row-bronze {
+    background-color: rgba(205, 127, 50, 0.47);
+}
+
+.row-player {
+    background-color: rgba(227, 86, 25, 0.35);
+    border-left-width: 4px;
+    border-left-color: rgb(227, 86, 25);
+}
+
+#best-time-label.new-record-text {
+    color: rgb(248, 171, 0);
+    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&guid=8c2ab64ad12824a55827b2ea2f868ae3&type=3#VT323-Regular");
+}

@@ -24,11 +24,13 @@ public class PlayerController : MonoBehaviour
     public float oriBackwardAcceleration = 6f;
 
     [Header("Original Rotation Settings")]
-    public float oriTurnSpeed = 200f;
+    public float oriTurnSpeed = 240f;
     [Tooltip("Maximum handlebar angle when stationary (in degrees)")]
     public float maxStationaryHandlebarAngle = 45f;
     [Tooltip("Speed of handlebar rotation when stationary")]
-    public float stationaryHandlebarTurnSpeed = 60f;
+    public float stationaryHandlebarTurnSpeed = 72f;
+    [Tooltip("Minimum turn speed factor at low speeds (e.g., 0.7 = 70% turn speed)")]
+    public float minTurnSpeedFactor = 0.7f;
 
     [Header("Cooldown Settings")]
     public float collisionCooldown = 1.5f;
@@ -55,6 +57,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip bellSound;
     private float bellTimer = 0f;
     private AudioSource audioSource;
+    [Tooltip("Duration of control reduction after ringing bell (seconds)")]
+    public float bellControlReductionDuration = 0.5f;
+    [Tooltip("Turn speed multiplier during bell control reduction (0.75 = 25% reduction)")]
+    public float bellTurnSpeedMultiplier = 0.5f;
+    [Tooltip("Brake effectiveness multiplier during bell control reduction (0.5 = 50% reduction)")]
+    public float bellBrakeMultiplier = 0.5f;
+    private float bellControlReductionTimer = 0f;
 
     [Header("Renderer")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -124,10 +133,23 @@ public class PlayerController : MonoBehaviour
         HandleMoodDrain();
 
         moveInput = Input.GetAxisRaw("Vertical");
+        
+        // Support Shift key for braking/backward movement
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveInput = -1f;
+        }
 
         collisionTimer += Time.deltaTime;
 
         bellTimer += Time.deltaTime;
+        
+        // Update bell control reduction timer
+        if (bellControlReductionTimer > 0f)
+        {
+            bellControlReductionTimer -= Time.deltaTime;
+        }
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TryRingBell();
@@ -195,6 +217,9 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        // Apply bell control reduction to brake effectiveness
+        float brakeMultiplier = IsUnderBellControlReduction() ? bellBrakeMultiplier : 1f;
+        
         if (moveInput > 0)
         {
             currentSpeed += currentAcceleration * Time.fixedDeltaTime;
@@ -204,7 +229,7 @@ public class PlayerController : MonoBehaviour
         {
             if (currentSpeed > 0)
             {
-                currentSpeed -= currentBrakeDeceleration * Time.fixedDeltaTime;
+                currentSpeed -= currentBrakeDeceleration * brakeMultiplier * Time.fixedDeltaTime;
             }
             else
             {
@@ -233,6 +258,9 @@ void HandleRotation()
 {
     float turnInput = -Input.GetAxis("Horizontal");
     
+    // Apply bell control reduction to turn speed
+    float turnMultiplier = IsUnderBellControlReduction() ? bellTurnSpeedMultiplier : 1f;
+    
     if (Mathf.Abs(currentSpeed) > 0.1f)
     {
         // Moving: normal bicycle steering
@@ -242,9 +270,9 @@ void HandleRotation()
         // Turning effectiveness increases with speed
         float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
         // Higher minimum turn speed for better low-speed maneuverability
-        speedFactor = Mathf.Clamp(speedFactor, 0.6f, 1f);
+        speedFactor = Mathf.Clamp(speedFactor, minTurnSpeedFactor, 1f);
         
-        float rotationSpeed = currentTurnSpeed * speedFactor;
+        float rotationSpeed = currentTurnSpeed * speedFactor * turnMultiplier;
         
         rb.MoveRotation(rb.rotation + turnInput * turnDirection * rotationSpeed * Time.fixedDeltaTime);
         
@@ -258,7 +286,7 @@ void HandleRotation()
         if (Mathf.Abs(turnInput) > 0.01f)
         {
             // Adjust handlebar angle
-            currentHandlebarAngle += turnInput * stationaryHandlebarTurnSpeed * Time.fixedDeltaTime;
+            currentHandlebarAngle += turnInput * stationaryHandlebarTurnSpeed * turnMultiplier * Time.fixedDeltaTime;
             currentHandlebarAngle = Mathf.Clamp(currentHandlebarAngle, -maxStationaryHandlebarAngle, maxStationaryHandlebarAngle);
             
             // Apply visual rotation based on handlebar angle
@@ -382,7 +410,10 @@ void HandleRotation()
         if (audioSource != null && bellSound != null)
             audioSource.PlayOneShot(bellSound);
 
-        Debug.Log("Bell rang!");
+        // Apply control reduction penalty
+        bellControlReductionTimer = bellControlReductionDuration;
+
+        Debug.Log("Bell rang! Control reduced for " + bellControlReductionDuration + " seconds");
         ScareNearbyPigeons();
     }
 
@@ -394,6 +425,12 @@ void HandleRotation()
         {
             pigeon.TryScare(transform.position);
         }
+    }
+    
+    // Check if player is currently under bell control reduction effect
+    bool IsUnderBellControlReduction()
+    {
+        return bellControlReductionTimer > 0f;
     }
 
     // Apply external speed multiplier (e.g., from bird poop)

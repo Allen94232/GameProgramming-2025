@@ -517,7 +517,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.2, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!1 &8804221541656288061
 GameObject:
@@ -668,6 +668,14 @@ PrefabInstance:
     - target: {fileID: 4019933856196632159, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088222908065470764, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5088222908065470764, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
+      propertyPath: m_Size.y
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5088222908065470764, guid: e4fd015d647cc8d40a92c749cf6fdb1c, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
