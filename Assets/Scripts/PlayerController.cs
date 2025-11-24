@@ -24,11 +24,11 @@ public class PlayerController : MonoBehaviour
     public float oriBackwardAcceleration = 6f;
 
     [Header("Original Rotation Settings")]
-    public float oriTurnSpeed = 200f;
+    public float oriTurnSpeed = 240f;
     [Tooltip("Maximum handlebar angle when stationary (in degrees)")]
     public float maxStationaryHandlebarAngle = 45f;
     [Tooltip("Speed of handlebar rotation when stationary")]
-    public float stationaryHandlebarTurnSpeed = 60f;
+    public float stationaryHandlebarTurnSpeed = 72f;
 
     [Header("Cooldown Settings")]
     public float collisionCooldown = 1.5f;
@@ -255,7 +255,7 @@ void HandleRotation()
         // Turning effectiveness increases with speed
         float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
         // Higher minimum turn speed for better low-speed maneuverability
-        speedFactor = Mathf.Clamp(speedFactor, 0.6f, 1f);
+        speedFactor = Mathf.Clamp(speedFactor, 0.7f, 1f);
         
         float rotationSpeed = currentTurnSpeed * speedFactor * turnMultiplier;
         
