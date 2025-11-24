@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218b1025b25810f47bf1bbec5514ba94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  scareRadius: 15
+  scareRadius: 20
   flyAwaySpeed: 60
   animator: {fileID: -4815785694613492655}
 --- !u!95 &-4815785694613492655

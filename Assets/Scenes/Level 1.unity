@@ -494,17 +494,18 @@ MonoBehaviour:
   oriDeceleration: 8
   oriBrakeDeceleration: 20
   oriBackwardAcceleration: 6
-  oriTurnSpeed: 240
+  oriTurnSpeed: 180
   maxStationaryHandlebarAngle: 45
   stationaryHandlebarTurnSpeed: 84
+  minTurnSpeedFactor: 0.7
   collisionCooldown: 1.5
   baseMoodValue: 100
   minSpeedMultiplier: 0.5
   maxSpeedMultiplier: 1.7
   inWater: 0
   bellSound: {fileID: 8300000, guid: df88f0a0e0aa94b4195743ae54776780, type: 3}
-  bellControlReductionDuration: 0.75
-  bellTurnSpeedMultiplier: 0.75
+  bellControlReductionDuration: 0.5
+  bellTurnSpeedMultiplier: 0.8
   bellBrakeMultiplier: 0.5
   spriteRenderer: {fileID: 349764228}
   normalColor: {r: 0, g: 1, b: 0, a: 1}
@@ -660,6 +661,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   player: {fileID: 349764225}
+  lookAheadDistance: 25
+  smoothSpeed: 2
+  minSpeedThreshold: 10
+  maxSpeedForLookAhead: 20
 --- !u!1 &520548539
 GameObject:
   m_ObjectHideFlags: 0

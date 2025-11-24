@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     public float maxStationaryHandlebarAngle = 45f;
     [Tooltip("Speed of handlebar rotation when stationary")]
     public float stationaryHandlebarTurnSpeed = 72f;
+    [Tooltip("Minimum turn speed factor at low speeds (e.g., 0.7 = 70% turn speed)")]
+    public float minTurnSpeedFactor = 0.7f;
 
     [Header("Cooldown Settings")]
     public float collisionCooldown = 1.5f;
@@ -52,9 +54,9 @@ public class PlayerController : MonoBehaviour
     private float bellTimer = 0f;
     private AudioSource audioSource;
     [Tooltip("Duration of control reduction after ringing bell (seconds)")]
-    public float bellControlReductionDuration = 0.75f;
+    public float bellControlReductionDuration = 0.5f;
     [Tooltip("Turn speed multiplier during bell control reduction (0.75 = 25% reduction)")]
-    public float bellTurnSpeedMultiplier = 0.75f;
+    public float bellTurnSpeedMultiplier = 0.5f;
     [Tooltip("Brake effectiveness multiplier during bell control reduction (0.5 = 50% reduction)")]
     public float bellBrakeMultiplier = 0.5f;
     private float bellControlReductionTimer = 0f;
@@ -255,7 +257,7 @@ void HandleRotation()
         // Turning effectiveness increases with speed
         float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
         // Higher minimum turn speed for better low-speed maneuverability
-        speedFactor = Mathf.Clamp(speedFactor, 0.7f, 1f);
+        speedFactor = Mathf.Clamp(speedFactor, minTurnSpeedFactor, 1f);
         
         float rotationSpeed = currentTurnSpeed * speedFactor * turnMultiplier;
         
