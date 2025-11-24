@@ -497,7 +497,7 @@ MonoBehaviour:
   oriTurnSpeed: 180
   maxStationaryHandlebarAngle: 45
   stationaryHandlebarTurnSpeed: 84
-  minTurnSpeedFactor: 0.7
+  minTurnSpeedFactor: 0.65
   collisionCooldown: 1.5
   baseMoodValue: 100
   minSpeedMultiplier: 0.5

@@ -129,6 +129,12 @@ public class PlayerController : MonoBehaviour
         HandleMoodDrain();
 
         moveInput = Input.GetAxisRaw("Vertical");
+        
+        // Support Shift key for braking/backward movement
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveInput = -1f;
+        }
 
         collisionTimer += Time.deltaTime;
 
