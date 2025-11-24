@@ -7,6 +7,10 @@ public class Draggable : MonoBehaviour
     public LayerMask targetLayer;
     [Header("Sprite")]
 
+    [Header("Flash Detection")]
+    public GameObject model;
+
+    private InteractiveFlash _interactiveFlash;
     private Vector3 offset;
     private Camera cam;
     private Collider2D col;
@@ -16,6 +20,7 @@ public class Draggable : MonoBehaviour
     {
         cam = Camera.main;
         col = GetComponent<Collider2D>();
+        _interactiveFlash = model.GetComponent<InteractiveFlash>();
 
         // Force physics refresh with delay to ensure it's draggable
         StartCoroutine(RefreshColliderWithDelay());
@@ -81,6 +86,23 @@ public class Draggable : MonoBehaviour
         }
 
         Debug.Log("Dropped but not on any target.");
+    }
+
+    void OnMouseOver()
+    {
+        _interactiveFlash.SetFlashColor(_interactiveFlash._flashColor);
+        _interactiveFlash.StopLoopFlash();
+        _interactiveFlash.SetFlashAmount(0.5f);
+
+        if (Input.GetMouseButton(0))
+        {
+            _interactiveFlash.SetFlashColor(_interactiveFlash._pushColor);
+        }
+    }
+
+    void OnMouseExit()
+    {
+        _interactiveFlash.StartLoopFlash(0.2f);
     }
 
     private void OnDroppedOnTarget(DraggableTarget target)

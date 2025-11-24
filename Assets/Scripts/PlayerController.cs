@@ -45,6 +45,10 @@ public class PlayerController : MonoBehaviour
     
     [Header("Env Effects")]
     public bool inWater = false;
+
+    [Header("Sprite")]
+    public Sprite[] sprites;
+    public Animator animator;
     
     // Counter to track how many water spray areas the player is in
     private int waterAreaCount = 0;
@@ -155,6 +159,9 @@ public class PlayerController : MonoBehaviour
         {
             poop.TryFall(transform.position);
         }
+
+        UpdateSpriteByRotation();
+        // UpdateSprite();
     }
 
     void FixedUpdate()
@@ -443,5 +450,59 @@ void HandleRotation()
     {
         externalSpeedMultiplier = 1f;
         ApplySettingsForStatus(Playerstatus);
+    }
+
+    void UpdateSpriteByRotation()
+    {
+        float angle = rb.rotation % 360f;
+
+        if (angle < 0)
+            angle += 360f; // 確保角度為 0~360
+
+        // 8 向方向判斷
+        if (angle >= 337.5f || angle < 22.5f)
+        {
+            spriteRenderer.sprite = sprites[0];
+        }
+        else if (angle >= 22.5f && angle < 67.5f)
+        {
+            spriteRenderer.sprite = sprites[1];
+        }
+        else if (angle >= 67.5f && angle < 112.5f)
+        {
+            spriteRenderer.sprite = sprites[2];
+        }
+        else if (angle >= 112.5f && angle < 157.5f)
+        {
+            spriteRenderer.sprite = sprites[3]; 
+        }
+        else if (angle >= 157.5f && angle < 202.5f)
+        {
+            spriteRenderer.sprite = sprites[4];
+        }
+        else if (angle >= 202.5f && angle < 247.5f)
+        {
+            spriteRenderer.sprite = sprites[5]; 
+        }
+        else if (angle >= 247.5f && angle < 292.5f)
+        {
+            spriteRenderer.sprite = sprites[6]; 
+        }
+        else
+        {
+            spriteRenderer.sprite = sprites[7]; 
+        }
+    }
+
+    void UpdateSprite()
+    {
+        float angle = rb.rotation % 360f;
+
+        if (angle < 0)
+            angle += 360f; // 確保角度為 0~360
+
+        angle /= 360f;
+
+        animator.SetFloat("Rot", angle);
     }
 }
