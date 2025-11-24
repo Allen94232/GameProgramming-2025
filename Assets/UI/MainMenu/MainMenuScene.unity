@@ -511,7 +511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   availableLevels:
   - Level 1
-  maxMood: 100
+  maxMood: 200
   initialMood: 100
   gameTime: 180
 --- !u!4 &1390719313
