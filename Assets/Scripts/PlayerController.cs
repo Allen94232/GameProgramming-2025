@@ -251,21 +251,26 @@ void HandleRotation()
 {
     float turnInput = -Input.GetAxis("Horizontal");
     
-    // Apply bell control reduction to turn speed
+    // Apply bell control reduction to handlebar rotation
     float turnMultiplier = IsUnderBellControlReduction() ? bellTurnSpeedMultiplier : 1f;
     
     if (Mathf.Abs(currentSpeed) > 0.1f)
     {
-        // Moving: normal bicycle steering
+        // Moving: realistic bicycle physics
+        // - Handlebar rotation speed: constant (controlled by player's hand strength)
+        // - Turning effectiveness: increases with speed (physics of angular momentum)
+        
         // Reverse steering direction when moving backward (like a car)
         float turnDirection = currentSpeed > 0 ? 1f : -1f;
         
-        // Turning effectiveness increases with speed
-        float speedFactor = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
-        // Higher minimum turn speed for better low-speed maneuverability
-        speedFactor = Mathf.Clamp(speedFactor, minTurnSpeedFactor, 1f);
+        // Speed affects turning effectiveness, not handlebar rotation speed
+        // At low speed: same handlebar angle produces less turning
+        // At high speed: same handlebar angle produces more turning
+        float turnEffectiveness = Mathf.Abs(currentSpeed) / currentMaxForwardSpeed;
+        turnEffectiveness = Mathf.Clamp(turnEffectiveness, minTurnSpeedFactor, 1f);
         
-        float rotationSpeed = currentTurnSpeed * speedFactor * turnMultiplier;
+        // Final rotation = handlebar input × effectiveness × control penalties
+        float rotationSpeed = currentTurnSpeed * turnEffectiveness * turnMultiplier;
         
         rb.MoveRotation(rb.rotation + turnInput * turnDirection * rotationSpeed * Time.fixedDeltaTime);
         
