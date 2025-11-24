@@ -4912,7 +4912,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 50
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -5121,6 +5121,7 @@ MonoBehaviour:
   offColor: {r: 1, g: 0, b: 0, a: 1}
   cooldownColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   waterVisualEffect: {fileID: 0}
+  model: {fileID: 6275093538792632583}
 --- !u!1 &5055505176004293539
 GameObject:
   m_ObjectHideFlags: 0
@@ -5267,6 +5268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8103972670547123099}
   - component: {fileID: 5337144028268337678}
+  - component: {fileID: 4703408470913042066}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -5314,7 +5316,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: aeaebf13e9330a74a9e31d7d7e8b5394, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5334,7 +5336,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -8894492111138631748, guid: 6a56ec5cf93df2c4da357e10ff35c15c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5347,3 +5349,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4703408470913042066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275093538792632583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d783403a10903245b1e527ed38e7098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractiveFlash
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _pushColor: {r: 0, g: 0, b: 0, a: 1}
+  _flashtime: 2

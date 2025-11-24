@@ -26,7 +26,11 @@ public class SprinklerButton : MonoBehaviour
     
     [Header("Optional: Water Visual Effect")]
     public GameObject waterVisualEffect;
+
+    [Header("Flash Detection")]
+    public GameObject model;
     
+    private InteractiveFlash _interactiveFlash;
     private Camera cam;
     private Collider2D buttonCollider;
     private bool isOnCooldown = false;
@@ -35,6 +39,7 @@ public class SprinklerButton : MonoBehaviour
     {
         cam = Camera.main;
         buttonCollider = GetComponent<Collider2D>();
+        _interactiveFlash = model.GetComponent<InteractiveFlash>();
         
         // Force physics refresh with delay to ensure it's clickable
         StartCoroutine(RefreshColliderWithDelay());
@@ -128,6 +133,23 @@ public class SprinklerButton : MonoBehaviour
         StartCooldown();
 
         Debug.Log($"Sprinkler button clicked! Water spray is now: {(waterSprayTrigger.isOpening ? "ON" : "OFF")}");
+    }
+
+    void OnMouseOver()
+    {
+        _interactiveFlash.SetFlashColor(_interactiveFlash._flashColor);
+        _interactiveFlash.StopLoopFlash();
+        _interactiveFlash.SetFlashAmount(0.5f);
+
+        if (Input.GetMouseButton(0))
+        {
+            _interactiveFlash.SetFlashColor(_interactiveFlash._pushColor);
+        }
+    }
+
+    void OnMouseExit()
+    {
+        _interactiveFlash.StartLoopFlash(0.2f);
     }
 
     // Start the cooldown timer

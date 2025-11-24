@@ -273,8 +273,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: -0.012340546, y: 0.18518066}
+  m_Size: {x: 1.1234512, y: 2.3703613}
   m_Direction: 0
 --- !u!50 &349764227
 Rigidbody2D:
@@ -350,8 +350,8 @@ SpriteRenderer:
   m_SortingLayerID: 54341337
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0, g: 0.6150943, b: 0.079826236, a: 1}
+  m_Sprite: {fileID: 1356648912636168812, guid: 92211ef537200d04aad6ef3d7afa5fa5, type: 3}
+  m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -502,9 +502,19 @@ MonoBehaviour:
   minSpeedMultiplier: 0.5
   maxSpeedMultiplier: 1.7
   inWater: 0
+  sprites:
+  - {fileID: 1356648912636168812, guid: 92211ef537200d04aad6ef3d7afa5fa5, type: 3}
+  - {fileID: -7460045500287315240, guid: 03eb5fe103c6e98448c1c6a5cac6809d, type: 3}
+  - {fileID: 6422771882603443667, guid: af438485d86e165409ff4a1fcded7c83, type: 3}
+  - {fileID: -5083773310821232062, guid: 8e648a16f21399647bfec313ab214bb4, type: 3}
+  - {fileID: 6454490000420998888, guid: 0a360e89a23e69c4f961f35e4ba3f874, type: 3}
+  - {fileID: -2487335777278795983, guid: 8bb5c4a7a87ab4940b3868473734799c, type: 3}
+  - {fileID: 8932870640403358205, guid: 01d916c8f6f6fb14ca7eabf9739f0ae4, type: 3}
+  - {fileID: -5846783721379332408, guid: 3705a99cb8e10ef44abd5ad5662aecf1, type: 3}
+  animator: {fileID: 0}
   bellSound: {fileID: 8300000, guid: df88f0a0e0aa94b4195743ae54776780, type: 3}
   spriteRenderer: {fileID: 349764228}
-  normalColor: {r: 0, g: 1, b: 0, a: 1}
+  normalColor: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
   inWaterColor: {r: 0.5, g: 0.8, b: 1, a: 1}
 --- !u!1 &519420028
 GameObject:
@@ -971,6 +981,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  model: {fileID: 0}
 --- !u!61 &738327051
 BoxCollider2D:
   m_ObjectHideFlags: 0
