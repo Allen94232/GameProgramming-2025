@@ -376,7 +376,7 @@ MonoBehaviour:
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
   mainMenuBGM: {fileID: 8300000, guid: b816f0eb9884fec46a34d7ad9a889c48, type: 3}
-  level1BGM: {fileID: 8300000, guid: 2498129c988e24748a28105b855754eb, type: 3}
+  level1BGM: {fileID: 8300000, guid: 2f4541123a775493185c2c1b8112a0c0, type: 3}
   winSFX: {fileID: 8300000, guid: 0c546dd9d43f011478757c8aed53731c, type: 3}
   loseSFX: {fileID: 8300000, guid: 7e660065651dfce40bbf7b64713b17dd, type: 3}
   buttonClickSFX: {fileID: 8300000, guid: 00b18e15346f38a4e8535ac98e4ac9ee, type: 3}
