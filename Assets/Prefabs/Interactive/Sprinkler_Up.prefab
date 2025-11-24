@@ -4912,7 +4912,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 50
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4970,7 +4970,7 @@ GameObject:
   - component: {fileID: 8583390347015574305}
   - component: {fileID: 3663489032522716066}
   - component: {fileID: 3705319748489002672}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4985,7 +4985,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4935805841928203250}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5040,8 +5040,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 218282765
+  m_SortingLayer: 5
   m_SortingOrder: 75
   m_Sprite: {fileID: -8894492111138631748, guid: 6a56ec5cf93df2c4da357e10ff35c15c, type: 3}
   m_Color: {r: 1, g: 0.9803922, b: 0.9803922, a: 1}
@@ -5071,7 +5071,7 @@ BoxCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: -10
   m_ForceSendLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -5098,7 +5098,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 7.222351, y: 9.235893}
+  m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0
 --- !u!114 &3705319748489002672
 MonoBehaviour:
@@ -5334,7 +5334,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 218282765
-  m_SortingLayer: 6
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -8894492111138631748, guid: 6a56ec5cf93df2c4da357e10ff35c15c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
