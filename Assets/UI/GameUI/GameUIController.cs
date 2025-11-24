@@ -469,15 +469,12 @@ public class GameUIController : MonoBehaviour
                         float bestTime = score / 1000f;
                         _bestTimeLabel.text = $"Your Best: {FormatTime(bestTime)}";
                         
-                        // Check if this is a new record
+                        // new record style
+                        _bestTimeLabel.RemoveFromClassList("new-record-text");
                         if (_currentRunTime > bestTime)
                         {
                             _bestTimeLabel.text += " (NEW RECORD!)";
-                            _bestTimeLabel.style.color = new Color(1f, 0.84f, 0f); // Gold color
-                        }
-                        else
-                        {
-                            _bestTimeLabel.style.color = new Color(180f/255f, 180f/255f, 180f/255f);
+                            _bestTimeLabel.AddToClassList("new-record-text"); 
                         }
                     }
                     else
@@ -521,107 +518,57 @@ public class GameUIController : MonoBehaviour
     private VisualElement CreateWinLeaderboardEntry(LootLockerLeaderboardMember member)
     {
         var container = new VisualElement();
-        container.style.flexDirection = FlexDirection.Row;
-        container.style.paddingTop = 6;
-        container.style.paddingBottom = 6;
-        container.style.paddingLeft = 10;
-        container.style.paddingRight = 10;
-        container.style.marginBottom = 1;
-        container.style.alignItems = Align.Center;
+        container.AddToClassList("leaderboard-row");
         
-        // Highlight player's own entry
         string playerIdentifier = LeaderboardManager.Instance?.GetPlayerIdentifier();
         bool isCurrentPlayer = (member.member_id == playerIdentifier);
         
         if (isCurrentPlayer)
         {
-            container.style.backgroundColor = new Color(11f/255f, 255f/255f, 11f/255f, 0.25f);
-            container.style.borderLeftWidth = 3;
-            container.style.borderLeftColor = new Color(11f/255f, 255f/255f, 11f/255f);
+            container.AddToClassList("row-player");
         }
-        else if (member.rank == 1)
-        {
-            container.style.backgroundColor = new Color(1f, 0.84f, 0f, 0.12f);
-        }
-        else if (member.rank == 2)
-        {
-            container.style.backgroundColor = new Color(0.75f, 0.75f, 0.75f, 0.12f);
-        }
-        else if (member.rank == 3)
-        {
-            container.style.backgroundColor = new Color(0.8f, 0.5f, 0.2f, 0.12f);
-        }
+        else if (member.rank == 1) container.AddToClassList("row-gold");
+        else if (member.rank == 2) container.AddToClassList("row-silver");
+        else if (member.rank == 3) container.AddToClassList("row-bronze");
         else
         {
             container.style.backgroundColor = new Color(0, 0, 0, 0.3f);
         }
         
-        // Rank with medal for top 3
-        string rankText = "";
-        Color rankColor = Color.white;
-        
-        if (member.rank == 1) 
-        {
-            rankText = "#1";
-            rankColor = new Color(1f, 0.84f, 0f); // Gold
-        }
-        else if (member.rank == 2) 
-        {
-            rankText = "#2";
-            rankColor = new Color(0.75f, 0.75f, 0.75f); // Silver
-        }
-        else if (member.rank == 3) 
-        {
-            rankText = "#3";
-            rankColor = new Color(0.8f, 0.5f, 0.2f); // Bronze
-        }
-        else 
-        {
-            rankText = $"#{member.rank}";
-        }
-
+        // rank label
+        string rankText = (member.rank <= 3) ? $"#{member.rank}" : member.rank.ToString();
         var rankLabel = new Label(rankText);
-        rankLabel.style.width = 70;
-        rankLabel.style.color = rankColor;
-        rankLabel.style.fontSize = 16;
-        rankLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        rankLabel.AddToClassList("leaderboard-text"); 
+        rankLabel.style.width = 80; 
+        rankLabel.style.flexGrow = 0;
         container.Add(rankLabel);
-        
-        // Player name
+
+        // name label
         string displayName = ExtractPlayerNameFromMetadata(member.metadata);
         if (string.IsNullOrEmpty(displayName))
         {
             displayName = member.member_id;
-            if (displayName.Length > 20 && displayName.Contains("-"))
-            {
-                string shortId = displayName.Substring(0, 8);
-                displayName = $"Player{shortId}";
-            }
+            if (displayName.Length > 20) displayName = "Player " + displayName.Substring(0, 4);
         }
-        
+    
         var nameLabel = new Label(displayName);
+        nameLabel.AddToClassList("leaderboard-text");
+        nameLabel.style.width = StyleKeyword.Auto;
         nameLabel.style.flexGrow = 1;
-        nameLabel.style.color = isCurrentPlayer ? new Color(11f/255f, 255f/255f, 11f/255f) : Color.white;
-        nameLabel.style.fontSize = 15;
-        if (isCurrentPlayer)
-        {
-            nameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        }
+        nameLabel.style.marginLeft = 12;
+
+    
         container.Add(nameLabel);
         
-        // Time
+        // time label
         float timeInSeconds = member.score / 1000f;
         var timeLabel = new Label(FormatTime(timeInSeconds));
-        timeLabel.style.width = 120;
-        timeLabel.style.color = member.rank <= 3 ? rankColor : Color.white;
-        timeLabel.style.fontSize = 15;
+        timeLabel.AddToClassList("leaderboard-text");
+        timeLabel.style.width = 160;
+        timeLabel.style.marginRight =30;
         timeLabel.style.unityTextAlign = TextAnchor.MiddleRight;
-        if (member.rank <= 3)
-        {
-            timeLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
-        }
         container.Add(timeLabel);
-        
+            
         return container;
     }
     
