@@ -5361,6 +5361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d783403a10903245b1e527ed38e7098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractiveFlash
-  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
   _pushColor: {r: 0, g: 0, b: 0, a: 1}
   _flashtime: 2

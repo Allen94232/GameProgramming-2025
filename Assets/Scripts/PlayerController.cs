@@ -160,8 +160,9 @@ public class PlayerController : MonoBehaviour
             poop.TryFall(transform.position);
         }
 
-        UpdateSpriteByRotation();
-        // UpdateSprite();
+        // Choose animation method (comment/uncomment based on preference)
+        //UpdateSpriteByRotation();  // Direct sprite switching (instant)
+        //UpdateSpriteWithAnimation();  // Animator-based (smooth transitions)
     }
 
     void FixedUpdate()
@@ -452,6 +453,8 @@ void HandleRotation()
         ApplySettingsForStatus(Playerstatus);
     }
 
+    private int currentSpriteIndex = -1; // Track current sprite to avoid unnecessary updates
+    
     void UpdateSpriteByRotation()
     {
         float angle = rb.rotation % 360f;
@@ -459,50 +462,94 @@ void HandleRotation()
         if (angle < 0)
             angle += 360f; // 確保角度為 0~360
 
-        // 8 向方向判斷
+        // Determine sprite index based on 8-directional angle ranges
+        int newSpriteIndex = -1;
+        
         if (angle >= 337.5f || angle < 22.5f)
         {
-            spriteRenderer.sprite = sprites[0];
+            newSpriteIndex = 0; // 上 (0°)
         }
         else if (angle >= 22.5f && angle < 67.5f)
         {
-            spriteRenderer.sprite = sprites[1];
+            newSpriteIndex = 1; // 右上 (45°)
         }
         else if (angle >= 67.5f && angle < 112.5f)
         {
-            spriteRenderer.sprite = sprites[2];
+            newSpriteIndex = 2; // 右 (90°)
         }
         else if (angle >= 112.5f && angle < 157.5f)
         {
-            spriteRenderer.sprite = sprites[3]; 
+            newSpriteIndex = 3; // 右下 (135°)
         }
         else if (angle >= 157.5f && angle < 202.5f)
         {
-            spriteRenderer.sprite = sprites[4];
+            newSpriteIndex = 4; // 下 (180°)
         }
         else if (angle >= 202.5f && angle < 247.5f)
         {
-            spriteRenderer.sprite = sprites[5]; 
+            newSpriteIndex = 5; // 左下 (225°)
         }
         else if (angle >= 247.5f && angle < 292.5f)
         {
-            spriteRenderer.sprite = sprites[6]; 
+            newSpriteIndex = 6; // 左 (270°)
         }
-        else
+        else // 292.5f ~ 337.5f
         {
-            spriteRenderer.sprite = sprites[7]; 
+            newSpriteIndex = 7; // 左上 (315°)
+        }
+        
+        // Only update sprite if direction changed (reduces unnecessary sprite assignments)
+        if (newSpriteIndex != currentSpriteIndex && newSpriteIndex >= 0 && newSpriteIndex < sprites.Length)
+        {
+            currentSpriteIndex = newSpriteIndex;
+            spriteRenderer.sprite = sprites[currentSpriteIndex];
         }
     }
 
-    void UpdateSprite()
+    // Animation-based sprite updating (uses Blend Tree for direction control)
+    void UpdateSpriteWithAnimation()
     {
+        if (animator == null) return;
+        
         float angle = rb.rotation % 360f;
 
         if (angle < 0)
             angle += 360f; // 確保角度為 0~360
 
-        angle /= 360f;
-
-        animator.SetFloat("Rot", angle);
+        // Convert angle to radians for trigonometry
+        float angleRad = angle * Mathf.Deg2Rad;
+        
+        // Calculate target X and Y components
+        float targetX = Mathf.Sin(angleRad);
+        float targetY = Mathf.Cos(angleRad);
+        
+        // Direct parameter update (no smoothing) for instant sprite switching
+        // For 8 static sprites, smoothing creates ghosting effect instead of rotation
+        animator.SetFloat("MoveX", targetX);
+        animator.SetFloat("MoveY", targetY);
+        
+        // Debug (optional - uncomment to test)
+        // Debug.Log($"Angle: {angle:F1}° → X: {targetX:F2}, Y: {targetY:F2}");
+    }
+    
+    // Helper method to get direction index based on angle
+    private int GetDirectionIndex(float angle)
+    {
+        if (angle >= 337.5f || angle < 22.5f)
+            return 0; // 上 (0°)
+        else if (angle >= 22.5f && angle < 67.5f)
+            return 1; // 右上 (45°)
+        else if (angle >= 67.5f && angle < 112.5f)
+            return 2; // 右 (90°)
+        else if (angle >= 112.5f && angle < 157.5f)
+            return 3; // 右下 (135°)
+        else if (angle >= 157.5f && angle < 202.5f)
+            return 4; // 下 (180°)
+        else if (angle >= 202.5f && angle < 247.5f)
+            return 5; // 左下 (225°)
+        else if (angle >= 247.5f && angle < 292.5f)
+            return 6; // 左 (270°)
+        else
+            return 7; // 左上 (315°)
     }
 }
