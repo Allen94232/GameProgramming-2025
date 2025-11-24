@@ -83,7 +83,7 @@ public class InteractiveFlash : MonoBehaviour
                 ratio = (_flashtime - elapsedTime) / (_flashtime / 2);
             }
 
-            currentFlashamount = Mathf.Lerp(0.5f, 0f, ratio);
+            currentFlashamount = Mathf.Lerp(0.25f, 0f, ratio);
 
             SetFlashAmount(currentFlashamount);
 
