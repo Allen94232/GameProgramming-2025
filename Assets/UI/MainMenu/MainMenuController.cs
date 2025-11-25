@@ -25,6 +25,17 @@ public class MainMenuController : MonoBehaviour
     private Label _bgmVolumeLabel;
     private Label _sfxVolumeLabel;
 
+    // Help panel components
+    private Button _helpButton;
+    private VisualElement _helpPanel;
+    private Button _closeHelpButton;
+    private ScrollView _helpScrollView;
+
+    // Level selection panel components
+    private VisualElement _levelSelectionPanel;
+    private Button _closeLevelSelectionButton;
+    private Button _level1Button;
+
     // Leaderboard panel components
     private VisualElement _leaderboardPanel;
     private Button _closeLeaderboardButton;
@@ -60,6 +71,17 @@ public class MainMenuController : MonoBehaviour
         _bgmVolumeLabel = root.Q<Label>("bgm-volume-label");
         _sfxVolumeLabel = root.Q<Label>("sfx-volume-label");
 
+        // Get help panel components
+        _helpButton = root.Q<Button>("help-button");
+        _helpPanel = root.Q<VisualElement>("help-panel");
+        _closeHelpButton = root.Q<Button>("close-help-button");
+        _helpScrollView = root.Q<ScrollView>("help-scroll-view");
+
+        // Get level selection panel components
+        _levelSelectionPanel = root.Q<VisualElement>("level-selection-panel");
+        _closeLevelSelectionButton = root.Q<Button>("close-level-selection-button");
+        _level1Button = root.Q<Button>("level-1-button");
+
         // Get leaderboard panel components
         _leaderboardPanel = root.Q<VisualElement>("leaderboard-panel");
         _closeLeaderboardButton = root.Q<Button>("close-leaderboard-button");
@@ -71,8 +93,14 @@ public class MainMenuController : MonoBehaviour
         // Setup button events (with sound effects)
         if (_startButton != null)
         {
-            _startButton.clicked += () => { PlayButtonSound(); StartGame(); };
+            _startButton.clicked += () => { PlayButtonSound(); ShowLevelSelection(); };
             _startButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_helpButton != null)
+        {
+            _helpButton.clicked += () => { PlayButtonSound(); ShowHelp(); };
+            _helpButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
 
         if (_settingsButton != null)
@@ -91,6 +119,24 @@ public class MainMenuController : MonoBehaviour
         {
             _confirmNameButton.clicked += () => { PlayButtonSound(); OnConfirmNameClicked(); };
             _confirmNameButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_closeHelpButton != null)
+        {
+            _closeHelpButton.clicked += () => { PlayButtonSound(); HideHelp(); };
+            _closeHelpButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_closeLevelSelectionButton != null)
+        {
+            _closeLevelSelectionButton.clicked += () => { PlayButtonSound(); HideLevelSelection(); };
+            _closeLevelSelectionButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_level1Button != null)
+        {
+            _level1Button.clicked += () => { PlayButtonSound(); StartLevel("Level 1"); };
+            _level1Button.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
 
         if (_closeLeaderboardButton != null)
@@ -150,6 +196,7 @@ public class MainMenuController : MonoBehaviour
 
         // Initialize
         InitializePlayerName();
+        InitializeTutorialContent();
         // Don't setup dropdown in Awake, do it when opening leaderboard panel instead
         
         // Subscribe to LootLocker session ready event
@@ -358,21 +405,245 @@ public class MainMenuController : MonoBehaviour
         HideNameWarning();
     }
 
-    private void StartGame()
+    private void ShowLevelSelection()
     {
-        // Get the first available level from GameManager
-        if (GameManager.Instance != null && GameManager.Instance.availableLevels.Length > 0)
+        if (_levelSelectionPanel == null) return;
+        _levelSelectionPanel.style.display = DisplayStyle.Flex;
+    }
+
+    private void HideLevelSelection()
+    {
+        if (_levelSelectionPanel == null) return;
+        _levelSelectionPanel.style.display = DisplayStyle.None;
+    }
+
+    private void StartLevel(string levelName)
+    {
+        Debug.Log($"Starting level: {levelName}");
+        
+        // Use GameManager if available
+        if (GameManager.Instance != null)
         {
-            string firstLevel = GameManager.Instance.availableLevels[0];
-            Debug.Log($"Start Game button clicked! Loading level: {firstLevel}");
-            GameManager.Instance.LoadLevel(firstLevel);
+            GameManager.Instance.LoadLevel(levelName);
         }
         else
         {
-            // Fallback to hardcoded level if GameManager doesn't exist
-            Debug.Log("Start Game button clicked! Loading scene: Level 1 (fallback)");
-            SceneManager.LoadScene("Level 1");
+            // Fallback to direct scene loading
+            SceneManager.LoadScene(levelName);
         }
+    }
+
+    private void ShowHelp()
+    {
+        if (_helpPanel == null) return;
+        _helpPanel.style.display = DisplayStyle.Flex;
+    }
+
+    private void HideHelp()
+    {
+        if (_helpPanel == null) return;
+        _helpPanel.style.display = DisplayStyle.None;
+    }
+
+    private void InitializeTutorialContent()
+    {
+        if (_helpScrollView == null) return;
+
+        // Clear existing content
+        _helpScrollView.Clear();
+
+        // Tutorial data - set imagePath to null or empty string to hide image for that section
+        var tutorials = new[]
+        {
+            // Game Controls
+            new
+            {
+                imagePath = "",
+                hasImage = false,
+                text = "Game Controls:\n\nUse W, S / Left Shift to move forward and backward (brake)\n\nUse A, D to turn left and right\n\nPress Space to ring the bell and scare away animals in your path\n\nUse mouse to interact with objects (click, drag)"
+            },
+            // How to Play
+            new
+            {
+                imagePath = "game intro",
+                hasImage = true,
+                text = "How to Play:\n\nTimer at top left shows remaining time. Reach the destination before time runs out! Minimap guides your direction\n\nMood meter at top left affects your movement speed. Keep high mood to move faster\n\nColliding with walls or obstacles reduces mood. Some objects increase or decrease mood"
+            },
+            // Objects: Coin
+            new
+            {
+                imagePath = "coin2_20x20_0",
+                hasImage = true,
+                text = "Objects - Coin:\n\nCollecting coins makes you happy and increases mood"
+            },
+            // Objects: Obstacles
+            new
+            {
+                imagePath = "ME_Singles_City_Props_48x48_Cone_6",
+                hasImage = true,
+                text = "Objects - Obstacles:\n\nCones, trash cans and other obstacles. Avoid collisions or your mood will drop"
+            },
+            // Objects: Pedestrians
+            new
+            {
+                imagePath = "Modern_Exteriors_Characters_Postman_48x48_1_3",
+                hasImage = true,
+                text = "Objects - Pedestrians:\n\nWalk around randomly. Be careful not to hit them or they get angry and your mood drops"
+            },
+            // Objects: Birds
+            new
+            {
+                imagePath = "Crow_idle_Left_48x48_4",
+                hasImage = true,
+                text = "Objects - Birds:\n\nGet close and press Space to ring bell and scare them away. Watch out for animals, they are obstacles too"
+            },
+            // Objects: Bird Poop
+            new
+            {
+                imagePath = "bird poop_1",
+                hasImage = true,
+                text = "Objects - Bird Poop:\n\nWatch for shadows! Bird poop falls from above. Stepping on it slows you down and ruins your mood"
+            },
+            // Objects: Speed Camera
+            new
+            {
+                imagePath = "ME_Singles_City_Props_48x48_Traffic_Sign_Modular_9",
+                hasImage = true,
+                text = "Objects - Speed Camera:\n\nSpeed over 20 is speeding. Tickets ruin your mood. Find spray paint nearby and drag it to cover the camera screen so you don't get a ticket (?" 
+            },
+            // Objects: Fire Hydrant
+            new
+            {
+                imagePath = "ME_Singles_Fire_Station_48x48_Fire_Hydrant",
+                hasImage = true,
+                text = "Objects - Fire Hydrant:\n\nClick to turn it off. Getting wet makes you unhappy"
+            },
+            // Objects: Flag
+            new
+            {
+                imagePath = "ME_Singles_School_48x48_Flag_2",
+                hasImage = true,
+                text = "Objects - Flag:\n\nThe destination! Touch it to successfully reach class on time"
+            }
+        };
+
+        // Create tutorial items
+        foreach (var tutorial in tutorials)
+        {
+            var itemContainer = new VisualElement();
+            itemContainer.AddToClassList("tutorial-item");
+
+            // Create image only if hasImage is true
+            if (tutorial.hasImage && !string.IsNullOrEmpty(tutorial.imagePath))
+            {
+                string resourcePath = ExtractResourcePath(tutorial.imagePath);
+                
+                // Try to load as Sprite first (for .asset files from sprite sheets)
+                var sprite = Resources.Load<Sprite>(resourcePath);
+                Texture2D texture = null;
+                float imageWidth = 0;
+                float imageHeight = 0;
+                
+                if (sprite != null)
+                {
+                    texture = sprite.texture;
+                    // Use sprite's actual rect size, not the entire texture
+                    imageWidth = sprite.rect.width;
+                    imageHeight = sprite.rect.height;
+                }
+                else
+                {
+                    // If not a sprite, try loading as Texture2D
+                    texture = Resources.Load<Texture2D>(resourcePath);
+                    if (texture != null)
+                    {
+                        imageWidth = texture.width;
+                        imageHeight = texture.height;
+                    }
+                }
+                
+                if (texture != null)
+                {
+                    var image = new VisualElement();
+                    image.AddToClassList("tutorial-image");
+                    
+                    // Use sprite if available, otherwise use texture
+                    if (sprite != null)
+                    {
+                        image.style.backgroundImage = new StyleBackground(sprite);
+                    }
+                    else
+                    {
+                        image.style.backgroundImage = new StyleBackground(texture);
+                    }
+                    
+                    // Set image size based on actual image dimensions
+                    // Limit max width and height to maintain aspect ratio
+                    float maxWidth = 400f; // Maximum width in pixels
+                    float maxHeight = 200f; // Maximum height in pixels
+                    float aspectRatio = imageHeight / imageWidth;
+                    
+                    float displayWidth = Mathf.Min(imageWidth, maxWidth);
+                    float displayHeight = displayWidth * aspectRatio;
+                    
+                    // If height exceeds max, recalculate based on height constraint
+                    if (displayHeight > maxHeight)
+                    {
+                        displayHeight = maxHeight;
+                        displayWidth = displayHeight / aspectRatio;
+                    }
+                    
+                    image.style.width = displayWidth;
+                    image.style.height = displayHeight;
+                    image.style.marginBottom = 15;
+                    image.style.backgroundColor = new Color(1, 1, 1, 0.1f);
+                    image.style.borderTopLeftRadius = 5;
+                    image.style.borderTopRightRadius = 5;
+                    image.style.borderBottomLeftRadius = 5;
+                    image.style.borderBottomRightRadius = 5;
+                    
+                    itemContainer.Add(image);
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to load image (tried both Sprite and Texture2D): {tutorial.imagePath}");
+                }
+            }
+
+            // Create text label
+            var textLabel = new Label(tutorial.text);
+            textLabel.AddToClassList("tutorial-text");
+            itemContainer.Add(textLabel);
+
+            _helpScrollView.Add(itemContainer);
+        }
+    }
+
+    private string ExtractResourcePath(string projectPath)
+    {
+        // If path already looks like a resource path (no protocol or Assets), return as-is without extension
+        if (!projectPath.Contains("://") && !projectPath.Contains("Assets/"))
+        {
+            // Remove extension if present
+            int dotIndex = projectPath.LastIndexOf('.');
+            if (dotIndex > 0)
+            {
+                return projectPath.Substring(0, dotIndex);
+            }
+            return projectPath;
+        }
+        
+        // Extract resource path from Unity project path
+        if (projectPath.Contains("Resources/"))
+        {
+            int startIndex = projectPath.IndexOf("Resources/") + "Resources/".Length;
+            int endIndex = projectPath.LastIndexOf('.');
+            if (endIndex > startIndex)
+            {
+                return projectPath.Substring(startIndex, endIndex - startIndex);
+            }
+        }
+        return "";
     }
 
     private void ShowLeaderboard()

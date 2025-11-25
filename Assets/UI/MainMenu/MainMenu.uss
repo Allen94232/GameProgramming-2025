@@ -125,3 +125,39 @@
 #close-settings-button:hover {
     scale: 1.1 1.1;
 }
+
+#close-level-selection-button:hover {
+    scale: 1.1 1.1;
+}
+
+#help-button:hover {
+    scale: 1.1 1.1;
+    transition-duration: 0.2s;
+}
+
+#close-help-button:hover {
+    scale: 1.1 1.1;
+}
+
+.tutorial-item {
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.tutorial-image {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.tutorial-text {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&guid=8c2ab64ad12824a55827b2ea2f868ae3&type=3#VT323-Regular");
+    white-space: normal;
+    -unity-text-align: upper-left;
+}

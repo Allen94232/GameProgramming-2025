@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     public bool inWater = false;
 
     [Header("Sprite")]
-    public Sprite[] sprites;
+    public Sprite[] sprites; // Should contain 20 sprites for smooth rotation (0-180° with mirroring for 180-360°)
     public Animator animator;
     
     // Counter to track how many water spray areas the player is in
@@ -161,8 +161,8 @@ public class PlayerController : MonoBehaviour
         }
 
         // Choose animation method (comment/uncomment based on preference)
-        //UpdateSpriteByRotation();  // Direct sprite switching (instant)
-        //UpdateSpriteWithAnimation();  // Animator-based (smooth transitions)
+        //UpdateSpriteByRotation();  // Direct sprite switching with 20 angles (smooth)
+        //UpdateSpriteWithAnimation();  // Animator-based (for animated clips only)
     }
 
     void FixedUpdate()
@@ -454,55 +454,68 @@ void HandleRotation()
     }
 
     private int currentSpriteIndex = -1; // Track current sprite to avoid unnecessary updates
+    private bool currentFlipX = false; // Track flip state
     
     void UpdateSpriteByRotation()
     {
+        if (spriteRenderer == null || sprites == null || sprites.Length == 0) return;
+
         float angle = rb.rotation % 360f;
+        if (angle < 0) angle += 360f;
 
-        if (angle < 0)
-            angle += 360f; // 確保角度為 0~360
-
-        // Determine sprite index based on 8-directional angle ranges
         int newSpriteIndex = -1;
-        
-        if (angle >= 337.5f || angle < 22.5f)
+        bool flipX = false;
+
+        if (sprites.Length == 20)
         {
-            newSpriteIndex = 0; // 上 (0°)
+            // Use 20-sprite detailed rotation (0-180° with mirroring for 180-360°)
+            if (angle <= 180f)
+            {
+                // Front half (0-180°): use sprites 0-19 directly
+                float normalizedAngle = angle / 180f; // 0.0 to 1.0
+                newSpriteIndex = Mathf.Clamp(Mathf.RoundToInt(normalizedAngle * 19f), 0, 19);
+                flipX = false;
+            }
+            else
+            {
+                // Back half (180-360°): mirror front half
+                float mirroredAngle = 360f - angle; // Convert to 0-180° range
+                float normalizedAngle = mirroredAngle / 180f;
+                newSpriteIndex = Mathf.Clamp(Mathf.RoundToInt(normalizedAngle * 19f), 0, 19);
+                flipX = true; // Flip horizontally for left side
+            }
         }
-        else if (angle >= 22.5f && angle < 67.5f)
+        else if (sprites.Length == 8)
         {
-            newSpriteIndex = 1; // 右上 (45°)
+            // Fallback to 8-directional (legacy)
+            if (angle >= 337.5f || angle < 22.5f)
+                newSpriteIndex = 0; // 上 (0°)
+            else if (angle >= 22.5f && angle < 67.5f)
+                newSpriteIndex = 1; // 右上 (45°)
+            else if (angle >= 67.5f && angle < 112.5f)
+                newSpriteIndex = 2; // 右 (90°)
+            else if (angle >= 112.5f && angle < 157.5f)
+                newSpriteIndex = 3; // 右下 (135°)
+            else if (angle >= 157.5f && angle < 202.5f)
+                newSpriteIndex = 4; // 下 (180°)
+            else if (angle >= 202.5f && angle < 247.5f)
+                newSpriteIndex = 5; // 左下 (225°)
+            else if (angle >= 247.5f && angle < 292.5f)
+                newSpriteIndex = 6; // 左 (270°)
+            else
+                newSpriteIndex = 7; // 左上 (315°)
         }
-        else if (angle >= 67.5f && angle < 112.5f)
+
+        // Update sprite if index or flip state changed
+        if (newSpriteIndex >= 0 && newSpriteIndex < sprites.Length)
         {
-            newSpriteIndex = 2; // 右 (90°)
-        }
-        else if (angle >= 112.5f && angle < 157.5f)
-        {
-            newSpriteIndex = 3; // 右下 (135°)
-        }
-        else if (angle >= 157.5f && angle < 202.5f)
-        {
-            newSpriteIndex = 4; // 下 (180°)
-        }
-        else if (angle >= 202.5f && angle < 247.5f)
-        {
-            newSpriteIndex = 5; // 左下 (225°)
-        }
-        else if (angle >= 247.5f && angle < 292.5f)
-        {
-            newSpriteIndex = 6; // 左 (270°)
-        }
-        else // 292.5f ~ 337.5f
-        {
-            newSpriteIndex = 7; // 左上 (315°)
-        }
-        
-        // Only update sprite if direction changed (reduces unnecessary sprite assignments)
-        if (newSpriteIndex != currentSpriteIndex && newSpriteIndex >= 0 && newSpriteIndex < sprites.Length)
-        {
-            currentSpriteIndex = newSpriteIndex;
-            spriteRenderer.sprite = sprites[currentSpriteIndex];
+            if (newSpriteIndex != currentSpriteIndex || flipX != currentFlipX)
+            {
+                currentSpriteIndex = newSpriteIndex;
+                currentFlipX = flipX;
+                spriteRenderer.sprite = sprites[currentSpriteIndex];
+                spriteRenderer.flipX = flipX;
+            }
         }
     }
 
