@@ -346,9 +346,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   player: {fileID: 349764225}
-  lookAheadDistance: 3
-  smoothSpeed: 5
-  minSpeedThreshold: 2
+  lookAheadDistance: 25
+  smoothSpeed: 2
+  minSpeedThreshold: 10
   maxSpeedForLookAhead: 20
 --- !u!1001 &527694602
 PrefabInstance:
@@ -402,49 +402,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Not Map1
       objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileMatrixArray.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[1].m_Data
-      value: 
-      objectReference: {fileID: -3288385332491684076, guid: a98b644ee51749b48b3fdf3b6ace8953, type: 3}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[4].m_Data
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[0].m_RefCount
-      value: 1292
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[1].m_RefCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[4].m_RefCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_Tiles.Array.data[267].second.m_TileSpriteIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_Tiles.Array.data[596].second.m_TileSpriteIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9210021764591819395, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
-      propertyPath: m_Tiles.Array.data[1165].second.m_TileSpriteIndex
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3571908749694822297, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ee63adc299ecc54cbda81a8386efc30, type: 3}
