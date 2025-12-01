@@ -582,6 +582,7 @@ public class GameUIController : MonoBehaviour
         rankLabel.AddToClassList("leaderboard-text"); 
         rankLabel.style.width = 80; 
         rankLabel.style.flexGrow = 0;
+        rankLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
         container.Add(rankLabel);
 
         // name label
@@ -593,12 +594,12 @@ public class GameUIController : MonoBehaviour
         }
     
         var nameLabel = new Label(displayName);
+        // Now using Noto Sans SC which supports both English and Chinese
         nameLabel.AddToClassList("leaderboard-text");
         nameLabel.style.width = StyleKeyword.Auto;
         nameLabel.style.flexGrow = 1;
         nameLabel.style.marginLeft = 12;
-
-    
+        nameLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
         container.Add(nameLabel);
         
         // time label
@@ -611,6 +612,26 @@ public class GameUIController : MonoBehaviour
         container.Add(timeLabel);
             
         return container;
+    }
+    
+    // Helper method to detect Chinese characters
+    private bool ContainsChinese(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return false;
+        
+        foreach (char c in text)
+        {
+            // Check if character is in CJK (Chinese, Japanese, Korean) Unicode ranges
+            if ((c >= 0x4E00 && c <= 0x9FFF) ||   // CJK Unified Ideographs
+                (c >= 0x3400 && c <= 0x4DBF) ||   // CJK Unified Ideographs Extension A
+                (c >= 0x20000 && c <= 0x2A6DF) || // CJK Unified Ideographs Extension B
+                (c >= 0xF900 && c <= 0xFAFF) ||   // CJK Compatibility Ideographs
+                (c >= 0x2F800 && c <= 0x2FA1F))   // CJK Compatibility Ideographs Supplement
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     private string ExtractPlayerNameFromMetadata(string metadata)

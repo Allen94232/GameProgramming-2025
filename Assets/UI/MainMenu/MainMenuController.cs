@@ -40,12 +40,16 @@ public class MainMenuController : MonoBehaviour
     private VisualElement _leaderboardPanel;
     private Button _closeLeaderboardButton;
     private Button _refreshLeaderboardButton;
-    private DropdownField _levelDropdown;
+    //private DropdownField _levelDropdown;
+    private Button _prevLevelButton;
+    private Button _nextLevelButton;
+    private Label _currentLevelLabel;
     private ScrollView _leaderboardScrollView;
     private Label _playerRankLabel;
 
     private List<string> _availableLevels = new List<string>();
     private string _currentSelectedLevel = "";
+    private int _currentLevelIndex = 0;
     
     private bool _isWaitingForSession = false;
     private Coroutine _sessionCheckCoroutine = null;
@@ -86,7 +90,10 @@ public class MainMenuController : MonoBehaviour
         _leaderboardPanel = root.Q<VisualElement>("leaderboard-panel");
         _closeLeaderboardButton = root.Q<Button>("close-leaderboard-button");
         _refreshLeaderboardButton = root.Q<Button>("refresh-leaderboard-button");
-        _levelDropdown = root.Q<DropdownField>("level-dropdown");
+        //_levelDropdown = root.Q<DropdownField>("level-dropdown");
+        _prevLevelButton = root.Q<Button>("prev-level-button");
+        _nextLevelButton = root.Q<Button>("next-level-button");
+        _currentLevelLabel = root.Q<Label>("current-level-label");
         _leaderboardScrollView = root.Q<ScrollView>("leaderboard-scroll-view");
         _playerRankLabel = root.Q<Label>("player-rank-label");
 
@@ -138,6 +145,12 @@ public class MainMenuController : MonoBehaviour
             _level1Button.clicked += () => { PlayButtonSound(); StartLevel("Level 1"); };
             _level1Button.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
+
+        if (_prevLevelButton != null)
+            _prevLevelButton.clicked += () => { ChangeLevel(-1); PlayButtonSound(); };
+            
+        if (_nextLevelButton != null)
+            _nextLevelButton.clicked += () => { ChangeLevel(1); PlayButtonSound(); };
 
         if (_closeLeaderboardButton != null)
         {
@@ -277,12 +290,6 @@ public class MainMenuController : MonoBehaviour
             Debug.LogError("LeaderboardManager.Instance is null! Please ensure LeaderboardManager GameObject exists in scene.");
             return;
         }
-        
-        if (_levelDropdown == null)
-        {
-            Debug.LogError("_levelDropdown is null!");
-            return;
-        }
 
         Debug.Log($"LeaderboardManager exists, loading configuration...");
 
@@ -314,28 +321,43 @@ public class MainMenuController : MonoBehaviour
         if (_availableLevels.Count > 0)
         {
             Debug.Log($"Successfully loaded {_availableLevels.Count} level configurations");
-            _levelDropdown.choices = _availableLevels;
-            _levelDropdown.value = _availableLevels[0];
-            _currentSelectedLevel = _availableLevels[0];
-            Debug.Log($"Default selected level: {_currentSelectedLevel}");
-
-            _levelDropdown.RegisterValueChangedCallback(evt =>
-            {
-                _currentSelectedLevel = evt.newValue;
-                Debug.Log($"Switched level to: {_currentSelectedLevel}");
-                RefreshLeaderboard();
-            });
+            _currentLevelIndex = 0;
+            UpdateLevelDisplay();
         }
         else
         {
             // No leaderboards configured
             Debug.LogWarning("No leaderboards configured! Please set Leaderboard Configs in LeaderboardManager Inspector.");
-            _levelDropdown.choices = new List<string> { "Not Configured" };
-            _levelDropdown.value = "Not Configured";
             _currentSelectedLevel = "";
+            if (_currentLevelLabel != null) _currentLevelLabel.text = "No Levels";
         }
         
         Debug.Log("=== SetupLevelDropdown finished ===");
+    }
+
+    private void ChangeLevel(int direction)
+    {
+        if (_availableLevels.Count == 0) return;
+
+        _currentLevelIndex += direction;
+        
+        if (_currentLevelIndex < 0) 
+            _currentLevelIndex = _availableLevels.Count - 1;
+        else if (_currentLevelIndex >= _availableLevels.Count) 
+            _currentLevelIndex = 0;
+
+        UpdateLevelDisplay();
+        
+        RefreshLeaderboard();
+    }
+
+    private void UpdateLevelDisplay()
+    {
+        if (_availableLevels.Count > 0 && _currentLevelLabel != null)
+        {
+            _currentSelectedLevel = _availableLevels[_currentLevelIndex];
+            _currentLevelLabel.text = _currentSelectedLevel;
+        }
     }
 
     private void OnConfirmNameClicked()
@@ -761,7 +783,7 @@ public class MainMenuController : MonoBehaviour
             _playerRankLabel.text = "Loading...";
 
         // Get leaderboard data
-        LeaderboardManager.Instance.GetTopPlayers(10, OnLeaderboardLoaded, _currentSelectedLevel);
+        LeaderboardManager.Instance.GetTopPlayers(100, OnLeaderboardLoaded, _currentSelectedLevel);
 
         // Get player rank
         LeaderboardManager.Instance.GetPlayerRank(OnPlayerRankLoaded, _currentSelectedLevel);
@@ -818,7 +840,7 @@ public class MainMenuController : MonoBehaviour
 
         // Rank label
         var rankLabel = new Label($"#{member.rank}");
-        // style
+        // style (rank is always numbers, safe to use Roboto)
         rankLabel.AddToClassList("leaderboard-text"); 
         rankLabel.style.width = 80;  
         rankLabel.style.flexGrow = 0; 
@@ -843,8 +865,8 @@ public class MainMenuController : MonoBehaviour
         
         // Name label
         var nameLabel = new Label(displayName);
-        //style
-        nameLabel.AddToClassList("leaderboard-text"); 
+        //style - now using Noto Sans SC which supports both English and Chinese
+        nameLabel.AddToClassList("leaderboard-text");
         nameLabel.style.width = StyleKeyword.Auto;
         nameLabel.style.flexGrow = 1; 
         nameLabel.style.marginLeft = 12;
@@ -890,6 +912,26 @@ public class MainMenuController : MonoBehaviour
         int seconds = Mathf.FloorToInt(timeInSeconds % 60f);
         int milliseconds = Mathf.FloorToInt((timeInSeconds * 1000f) % 1000f);
         return $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+    }
+    
+    // Helper method to detect Chinese characters
+    private bool ContainsChinese(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return false;
+        
+        foreach (char c in text)
+        {
+            // Check if character is in CJK (Chinese, Japanese, Korean) Unicode ranges
+            if ((c >= 0x4E00 && c <= 0x9FFF) ||   // CJK Unified Ideographs
+                (c >= 0x3400 && c <= 0x4DBF) ||   // CJK Unified Ideographs Extension A
+                (c >= 0x20000 && c <= 0x2A6DF) || // CJK Unified Ideographs Extension B
+                (c >= 0xF900 && c <= 0xFAFF) ||   // CJK Compatibility Ideographs
+                (c >= 0x2F800 && c <= 0x2FA1F))   // CJK Compatibility Ideographs Supplement
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Extract player name from metadata JSON

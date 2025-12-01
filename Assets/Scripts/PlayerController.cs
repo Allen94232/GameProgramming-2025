@@ -413,8 +413,16 @@ void HandleRotation()
     {
         bellTimer = 0f;
 
-        if (audioSource != null && bellSound != null)
+        // Play bell sound through AudioManager
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayBellSFX();
+        }
+        else if (audioSource != null && bellSound != null)
+        {
+            // Fallback to local audio source if AudioManager doesn't exist
             audioSource.PlayOneShot(bellSound);
+        }
 
         // Apply control reduction penalty
         bellControlReductionTimer = bellControlReductionDuration;

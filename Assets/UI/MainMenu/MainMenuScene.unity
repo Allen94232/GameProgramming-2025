@@ -384,6 +384,7 @@ MonoBehaviour:
   coinCollectSFX: {fileID: 8300000, guid: 9892347bb1271e144a9a178b8fa46152, type: 3}
   sprinklerToggleSFX: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
   sprayPaintSFX: {fileID: 8300000, guid: 9102a1126f9c0e347b6ebc0dff95e9bf, type: 3}
+  bellSFX: {fileID: 8300000, guid: df88f0a0e0aa94b4195743ae54776780, type: 3}
   bgmVolume: 0.5
   sfxVolume: 0.7
 --- !u!4 &908559598

@@ -42,6 +42,9 @@ public class AudioManager : MonoBehaviour
     
     [Tooltip("Sound effect when spray painting (draggable object dropped on target)")]
     [SerializeField] private AudioClip sprayPaintSFX;
+    
+    [Tooltip("Sound effect when player rings bell")]
+    [SerializeField] private AudioClip bellSFX;
 
     [Header("Volume Settings")]
     [Range(0f, 1f)]
@@ -125,6 +128,7 @@ public class AudioManager : MonoBehaviour
     private void PlaySceneBGM(string sceneName)
     {
         AudioClip clipToPlay = null;
+        bool isGameLevel = false;
 
         switch (sceneName)
         {
@@ -133,16 +137,19 @@ public class AudioManager : MonoBehaviour
                 break;
             case "Level 1":
                 clipToPlay = level1BGM;
+                isGameLevel = true;
                 break;
             default:
                 // For any other level, try to use Level 1 BGM as fallback
                 clipToPlay = level1BGM;
+                isGameLevel = true;
                 break;
         }
 
         if (clipToPlay != null)
         {
-            PlayBGM(clipToPlay);
+            // Force restart for game levels to ensure music starts from beginning
+            PlayBGM(clipToPlay, isGameLevel);
         }
         else
         {
@@ -151,7 +158,7 @@ public class AudioManager : MonoBehaviour
     }
 
     // Play background music
-    public void PlayBGM(AudioClip clip)
+    public void PlayBGM(AudioClip clip, bool forceRestart = false)
     {
         if (clip == null)
         {
@@ -159,8 +166,8 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // If same clip is already playing, don't restart
-        if (bgmSource.clip == clip && bgmSource.isPlaying)
+        // If same clip is already playing and not forcing restart, don't restart
+        if (bgmSource.clip == clip && bgmSource.isPlaying && !forceRestart)
         {
             return;
         }
@@ -291,6 +298,18 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning("AudioManager: Spray paint SFX not assigned!");
+        }
+    }
+    
+    public void PlayBellSFX()
+    {
+        if (bellSFX != null)
+        {
+            sfxSource.PlayOneShot(bellSFX, sfxVolume);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager: Bell SFX not assigned!");
         }
     }
 
