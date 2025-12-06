@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Destination
+  - Vehicle
   layers:
   - Default
   - TransparentFX
@@ -17,9 +18,9 @@ TagManager:
   - Wall
   - Obstacle
   - Tilemap
-  - 
-  - 
-  - 
+  - Vehicle
+  - Pedestrian
+  - Player
   - 
   - 
   - 
@@ -59,6 +60,12 @@ TagManager:
     locked: 0
   - name: Pigeon
     uniqueID: 3054918933
+    locked: 0
+  - name: Pedestrian
+    uniqueID: 1524317833
+    locked: 0
+  - name: Vehicle
+    uniqueID: 4112661247
     locked: 0
   - name: Player
     uniqueID: 54341337

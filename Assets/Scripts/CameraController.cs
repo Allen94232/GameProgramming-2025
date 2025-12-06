@@ -5,6 +5,10 @@ public class CameraController : MonoBehaviour
     [Header("Target")]
     public GameObject player; // The player the camera will follow
 
+    [Header("Camera Mode")]
+    [Tooltip("Enable look-ahead camera (false = fixed center camera)")]
+    public bool enableLookAhead = false;
+
     [Header("Look Ahead Settings")]
     [Tooltip("Maximum offset distance in front of player based on movement direction")]
     public float lookAheadDistance = 3f;
@@ -15,16 +19,39 @@ public class CameraController : MonoBehaviour
     [Tooltip("Speed at which look-ahead reaches maximum distance")]
     public float maxSpeedForLookAhead = 20f;
 
-    private Vector3 currentVelocity;
     private Vector3 targetOffset;
+    private Rigidbody2D playerRb;
+    private float cameraZ;
+
+    void Start()
+    {
+        if (player != null)
+        {
+            playerRb = player.GetComponent<Rigidbody2D>();
+        }
+        cameraZ = transform.position.z;
+    }
 
     void LateUpdate()
     {
         if (player == null) return;
 
-        // Get player's Rigidbody2D to detect movement direction
-        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-        
+        if (enableLookAhead)
+        {
+            // Look-ahead camera mode with smooth following
+            UpdateLookAheadCamera();
+        }
+        else
+        {
+            // Fixed center camera - directly lock to player position
+            Vector3 targetPosition = player.transform.position;
+            targetPosition.z = cameraZ;
+            transform.position = targetPosition;
+        }
+    }
+
+    void UpdateLookAheadCamera()
+    {
         Vector3 basePosition = player.transform.position;
         
         if (playerRb != null)
@@ -41,12 +68,15 @@ public class CameraController : MonoBehaviour
                 
                 // Calculate offset in movement direction
                 Vector3 movementDirection = velocity.normalized;
-                targetOffset = movementDirection * lookAheadDistance * speedFactor;
+                Vector3 newTargetOffset = movementDirection * lookAheadDistance * speedFactor;
+                
+                // Smooth the offset transition
+                targetOffset = Vector3.Lerp(targetOffset, newTargetOffset, Time.deltaTime * smoothSpeed);
             }
             else
             {
                 // When stopped or moving slowly, return to center
-                targetOffset = Vector3.Lerp(targetOffset, Vector3.zero, Time.deltaTime * smoothSpeed * 0.5f);
+                targetOffset = Vector3.Lerp(targetOffset, Vector3.zero, Time.deltaTime * smoothSpeed);
             }
         }
         else
@@ -56,9 +86,9 @@ public class CameraController : MonoBehaviour
         
         // Calculate target position with offset
         Vector3 targetPosition = basePosition + targetOffset;
-        targetPosition.z = transform.position.z;
+        targetPosition.z = cameraZ;
         
-        // Smoothly move camera to target position
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref currentVelocity, 1f / smoothSpeed);
+        // Smooth movement using Lerp
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * smoothSpeed);
     }
 }

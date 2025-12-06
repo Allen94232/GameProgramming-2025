@@ -54,9 +54,7 @@ public class PlayerController : MonoBehaviour
     private int waterAreaCount = 0;
 
     [Header("Bell Settings")]
-    public AudioClip bellSound;
     private float bellTimer = 0f;
-    private AudioSource audioSource;
     [Tooltip("Duration of control reduction after ringing bell (seconds)")]
     public float bellControlReductionDuration = 0.5f;
     [Tooltip("Turn speed multiplier during bell control reduction (0.75 = 25% reduction)")]
@@ -114,7 +112,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        audioSource = GetComponent<AudioSource>();
         birdPoops = FindObjectsByType<BirdPoop>(FindObjectsSortMode.None);
         ApplySettingsForStatus(PlayerStatus.Normal);
 
@@ -418,11 +415,6 @@ void HandleRotation()
         {
             AudioManager.Instance.PlayBellSFX();
         }
-        else if (audioSource != null && bellSound != null)
-        {
-            // Fallback to local audio source if AudioManager doesn't exist
-            audioSource.PlayOneShot(bellSound);
-        }
 
         // Apply control reduction penalty
         bellControlReductionTimer = bellControlReductionDuration;
@@ -512,6 +504,21 @@ void HandleRotation()
                 newSpriteIndex = 6; // 左 (270°)
             else
                 newSpriteIndex = 7; // 左上 (315°)
+        }
+        else if (sprites.Length == 4)
+        {
+            // 4-directional (Up, Right, Down, Left)
+            // Sprite order: 0=Up, 1=Right, 2=Down, 3=Left
+            if (angle >= 315f || angle < 45f)
+                newSpriteIndex = 0; // 上 (0°)
+            else if (angle >= 45f && angle < 135f)
+                newSpriteIndex = 1; // 右 (90°)
+            else if (angle >= 135f && angle < 225f)
+                newSpriteIndex = 2; // 下 (180°)
+            else
+                newSpriteIndex = 3; // 左 (270°)
+            
+            flipX = false;
         }
 
         // Update sprite if index or flip state changed

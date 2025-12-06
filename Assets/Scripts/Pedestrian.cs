@@ -13,6 +13,22 @@ public class Pedestrian : MonoBehaviour
     public float checkRadius = 0.5f;     // Radius to check for collisions at target position (fallback if no collider)
     public int maxAttempts = 10;         // Maximum attempts to find valid position
     
+    [Header("Forward Detection")]
+    [Tooltip("Enable forward obstacle detection while walking")]
+    public bool enableForwardDetection = true;
+    [Tooltip("Distance to check ahead for obstacles")]
+    public float forwardDetectionDistance = 1.5f;
+    [Tooltip("Width of detection area")]
+    public float forwardDetectionWidth = 1f;
+    [Tooltip("Stop duration when obstacle detected (seconds)")]
+    public float obstacleStopDuration = 1f;
+    [Tooltip("Detection interval when stopped (seconds)")]
+    public float stoppedDetectionInterval = 1f;
+    
+    private float detectionTimer = 0f;
+    private bool isStopped = false;
+    private float stoppedTimer = 0f;
+    
     [Header("Angry State")]
     [Tooltip("Angry image to show when pedestrian is angry")]
     public GameObject angryImage;
@@ -71,6 +87,48 @@ public class Pedestrian : MonoBehaviour
             return;
         }
 
+        // Handle stopped state (similar to vehicle logic)
+        if (isStopped)
+        {
+            stoppedTimer += Time.deltaTime;
+            detectionTimer += Time.deltaTime;
+            
+            // Check if stop duration is over
+            if (stoppedTimer >= obstacleStopDuration)
+            {
+                // Time to check for obstacles again
+                if (detectionTimer >= stoppedDetectionInterval)
+                {
+                    detectionTimer = 0f;
+                    
+                    // Check if path is clear
+                    if (!DetectObstacleAhead())
+                    {
+                        // Path is clear, resume walking
+                        isStopped = false;
+                        stoppedTimer = 0f;
+                    }
+                    else
+                    {
+                        // Still blocked, pick new target
+                        AvoidObstacle();
+                    }
+                }
+            }
+            
+            return; // Don't move while stopped
+        }
+
+        // Forward detection to avoid obstacles while walking
+        if (enableForwardDetection && DetectObstacleAhead())
+        {
+            // Obstacle detected ahead, stop
+            isStopped = true;
+            stoppedTimer = 0f;
+            detectionTimer = 0f;
+            return;
+        }
+
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, walkingSpeed * Time.deltaTime);
 
         // Face the walking direction
@@ -92,6 +150,53 @@ public class Pedestrian : MonoBehaviour
         animator.SetFloat("walkingX", walkingDirection.x);
         animator.SetFloat("walkingY", walkingDirection.y);
     }
+    
+    // Detect obstacles ahead while walking (using box detection like vehicle)
+    bool DetectObstacleAhead()
+    {
+        if (walkingDirection == Vector3.zero)
+            return false;
+        
+        // Calculate detection box position (in front of pedestrian)
+        Vector3 detectionCenter = transform.position + walkingDirection * (forwardDetectionDistance * 0.5f);
+        
+        // Detection box size
+        Vector2 boxSize = new Vector2(forwardDetectionWidth, forwardDetectionDistance);
+        
+        // Calculate rotation angle
+        float angle = Mathf.Atan2(walkingDirection.y, walkingDirection.x) * Mathf.Rad2Deg;
+        
+        // Check for obstacles (get all colliders in the area)
+        Collider2D[] hits = Physics2D.OverlapBoxAll(detectionCenter, boxSize, angle, obstacleLayer);
+        
+        // Get all colliders in this pedestrian's hierarchy to exclude them
+        Collider2D[] selfColliders = GetComponentsInChildren<Collider2D>();
+        
+        // Check if any hit is not part of this pedestrian
+        foreach (Collider2D hit in hits)
+        {
+            if (hit == null) continue;
+            
+            // Check if this collider belongs to this pedestrian
+            bool isSelf = false;
+            foreach (Collider2D selfCollider in selfColliders)
+            {
+                if (hit == selfCollider)
+                {
+                    isSelf = true;
+                    break;
+                }
+            }
+            
+            // If not self, it's an obstacle
+            if (!isSelf)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     void OnBecameVisible()
     {
@@ -109,18 +214,59 @@ public class Pedestrian : MonoBehaviour
         // animator.SetBool("isWalking", false);
     }
     
-    // Collision with player
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Collision with player or vehicle (using Collision2D)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             SetAngry(true);
             Debug.Log($"Pedestrian {gameObject.name}: Hit by player, becoming angry!");
         }
+        else if (collision.gameObject.CompareTag("Vehicle"))
+        {
+            // Vehicle hit pedestrian - pick new target to avoid getting stuck
+            AvoidObstacle();
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle, picking new target!");
+        }
+    }
+    
+    // Trigger collision with player or vehicle (using Trigger)
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            SetAngry(true);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by player (trigger), becoming angry!");
+        }
+        else if (collision.CompareTag("Vehicle"))
+        {
+            // Vehicle hit pedestrian - pick new target to avoid getting stuck
+            AvoidObstacle();
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle (trigger), picking new target!");
+        }
+    }
+    
+    // Called when pedestrian collides with obstacle (vehicle)
+    public void AvoidObstacle()
+    {
+        // Stop current movement and show idle animation
+        isWalking = false;
+        isStopped = true;
+        stoppedTimer = 0f;
+        detectionTimer = 0f;
+        stopTimer = 0f;
+        
+        // Update animator to idle state
+        if (animator != null)
+        {
+            animator.SetBool("isWalking", false);
+        }
+        
+        // Will pick new target after obstacleStopDuration
     }
     
     // Set angry state
-    private void SetAngry(bool angry)
+    void SetAngry(bool angry)
     {
         isAngry = angry;
         
@@ -186,7 +332,7 @@ public class Pedestrian : MonoBehaviour
     }
     
     // Check if a position is valid (not inside obstacle)
-    private bool IsPositionValid(Vector3 position)
+    bool IsPositionValid(Vector3 position)
     {
         // If pedestrian has a collider, check if the collider would overlap with obstacles at target position
         if (pedestrianCollider != null)
@@ -272,6 +418,22 @@ public class Pedestrian : MonoBehaviour
             }
             
             Gizmos.DrawLine(transform.position, targetPosition);
+            
+            // Draw forward detection area (like vehicle)
+            if (enableForwardDetection && walkingDirection != Vector3.zero)
+            {
+                Gizmos.color = isStopped ? Color.red : Color.cyan;
+                Vector3 detectionCenter = transform.position + walkingDirection * (forwardDetectionDistance * 0.5f);
+                
+                // Draw detection box
+                float angle = Mathf.Atan2(walkingDirection.y, walkingDirection.x) * Mathf.Rad2Deg;
+                Matrix4x4 rotationMatrix = Matrix4x4.TRS(detectionCenter, 
+                    Quaternion.Euler(0, 0, angle), 
+                    Vector3.one);
+                Gizmos.matrix = rotationMatrix;
+                Gizmos.DrawWireCube(Vector3.zero, new Vector3(forwardDetectionWidth, forwardDetectionDistance, 0));
+                Gizmos.matrix = Matrix4x4.identity;
+            }
         }
     }
 }
