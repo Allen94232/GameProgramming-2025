@@ -48,7 +48,9 @@
                     <ui:Button name="close-level-selection-button" class="closeButton" style="font-size: 30px; background-image: url(&quot;project://database/Assets/UI/GameUI/texture/close_button.png?fileID=2800000&amp;guid=c0266d485c092487ca63a2ab7f1a83cb&amp;type=3#close_button&quot;); background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; padding-top: 0; padding-bottom: 0; padding-left: 0; margin-left: 0; margin-bottom: 0; padding-right: 0; margin-top: 0; margin-right: 0; color: rgba(27, 27, 27, 0); width: 50px; height: 50px; position: absolute; right: 70px; top: 0; align-content: flex-start;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="level-buttons-container" style="flex-grow: 1; align-items: center; justify-content: center; padding-left: 50px; padding-right: 50px;">
+                    <ui:Button text="Tutorial" name="tutorial-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 15px; width: 100%; height: 80px; font-size: 40px;" />
                     <ui:Button text="Level 1" name="level-1-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 15px; width: 100%; height: 80px; font-size: 40px;" />
+                    <ui:Button text="Level 2" name="level-2-button" class="menuRegularButton" style="background-color: rgba(188, 188, 188, 0); margin-top: 0; margin-bottom: 15px; width: 100%; height: 80px; font-size: 40px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

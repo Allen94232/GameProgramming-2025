@@ -34,7 +34,9 @@ public class MainMenuController : MonoBehaviour
     // Level selection panel components
     private VisualElement _levelSelectionPanel;
     private Button _closeLevelSelectionButton;
+    private Button _tutorialButton;
     private Button _level1Button;
+    private Button _level2Button;
 
     // Leaderboard panel components
     private VisualElement _leaderboardPanel;
@@ -84,7 +86,9 @@ public class MainMenuController : MonoBehaviour
         // Get level selection panel components
         _levelSelectionPanel = root.Q<VisualElement>("level-selection-panel");
         _closeLevelSelectionButton = root.Q<Button>("close-level-selection-button");
+        _tutorialButton = root.Q<Button>("tutorial-button");
         _level1Button = root.Q<Button>("level-1-button");
+        _level2Button = root.Q<Button>("level-2-button");
 
         // Get leaderboard panel components
         _leaderboardPanel = root.Q<VisualElement>("leaderboard-panel");
@@ -140,10 +144,22 @@ public class MainMenuController : MonoBehaviour
             _closeLevelSelectionButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
 
+        if (_tutorialButton != null)
+        {
+            _tutorialButton.clicked += () => { PlayButtonSound(); StartLevel("Tutorial"); };
+            _tutorialButton.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
         if (_level1Button != null)
         {
             _level1Button.clicked += () => { PlayButtonSound(); StartLevel("Level 1"); };
             _level1Button.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
+        }
+
+        if (_level2Button != null)
+        {
+            _level2Button.clicked += () => { PlayButtonSound(); StartLevel("Level 2"); };
+            _level2Button.RegisterCallback<MouseEnterEvent>(evt => PlayButtonHoverSound());
         }
 
         if (_prevLevelButton != null)
@@ -539,6 +555,13 @@ public class MainMenuController : MonoBehaviour
                 imagePath = "ME_Singles_Fire_Station_48x48_Fire_Hydrant",
                 hasImage = true,
                 text = "Objects - Fire Hydrant:\n\nClick to turn it off. Getting wet makes you unhappy"
+            },
+            // Objects: Car
+            new
+            {
+                imagePath = "Car_2_complete_48x48_1_0",
+                hasImage = true,
+                text = "Objects - Car:\n\nBe careful not to hit cars on the road. Collisions reduce your mood"
             },
             // Objects: Flag
             new

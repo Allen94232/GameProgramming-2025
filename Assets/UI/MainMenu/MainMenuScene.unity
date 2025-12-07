@@ -376,7 +376,9 @@ MonoBehaviour:
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
   mainMenuBGM: {fileID: 8300000, guid: 079e6e403a8284dc18316d1309852222, type: 3}
+  tutorialBGM: {fileID: 8300000, guid: 2f4541123a775493185c2c1b8112a0c0, type: 3}
   level1BGM: {fileID: 8300000, guid: 2f4541123a775493185c2c1b8112a0c0, type: 3}
+  level2BGM: {fileID: 8300000, guid: 2f4541123a775493185c2c1b8112a0c0, type: 3}
   winSFX: {fileID: 8300000, guid: 0c546dd9d43f011478757c8aed53731c, type: 3}
   loseSFX: {fileID: 8300000, guid: 7e660065651dfce40bbf7b64713b17dd, type: 3}
   buttonClickSFX: {fileID: 8300000, guid: 00b18e15346f38a4e8535ac98e4ac9ee, type: 3}
@@ -511,7 +513,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   availableLevels:
+  - Tutorial
   - Level 1
+  - Level 2
   maxMood: 200
   initialMood: 100
   gameTime: 180
@@ -620,8 +624,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LeaderboardManager
   defaultLeaderboardId: 32067
   leaderboardConfigs:
+  - levelName: Tutorial
+    leaderboardId: 32302
   - levelName: Level 1
     leaderboardId: 32067
+  - levelName: Level 2
+    leaderboardId: 32303
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

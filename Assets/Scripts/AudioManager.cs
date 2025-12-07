@@ -16,8 +16,14 @@ public class AudioManager : MonoBehaviour
     [Tooltip("BGM for Main Menu")]
     [SerializeField] private AudioClip mainMenuBGM;
     
+    [Tooltip("BGM for Tutorial")]
+    [SerializeField] private AudioClip tutorialBGM;
+    
     [Tooltip("BGM for Level 1")]
     [SerializeField] private AudioClip level1BGM;
+    
+    [Tooltip("BGM for Level 2")]
+    [SerializeField] private AudioClip level2BGM;
 
     [Header("Game Sound Effects")]
     [Tooltip("Sound effect when player wins")]
@@ -135,8 +141,16 @@ public class AudioManager : MonoBehaviour
             case "MainMenuScene":
                 clipToPlay = mainMenuBGM;
                 break;
+            case "Tutorial":
+                clipToPlay = tutorialBGM;
+                isGameLevel = true;
+                break;
             case "Level 1":
                 clipToPlay = level1BGM;
+                isGameLevel = true;
+                break;
+            case "Level 2":
+                clipToPlay = level2BGM;
                 isGameLevel = true;
                 break;
             default:

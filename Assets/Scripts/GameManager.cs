@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     [Header("Level Configuration")]
-    public string[] availableLevels = new string[] { "Level 1", "Level 1 v2" }; // Add all your level scene names here
+    public string[] availableLevels = new string[] { "Tutorial", "Level 1", "Level 2" }; // Add all your level scene names here
     
     private string currentLevelName = "";
     private bool isInGameLevel = false;
