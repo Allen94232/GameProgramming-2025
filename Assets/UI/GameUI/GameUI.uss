@@ -34,7 +34,7 @@ Label {
     -unity-slice-right: 10;
     -unity-slice-bottom: 10;
     -unity-slice-scale: 2px;
-    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/VT323-Regular.ttf?fileID=12800000&guid=8c2ab64ad12824a55827b2ea2f868ae3&type=3#VT323-Regular");
+    -unity-font-definition: url("project://database/Assets/UI/GameUI/font/PressStart2P-Regular.ttf?fileID=12800000&guid=e96d9fa8bd9894fd29870cc9c9dc76cb&type=3#PressStart2P-Regular");
     -unity-font-style: normal;
     -unity-text-outline-color: rgb(34, 34, 34);
     -unity-text-outline-width: 1.2px;
