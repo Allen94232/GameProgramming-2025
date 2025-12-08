@@ -406,7 +406,7 @@ public class MainMenuController : MonoBehaviour
 
         // Name is valid, save and display success message
         LeaderboardManager.Instance.SetPlayerName(newName);
-        ShowNameWarning("✅ Name updated to: " + newName, true);
+        ShowNameWarning("Name updated to: " + newName, true);
         Debug.Log($"Name updated to: {newName}");
 
         // Auto-hide success message after 2 seconds
