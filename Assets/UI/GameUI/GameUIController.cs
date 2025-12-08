@@ -273,7 +273,7 @@ public class GameUIController : MonoBehaviour
     public void Init()
     {
         moodValue = GameManager.Instance.initialMood;
-        _timeRemaining = GameManager.Instance.gameTime;
+        _timeRemaining = GameManager.Instance.GetCurrentLevelTimeLimit();
         _hasTriggeredGameOver = false; // Reset game over flag
         
         // Update UI display

@@ -518,7 +518,13 @@ MonoBehaviour:
   - Level 2
   maxMood: 200
   initialMood: 100
-  gameTime: 180
+  levelTimeConfigs:
+  - levelName: Tutorial
+    timeLimit: 600
+  - levelName: Level 1
+    timeLimit: 180
+  - levelName: Level 2
+    timeLimit: 360
 --- !u!4 &1390719313
 Transform:
   m_ObjectHideFlags: 0

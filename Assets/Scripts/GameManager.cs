@@ -103,7 +103,21 @@ public class GameManager : MonoBehaviour
     [Header("Game Parameters")]
     public float maxMood = 200;
     public float initialMood = 100;
-    public float gameTime = 180f;
+    
+    [System.Serializable]
+    public class LevelTimeConfig
+    {
+        public string levelName;
+        public float timeLimit;
+    }
+    
+    [Header("Level Time Configuration")]
+    public LevelTimeConfig[] levelTimeConfigs = new LevelTimeConfig[]
+    {
+        new LevelTimeConfig { levelName = "Tutorial", timeLimit = 600f },  // 10分鐘
+        new LevelTimeConfig { levelName = "Level 1", timeLimit = 180f },   // 3分鐘
+        new LevelTimeConfig { levelName = "Level 2", timeLimit = 360f }    // 6分鐘
+    };
 
     //private GameObject winUI;
     //private GameObject loseUI;
@@ -166,7 +180,33 @@ public class GameManager : MonoBehaviour
         isGameWin = false;
         isGameLose = false;
 
-        timer = gameTime;
+        // 根據當前關卡設定時間限制
+        float levelTime = GetLevelTimeLimit(currentLevelName);
+        timer = levelTime;
+        
+        Debug.Log($"GameManager: Level '{currentLevelName}' time limit set to {levelTime} seconds");
+    }
+    
+    // 獲取指定關卡的時間限制
+    private float GetLevelTimeLimit(string levelName)
+    {
+        foreach (var config in levelTimeConfigs)
+        {
+            if (config.levelName == levelName)
+            {
+                return config.timeLimit;
+            }
+        }
+        
+        // 如果找不到配置，返回預設值
+        Debug.LogWarning($"GameManager: No time config found for level '{levelName}', using default 180s");
+        return 180f;
+    }
+    
+    // 獲取當前關卡的時間限制（公開方法供其他腳本使用）
+    public float GetCurrentLevelTimeLimit()
+    {
+        return GetLevelTimeLimit(currentLevelName);
     }
 
     public void ResetGame()
