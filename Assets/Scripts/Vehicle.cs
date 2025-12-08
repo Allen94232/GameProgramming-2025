@@ -300,22 +300,52 @@ public class Vehicle : MonoBehaviour
         if (angle < 0) angle += 360f;
 
         Sprite newSprite = null;
+        float spriteBaseAngle = 0f; // sprite 圖片本身朝向的角度
 
-        // Determine sprite based on direction (4 directions)
+        // Determine sprite based on closest cardinal direction
         if (angle >= 315f || angle < 45f)
+        {
+            // Right (0度) - 使用朝右的圖片
             newSprite = spriteRight;
+            spriteBaseAngle = 0f;
+        }
         else if (angle >= 45f && angle < 135f)
+        {
+            // Up (90度) - 使用朝上的圖片
             newSprite = spriteUp;
+            spriteBaseAngle = 90f;
+        }
         else if (angle >= 135f && angle < 225f)
+        {
+            // Left (180度) - 使用朝左的圖片
             newSprite = spriteLeft;
+            spriteBaseAngle = 180f;
+        }
         else
+        {
+            // Down (270度) - 使用朝下的圖片
             newSprite = spriteDown;
+            spriteBaseAngle = 270f;
+        }
 
         // Update sprite if changed
         if (newSprite != null && spriteRenderer.sprite != newSprite)
         {
             spriteRenderer.sprite = newSprite;
         }
+        
+        // 計算需要額外旋轉的角度（實際方向 - sprite 基礎方向）
+        float rotationOffset = angle - spriteBaseAngle;
+        
+        // 將旋轉角度標準化到 -180 到 180 之間
+        if (rotationOffset > 180f) rotationOffset -= 360f;
+        if (rotationOffset < -180f) rotationOffset += 360f;
+        
+        // 限制旋轉在 ±45 度之內
+        rotationOffset = Mathf.Clamp(rotationOffset, -45f, 45f);
+        
+        // 只旋轉偏移量，不加上基礎角度（因為 sprite 圖片本身已經是朝向正確方向的）
+        transform.rotation = Quaternion.Euler(0, 0, rotationOffset);
         
         // Rotate collider to match movement direction
         if (vehicleColliderTransform != null)
@@ -394,7 +424,7 @@ public class Vehicle : MonoBehaviour
         Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
         if (pedestrianScript != null)
         {
-            pedestrianScript.AvoidObstacle();
+            pedestrianScript.AvoidObstacle(pedestrianScript.vehicleStopDuration);
         }
     }
 

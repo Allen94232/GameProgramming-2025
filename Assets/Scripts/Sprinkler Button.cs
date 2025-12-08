@@ -76,6 +76,20 @@ public class SprinklerButton : MonoBehaviour
         
         // Initialize visual state
         UpdateVisualState();
+        
+        // 初始化閃爍狀態：只有在灑水器開啟時才閃爍
+        if (_interactiveFlash != null && waterSprayTrigger != null)
+        {
+            if (waterSprayTrigger.isOpening)
+            {
+                _interactiveFlash.StartLoopFlash(0.2f);
+            }
+            else
+            {
+                _interactiveFlash.StopLoopFlash();
+                _interactiveFlash.SetFlashAmount(0f); // 重置為原本顏色
+            }
+        }
     }
 
     // Refresh collider after waiting for physics to settle
@@ -129,6 +143,17 @@ public class SprinklerButton : MonoBehaviour
         // Toggle water spray
         waterSprayTrigger.ToggleWaterSpray();
 
+        // 控制閃爍：開啟時閃爍，關閉時停止並重置顏色
+        if (waterSprayTrigger.isOpening)
+        {
+            _interactiveFlash.StartLoopFlash(0.2f);
+        }
+        else
+        {
+            _interactiveFlash.StopLoopFlash();
+            _interactiveFlash.SetFlashAmount(0f); // 重置為原本顏色
+        }
+
         // Start cooldown
         StartCooldown();
 
@@ -137,19 +162,27 @@ public class SprinklerButton : MonoBehaviour
 
     void OnMouseOver()
     {
-        _interactiveFlash.SetFlashColor(_interactiveFlash._flashColor);
-        _interactiveFlash.StopLoopFlash();
-        _interactiveFlash.SetFlashAmount(0.5f);
-
-        if (Input.GetMouseButton(0))
+        // 只有在灑水器開啟時才顯示 hover 效果
+        if (waterSprayTrigger != null && waterSprayTrigger.isOpening)
         {
-            _interactiveFlash.SetFlashColor(_interactiveFlash._pushColor);
+            _interactiveFlash.SetFlashColor(_interactiveFlash._flashColor);
+            _interactiveFlash.StopLoopFlash();
+            _interactiveFlash.SetFlashAmount(0.5f);
+
+            if (Input.GetMouseButton(0))
+            {
+                _interactiveFlash.SetFlashColor(_interactiveFlash._pushColor);
+            }
         }
     }
 
     void OnMouseExit()
     {
-        _interactiveFlash.StartLoopFlash(0.2f);
+        // 只有在灑水器開啟時才恢復閃爍
+        if (waterSprayTrigger != null && waterSprayTrigger.isOpening)
+        {
+            _interactiveFlash.StartLoopFlash(0.2f);
+        }
     }
 
     // Start the cooldown timer
@@ -238,6 +271,20 @@ public class SprinklerButton : MonoBehaviour
     public void RefreshVisualState()
     {
         UpdateVisualState();
+        
+        // 同步閃爍狀態：開啟時閃爍，關閉時停止並重置顏色
+        if (waterSprayTrigger != null && _interactiveFlash != null)
+        {
+            if (waterSprayTrigger.isOpening)
+            {
+                _interactiveFlash.StartLoopFlash(0.2f);
+            }
+            else
+            {
+                _interactiveFlash.StopLoopFlash();
+                _interactiveFlash.SetFlashAmount(0f); // 重置為原本顏色
+            }
+        }
     }
 
     // Helper method to check current state

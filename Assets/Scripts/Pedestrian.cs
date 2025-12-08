@@ -20,14 +20,17 @@ public class Pedestrian : MonoBehaviour
     public float forwardDetectionDistance = 1.5f;
     [Tooltip("Width of detection area")]
     public float forwardDetectionWidth = 1f;
-    [Tooltip("Stop duration when obstacle detected (seconds)")]
-    public float obstacleStopDuration = 1f;
+    [Tooltip("Stop duration when vehicle detected (seconds)")]
+    public float vehicleStopDuration = 1f;
+    [Tooltip("Stop duration when player detected (seconds)")]
+    public float playerStopDuration = 2f;
     [Tooltip("Detection interval when stopped (seconds)")]
     public float stoppedDetectionInterval = 1f;
     
     private float detectionTimer = 0f;
     private bool isStopped = false;
     private float stoppedTimer = 0f;
+    private float currentStopDuration = 1f; // 當前的停止時間（根據碰撞對象決定）
     
     [Header("Angry State")]
     [Tooltip("Angry image to show when pedestrian is angry")]
@@ -41,6 +44,7 @@ public class Pedestrian : MonoBehaviour
     private Vector3 startPosition;       // Store starting position for area calculation
     private Vector3 walkingDirection;
     private Collider2D pedestrianCollider;  // Reference to pedestrian's own collider
+    private Rigidbody2D rb;              // Reference to Rigidbody2D
     
     // Angry state variables
     private bool isAngry = false;
@@ -53,6 +57,18 @@ public class Pedestrian : MonoBehaviour
         
         // Get pedestrian's collider for overlap detection
         pedestrianCollider = GetComponent<Collider2D>();
+        
+        // Setup Rigidbody2D to prevent pushing player
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
+        }
+        
+        // Configure Rigidbody2D to not push other objects
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.simulated = true;
+        rb.useFullKinematicContacts = true; // Enable collision detection with kinematic bodies
         
         // Initialize angry state
         if (angryImage != null)
@@ -77,6 +93,30 @@ public class Pedestrian : MonoBehaviour
             }
         }
         
+        // Handle stopped state (similar to vehicle logic) - 優先處理
+        if (isStopped)
+        {
+            stoppedTimer += Time.deltaTime;
+            detectionTimer += Time.deltaTime;
+            
+            // Check if stop duration is over
+            if (stoppedTimer >= currentStopDuration)
+            {
+                // Time to check for obstacles again
+                if (detectionTimer >= stoppedDetectionInterval)
+                {
+                    detectionTimer = 0f;
+                    
+                    // 解除停止狀態並重新選擇目標
+                    isStopped = false;
+                    stoppedTimer = 0f;
+                    PickNewTarget(); // 這會設置 isWalking = true
+                }
+            }
+            
+            return; // Don't move while stopped
+        }
+        
         if (!isWalking)
         {
             stopTimer += Time.deltaTime;
@@ -85,38 +125,6 @@ public class Pedestrian : MonoBehaviour
                 PickNewTarget();
             }
             return;
-        }
-
-        // Handle stopped state (similar to vehicle logic)
-        if (isStopped)
-        {
-            stoppedTimer += Time.deltaTime;
-            detectionTimer += Time.deltaTime;
-            
-            // Check if stop duration is over
-            if (stoppedTimer >= obstacleStopDuration)
-            {
-                // Time to check for obstacles again
-                if (detectionTimer >= stoppedDetectionInterval)
-                {
-                    detectionTimer = 0f;
-                    
-                    // Check if path is clear
-                    if (!DetectObstacleAhead())
-                    {
-                        // Path is clear, resume walking
-                        isStopped = false;
-                        stoppedTimer = 0f;
-                    }
-                    else
-                    {
-                        // Still blocked, pick new target
-                        AvoidObstacle();
-                    }
-                }
-            }
-            
-            return; // Don't move while stopped
         }
 
         // Forward detection to avoid obstacles while walking
@@ -220,13 +228,15 @@ public class Pedestrian : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             SetAngry(true);
-            Debug.Log($"Pedestrian {gameObject.name}: Hit by player, becoming angry!");
+            // Player hit pedestrian - stop and wait longer
+            AvoidObstacle(playerStopDuration);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by player, becoming angry and stopping for {playerStopDuration}s!");
         }
         else if (collision.gameObject.CompareTag("Vehicle"))
         {
-            // Vehicle hit pedestrian - pick new target to avoid getting stuck
-            AvoidObstacle();
-            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle, picking new target!");
+            // Vehicle hit pedestrian - stop and wait
+            AvoidObstacle(vehicleStopDuration);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle, stopping for {vehicleStopDuration}s!");
         }
     }
     
@@ -236,18 +246,20 @@ public class Pedestrian : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             SetAngry(true);
-            Debug.Log($"Pedestrian {gameObject.name}: Hit by player (trigger), becoming angry!");
+            // Player hit pedestrian - stop and wait longer
+            AvoidObstacle(playerStopDuration);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by player (trigger), becoming angry and stopping for {playerStopDuration}s!");
         }
         else if (collision.CompareTag("Vehicle"))
         {
-            // Vehicle hit pedestrian - pick new target to avoid getting stuck
-            AvoidObstacle();
-            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle (trigger), picking new target!");
+            // Vehicle hit pedestrian - stop and wait
+            AvoidObstacle(vehicleStopDuration);
+            Debug.Log($"Pedestrian {gameObject.name}: Hit by vehicle (trigger), stopping for {vehicleStopDuration}s!");
         }
     }
     
-    // Called when pedestrian collides with obstacle (vehicle)
-    public void AvoidObstacle()
+    // Called when pedestrian collides with obstacle (vehicle or player)
+    public void AvoidObstacle(float stopDuration)
     {
         // Stop current movement and show idle animation
         isWalking = false;
@@ -255,6 +267,7 @@ public class Pedestrian : MonoBehaviour
         stoppedTimer = 0f;
         detectionTimer = 0f;
         stopTimer = 0f;
+        currentStopDuration = stopDuration; // 設定當前停止時間
         
         // Update animator to idle state
         if (animator != null)
@@ -262,7 +275,7 @@ public class Pedestrian : MonoBehaviour
             animator.SetBool("isWalking", false);
         }
         
-        // Will pick new target after obstacleStopDuration
+        // Will pick new target after currentStopDuration
     }
     
     // Set angry state

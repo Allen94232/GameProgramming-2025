@@ -25,6 +25,19 @@ public class SpeedDetector : MonoBehaviour
                 speedTextController.SpeedChanged(playerSpeed, isCovered);
             }
         }
+        if (other.CompareTag("Vehicle"))
+        {
+            // 車輛使用 Kinematic Rigidbody，所以要從 Vehicle 組件獲取速度
+            Vehicle vehicle = other.gameObject.GetComponent<Vehicle>();
+            if (vehicle != null)
+            {
+                float carSpeed = vehicle.speed; // 直接使用車輛設定的速度
+                carSpeed *= speedMultiplier;
+
+                // 使用專門針對車輛的方法（不影響心情值）
+                speedTextController.VehicleSpeedChanged(carSpeed, isCovered);
+            }
+        }
     }
     
     // Called by DraggableTarget UnityEvent when spray painted

@@ -53,6 +53,26 @@ public class SpeedTextController : MonoBehaviour
         speedText.text = currSpeed.ToString();
     }
 
+    // 針對車輛的速度檢測（不影響心情值）
+    public void VehicleSpeedChanged(float speed, bool isCovered = false)
+    {
+        currSpeed = Mathf.FloorToInt(speed);
+
+        if (currSpeed > overSpeedValue)
+        {
+            // Change face color of the text (紅色顯示超速)
+            textMaterial.SetColor("_FaceColor", overSpeedColor);
+        }
+        else
+        {
+            // Change face color of the text (正常顏色)
+            textMaterial.SetColor("_FaceColor", normalSpeedColor);
+        }
+
+        speedText.text = currSpeed.ToString();
+        // 不影響心情值，只顯示速度
+    }
+
     private void OnDestroy()
     {
         // Clean up material instance to prevent memory leak
