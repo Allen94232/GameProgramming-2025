@@ -97,3 +97,16 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# macOS
+.DS_Store
+
+# Unity schema files
+UIElementsSchema/
+
+# WebGL Builds (can be regenerated)
+/WebGL Builds/
+
+# VS Code
+.vscode/
+.vsconfig
