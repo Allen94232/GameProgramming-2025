@@ -80,6 +80,8 @@ The score combines the player's remaining time, mood, and collected coins. Separ
 - LootLocker SDK `6.4.0`
 - WebGL
 
+Verified third-party software and bundled asset acknowledgments are listed in [CREDITS.md](CREDITS.md).
+
 ### Run in Unity
 
 1. Install Unity `6000.2.2f1`.
