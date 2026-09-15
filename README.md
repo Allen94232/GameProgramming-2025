@@ -55,8 +55,7 @@ The score combines the player's remaining time, mood, and collected coins. Separ
 │   │   └── Levels/       # Tutorial, Level 1, and Level 2
 │   └── Scripts/          # Gameplay, UI, audio, and leaderboard logic
 ├── Packages/             # Unity package definitions
-├── ProjectSettings/      # Unity project settings
-└── WebGL Builds/         # Browser build committed to the repository
+└── ProjectSettings/      # Unity project settings
 ```
 
 ## Key Code
@@ -89,7 +88,9 @@ Verified third-party software and bundled asset acknowledgments are listed in [C
 3. Open a scene under `Assets/Scenes/Levels`.
 4. Enter Play Mode.
 
-### Play the Published Build
+### Build and Published Version
+
+Generated WebGL output is excluded from Git. Create a fresh build from Unity when publishing a release.
 
 [Play Campus Dash on itch.io](https://allen94232.itch.io/campusdash)
 
