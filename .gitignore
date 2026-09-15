@@ -110,3 +110,6 @@ UIElementsSchema/
 # VS Code
 .vscode/
 .vsconfig
+
+# Unity Version Control conflict copies
+*.private.*
